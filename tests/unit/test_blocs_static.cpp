@@ -74,8 +74,8 @@ BOOST_AUTO_TEST_CASE(test_blocs_static_sh_real) {
     auto a = mdot::real_sh_blocs_crtp<mdot::sh_sp_u1>::get_shapes();
     BOOST_CHECK(std::get<0>(a[0]) == 1);
     auto index = mdot::real_sh_blocs_crtp<mdot::sh_sp_u1>::get_index(0);
-    BOOST_CHECK(std::get<0>(index) == 1);
-    BOOST_CHECK(std::get<1>(index) == 0);
+    BOOST_CHECK(std::get<0>(index) == 0);
+    BOOST_CHECK(std::get<1>(index) == 1);
     auto array = mdot::real_sh_blocs_crtp<mdot::sh_sp_u1>::get_array(0, 1.);
     BOOST_CHECK(array[0] == 1.);
   }
@@ -87,12 +87,27 @@ BOOST_AUTO_TEST_CASE(test_blocs_static_sh_real) {
         std::get<0>(
             mdot::real_sh_blocs_crtp<mdot::sh_sm_u1>::get_shapes()[0]) == 1);
     auto index = mdot::real_sh_blocs_crtp<mdot::sh_sm_u1>::get_index(0);
-    BOOST_CHECK(std::get<0>(index) == 0);
-    BOOST_CHECK(std::get<1>(index) == 1);
+    BOOST_CHECK(std::get<0>(index) == 1);
+    BOOST_CHECK(std::get<1>(index) == 0);
     auto array = mdot::real_sh_blocs_crtp<mdot::sh_sm_u1>::get_array(0);
     BOOST_CHECK(array[0] == 1.);
   }
-  // // sh_sx_no
+  {
+    // sh_sx_no
+    BOOST_CHECK(mdot::real_sh_blocs_crtp<mdot::sh_sx_u1>::nb_blocs == 2);
+    BOOST_CHECK(mdot::real_sh_blocs_crtp<mdot::sh_sx_u1>::get_size(0) == 1);
+    BOOST_CHECK(
+        std::get<0>(
+            mdot::real_sh_blocs_crtp<mdot::sh_sx_u1>::get_shapes()[0]) == 1);
+    auto indices = mdot::real_sh_blocs_crtp<mdot::sh_sx_u1>::get_indices();
+    BOOST_CHECK(std::get<0>(indices[0]) == 0);
+    BOOST_CHECK(std::get<1>(indices[0]) == 1);
+    BOOST_CHECK(std::get<0>(indices[1]) == 1);
+    BOOST_CHECK(std::get<1>(indices[1]) == 0);
+    auto arrays = mdot::real_sh_blocs_crtp<mdot::sh_sx_u1>::get_arrays();
+    BOOST_CHECK(arrays[0][0] == 1.);
+    BOOST_CHECK(arrays[1][0] == 1.);
+  }
   // // sh_sy_no
   // // sh_sz_no
 }
