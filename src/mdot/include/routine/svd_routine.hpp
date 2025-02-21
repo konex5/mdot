@@ -26,7 +26,6 @@ void dgesdd_(const char *jobz, const size_t *m, const size_t *n,
              const size_t *ldu, dnum_t *vt, const size_t *ldvt, dnum_t *work,
              int *lwork, int *iwork, int *info);
 #endif
-
 }
 
 namespace mdot {
@@ -147,7 +146,7 @@ void svd_nondeg(dtbloc_t &theta_bloc,
             &ldA, Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, work,
             &lwork, &info);
 #else
-    int iwork[8*K];
+    int iwork[8 * K];
     dgesdd_((char *)"S", &M, &N, theta_bloc[key].second.data(), &ldA,
             Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, &worktest,
             &lwork, iwork, &info);
@@ -155,8 +154,8 @@ void svd_nondeg(dtbloc_t &theta_bloc,
     lwork = (int)worktest;
     double work[lwork];
     dgesdd_((char *)"S", &M, &N, theta_bloc[key].second.data(), &ldA,
-            Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, work, &lwork, iwork,
-            &info);
+            Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, work, &lwork,
+            iwork, &info);
 #endif
     array_of_U.push_back(Uout);
     array_of_S.push_back(Sout);
@@ -239,16 +238,15 @@ void svd_deg(
             Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, work, &lwork,
             &info);
 #else
-    int iwork[8*K];
-    dgesdd_((char *)"S", &M, &N, tmp_theta.data(), &ldA,
-            Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, &worktest,
-            &lwork, iwork, &info);
+    int iwork[8 * K];
+    dgesdd_((char *)"S", &M, &N, tmp_theta.data(), &ldA, Sout.data(),
+            VDout.data(), &ldvT, Uout.data(), &ldu, &worktest, &lwork, iwork,
+            &info);
 
     lwork = (int)worktest;
     double work[lwork];
-    dgesdd_((char *)"S", &M, &N, tmp_theta.data(), &ldA,
-            Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, work, &lwork, iwork,
-            &info);
+    dgesdd_((char *)"S", &M, &N, tmp_theta.data(), &ldA, Sout.data(),
+            VDout.data(), &ldvT, Uout.data(), &ldu, work, &lwork, iwork, &info);
 #endif
 
     array_of_U.push_back(Uout);

@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(test_svd) {
     size_t ldA = M, ldu = K, ldvT = M;
     double worktest;
     int info, lwork = -1;
-    int iwork[8*N < 8*M ? N : M];
+    int iwork[8 * N < 8 * M ? N : M];
 
     dgesdd_((char *)"S", &M, &N, A, &ldA, Sout, VDout, &ldvT, Uout, &ldu,
             &worktest, &lwork, iwork, &info);
@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE(test_svd) {
     size_t ldA = N, ldu = M, ldvT = N < M ? N : M;
     double worktest;
     int info, lwork = -1;
-    int iwork[8*N < 8*M ? N : M];
+    int iwork[8 * N < 8 * M ? N : M];
 
     dgesdd_((char *)"S", &N, &M, A, &ldA, Sout, Uout, &ldu, VDout, &ldvT,
             &worktest, &lwork, iwork, &info);
@@ -165,8 +165,8 @@ BOOST_AUTO_TEST_CASE(test_svd_validation) {
     size_t ldA = M, ldvT = M;
     double worktest;
     int info, lwork = -1;
-    int iwork[8*N < 8*M ? N : M];
-    
+    int iwork[8 * N < 8 * M ? N : M];
+
     dgesdd_((char *)"S", &M, &N, A, &ldA, Sout, VDout, &ldvT, Uout, &ldu,
             &worktest, &lwork, iwork, &info);
     lwork = (int)worktest;
