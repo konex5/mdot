@@ -57,19 +57,48 @@ namespace mdot
     static constexpr std::array<index_t, 2> n_shape = {2, 2};
     static constexpr std::array<dnum_t, 4> n_array = {1, 0, 0, 1};
   };
-  struct sh_sz_no : real_operators_crtp<sh_sz_no>
+  struct sh_id_no : cplx_operators_crtp<sh_id_no>
   {
     static constexpr index_t n_size = 4;
     static constexpr std::array<index_t, 2> n_shape = {2, 2};
-    static constexpr std::array<dnum_t, 4> n_array = {1, 0, 0, -1};
+    static constexpr std::array<znum_t, 4> n_array = {1 , 0, 0, 1};
   };
-  struct sh_sy_cplx_no : cplx_operators_crtp<sh_sy_cplx_no>
+
+  struct sh_sp_no : real_operators_crtp<sh_sp_no>
+  {
+    static constexpr index_t n_size = 4;
+    static constexpr std::array<index_t, 2> n_shape = {2, 2};
+    static constexpr std::array<dnum_t, 4> n_array = {0, 1, 0, 0};
+  };
+
+    struct sh_sm_no : real_operators_crtp<sh_sm_no>
+  {
+    static constexpr index_t n_size = 4;
+    static constexpr std::array<index_t, 2> n_shape = {2, 2};
+    static constexpr std::array<dnum_t, 4> n_array = {0, 0, 1, 0};
+  };
+
+  struct sh_sx_no : real_operators_crtp<sh_sx_no>
+  {
+    static constexpr index_t n_size = 4;
+    static constexpr std::array<index_t, 2> n_shape = {2, 2};
+    static constexpr std::array<dnum_t, 4> n_array = {0, 1, 1, 0};
+  };
+  
+  struct sh_sy_no : cplx_operators_crtp<sh_sy_no>
   {
     static constexpr index_t n_size = 4;
     static constexpr std::array<index_t, 2> n_shape = {2, 2};
     static constexpr std::array<znum_t, 4> n_array = {0 , 0+ 1.i, 0- 1.i, 0};
   };
 
+  struct sh_sz_no : real_operators_crtp<sh_sz_no>
+  {
+    static constexpr index_t n_size = 4;
+    static constexpr std::array<index_t, 2> n_shape = {2, 2};
+    static constexpr std::array<dnum_t, 4> n_array = {1, 0, 0, -1};
+  };
+  
   /*
 
 
