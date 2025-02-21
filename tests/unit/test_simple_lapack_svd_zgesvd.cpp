@@ -59,8 +59,6 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd) {
     zgesvd_((char *)"S", (char *)"S", &N, &N, A, &ldA, Sout, VDout, &ldvT, Uout,
             &ldu, work, &lwork, rwork, &info);
 
-    std::cout << "info=" << info << " zero is ok!" << std::endl;
-
     for (std::size_t k = 0; k < N; k++)
       BOOST_CHECK(abs(S[k] - Sout[k]) < 1e-5);
     for (std::size_t k = 0; k < N * N; k++)
@@ -114,8 +112,6 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd) {
 
     zgesvd_((char *)"S", (char *)"S", &N, &N, A, &ldA, Sout, Uout, &ldvT, VDout,
             &ldu, work, &lwork, rwork, &info);
-
-    std::cout << "info=" << info << " zero is ok!" << std::endl;
 
     for (std::size_t k = 0; k < N; k++)
       BOOST_CHECK(S[k] - Sout[k] < 1e-5);

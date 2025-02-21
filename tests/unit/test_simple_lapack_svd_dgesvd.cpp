@@ -28,23 +28,25 @@ BOOST_AUTO_TEST_CASE(test_svd) {
   { // real, row major
 
     const double A[N * M] = {1, 0, 0, -1, 0, 1, -1, 1, 0};
+    const double Adeepcopy[N * M] = {A[0], A[1], A[2], A[3], A[4],
+                                     A[5], A[6], A[7], A[8]};
 
-    double U[N * K] = {-4.59700843e-01, 6.99362418e-17,  -8.88073834e-01,
-                       6.27963030e-01,  -7.07106781e-01, -3.25057584e-01,
-                       6.27963030e-01,  7.07106781e-01,  -3.25057584e-01};
+    double U[N * K] = {4.59700843e-01,  0,
+                       -8.88073834e-01, -6.27963030e-01,
+                       7.07106781e-01,  -3.25057584e-01,
+                       -6.27963030e-01, -7.07106781e-01,
+                       -3.25057584e-01};
     double S[K] = {1.93185165, 1., 0.51763809};
-    double Vd[K * M] = {-0.88807383, 0.32505758,  0.32505758,
-                        -0.,         0.70710678,  -0.70710678,
+    double Vd[K * M] = {0.88807383,  -0.32505758, -0.32505758,
+                        0.,          -0.70710678, 0.70710678,
                         -0.45970084, -0.62796303, -0.62796303};
 
     for (std::size_t i = 0; i < N; i++)
-      for (std::size_t j = 0; j < M; j++) {
+      for (std::size_t j = 0; j < N; j++) {
         double sum = 0;
-        for (std::size_t k = 0; k < K; k++)
-          sum += U[i * K + k] * S[k] * Vd[k * M + j];
-        // std::cout << "A[i*5+j]=" << A[i*M+j] << " and the sum gives:" << sum
-        // << std::endl;
-        BOOST_CHECK(abs(A[i * M + j] - sum) < 1e-5);
+        for (std::size_t k = 0; k < N; k++)
+          sum += U[i * N + k] * S[k] * Vd[k * N + j];
+        BOOST_CHECK(abs(Adeepcopy[i * N + j] - sum) < 1e-5);
       };
 
     double Uout[N * K], Sout[K], VDout[K * M];
@@ -59,27 +61,25 @@ BOOST_AUTO_TEST_CASE(test_svd) {
     dgesvd_((char *)"S", (char *)"S", &M, &N, A, &ldA, Sout, VDout, &ldu, Uout,
             &ldvT, work, &lwork, &info);
 
-    for (std::size_t k = 0; k < K; k++)
-      // std::cout << S[k] << "compared with" << Sout[k] << std::endl;
-      BOOST_CHECK_CLOSE(S[k], Sout[k], 1e-5);
+    for (std::size_t k = 0; k < N; k++)
+      BOOST_CHECK(abs(S[k] - Sout[k]) < 1e-5);
+    for (std::size_t k = 0; k < N * N; k++)
+      BOOST_CHECK(abs(U[k] - Uout[k]) < 1e-5);
+    for (std::size_t k = 0; k < N * N; k++)
+      BOOST_CHECK(abs(Vd[k] - VDout[k]) < 1e-5);
 
     for (std::size_t i = 0; i < N; i++)
-      for (std::size_t k = 0; k < K; k++)
-        // std::cout << U[i*K+k] << "compared with" << Uout[i*K+k] << std::endl;
-        if (!((k != 3 && i != N) || (i == 0 && k == 1))) // some freedom in SVD
-          BOOST_CHECK_CLOSE(U[i * K + k], Uout[i * K + k], 1e-5);
-
-    for (std::size_t j = 0; j < M; j++)
-      for (std::size_t k = 0; k < K; k++)
-        // std::cout << Vd[k*M+j] << "compared with" << VDout[k*M+j] <<
-        // std::endl;
-        if (!((k == 1 && j == 0) ||
-              (k == K - 2 &&
-               j == M - 1))) // some floating point precision issue
-          BOOST_CHECK_CLOSE(abs(Vd[k * M + j]), abs(VDout[k * M + j]), 1e-5);
+      for (std::size_t j = 0; j < N; j++) {
+        double sum = 0;
+        for (std::size_t k = 0; k < N; k++)
+          sum += Uout[i * N + k] * Sout[k] * VDout[k * N + j];
+        BOOST_CHECK(abs(Adeepcopy[i * N + j] - sum) < 1e-5);
+      };
   }
   { // real, column major
     const double A[N * M] = {1, -1, -1, 0, 0, 1, 0, 1, 0};
+    const double Adeepcopy[N * M] = {A[0], A[1], A[2], A[3], A[4],
+                                     A[5], A[6], A[7], A[8]};
 
     double U[N * K] = {-4.59700843e-01, 6.27963030e-01,  6.27963030e-01,
                        6.99362418e-17,  -7.07106781e-01, 7.07106781e-01,
@@ -94,8 +94,6 @@ BOOST_AUTO_TEST_CASE(test_svd) {
         double sum = 0;
         for (std::size_t k = 0; k < K; k++)
           sum += U[i + k * N] * S[k] * Vd[k + j * K];
-        // std::cout << "A[i+j*4]=" << A[i+j*N] << " and the sum gives:" << sum
-        // << std::endl;
         BOOST_CHECK(abs(A[i + j * N] - sum) < 1e-5);
       };
 
@@ -113,5 +111,16 @@ BOOST_AUTO_TEST_CASE(test_svd) {
 
     for (std::size_t k = 0; k < K; k++)
       BOOST_CHECK_CLOSE(S[k], Sout[k], 1e-5);
+    for (std::size_t k = 0; k < N * N; k++)
+      BOOST_CHECK(abs(U[k] - Uout[k]) < 1e-5);
+    for (std::size_t k = 0; k < N * N; k++)
+      BOOST_CHECK(abs(Vd[k] - VDout[k]) < 1e-5);
+    for (std::size_t i = 0; i < N; i++)
+      for (std::size_t j = 0; j < M; j++) {
+        double sum = 0;
+        for (std::size_t k = 0; k < K; k++)
+          sum += Uout[i + k * N] * Sout[k] * VDout[k + j * K];
+        BOOST_CHECK(abs(Adeepcopy[i + j * N] - sum) < 1e-5);
+      };
   }
 }
