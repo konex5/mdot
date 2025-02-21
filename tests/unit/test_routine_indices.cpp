@@ -46,3 +46,18 @@ BOOST_AUTO_TEST_CASE(test_routine_indices_potential_middle_indices) {
   BOOST_CHECK(std::get<2>(out.second[0].second[1]) == 1);
   BOOST_CHECK(std::get<3>(out.second[0].second[1]) == 0);
 }
+
+BOOST_AUTO_TEST_CASE(test_routine_indices_slices_degenerate_blocs) {
+  std::vector<t_index_t> theta_indices_large = {
+      {0, 0, 0, 0}, {0, 0, 0, 1}, {0, 0, 0, 2}, {0, 0, 0, 4}, {0, 0, 1, 0},
+      {0, 0, 1, 1}, {0, 0, 1, 2}, {0, 0, 1, 4}, {0, 1, 0, 0}, {0, 1, 0, 1},
+      {0, 1, 1, 0}, {0, 1, 1, 1}, {0, 1, 1, 2}, {0, 1, 1, 4}, {1, 0, 0, 3},
+      {1, 0, 1, 0}, {1, 1, 0, 0}, {1, 1, 1, 3}};
+
+  auto middle = mdot::potential_middle_indices(theta_indices_large, 1);
+  BOOST_CHECK(middle.size() == 6);
+  auto out_nondeg_deg =
+      mdot::degeneracy_in_theta(theta_indices_large, middle, 1);
+  BOOST_CHECK(out_nondeg_deg.first.size() == 0);
+  BOOST_CHECK(out_nondeg_deg.second.size() == 3);
+}
