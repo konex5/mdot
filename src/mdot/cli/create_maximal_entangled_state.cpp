@@ -1,7 +1,8 @@
-#include <boost/program_options.hpp>
-
 #include <iostream>
 #include <string>
+
+#include <boost/filesystem.hpp>
+#include <boost/program_options.hpp>
 
 namespace po = boost::program_options;
 
@@ -20,15 +21,15 @@ int main(int argc, char *argv[]) {
     po::store(po::parse_command_line(argc, argv, desc), vm);
     po::notify(vm);
 
-    if (vm.count("help") || vm.count("hamiltonian") || vm.count("output")) {
+    if (vm.count("help") || vm.count("hamiltonian") == 0 ||
+        vm.count("output") == 0) {
       std::cout << desc << "\n";
       return 0;
     }
-
-    // boost::pathname
-    if (vm.count("hamiltonian")) {
-      // hamiltonian_file = vm["hamiltonian"].as<std::string>();
-    } else {
+    boost::filesystem::path hamiltonian_path;
+    hamiltonian_path =
+        boost::filesystem::path(vm["hamiltonian"].as<std::string>());
+    if (!boost::filesystem::exists(hamiltonian_path)) {
       std::cout << "cli, create_maximal_entangled_state: the hamiltonian path "
                 << vm["hamiltonian"].as<std::string>() << " is not a valid path"
                 << std::endl;
