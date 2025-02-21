@@ -40,8 +40,8 @@ void theta_to_mm(dtbloc_t &theta_blocs, dmbloc_t &lhs_blocs,
   auto out_nondeg_deg =
       degeneracy_in_theta(theta_indices, middle_indices, direction_right);
 
-  // auto subnewsize_deg = : _List[_List] = []
-  //  slices_degenerate_blocs(theta_blocs, deg, subnewsize_deg)
+  auto new_subsize =
+      slices_degenerate_blocs(theta_blocs, out_nondeg_deg.second);
 
   std::vector<std::vector<dnum_t>> array_of_U, array_of_V;
   std::vector<std::vector<dnum_t>> array_of_S;
