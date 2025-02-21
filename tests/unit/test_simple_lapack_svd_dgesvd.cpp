@@ -171,12 +171,14 @@ BOOST_AUTO_TEST_CASE(test_dgesvd_overwrite_left_right) {
     for (std::size_t k = 0; k < Keff; k++)
       BOOST_CHECK(abs(S[k] - Sout[k]) < 1e-7);
 
-    // for (std::size_t k = 0; k < 9; k++) {
-    //   std::cout << U[k] << " AND " << A[k] << std::endl;
-    // }
+    for (std::size_t k = 0; k < 2; k++) { // see the offset in matrix A.
+      BOOST_CHECK(abs(U[k] - A[k]) < 1e-7);
+      BOOST_CHECK(abs(U[k+2] - A[k+3]) < 1e-7);
+      BOOST_CHECK(abs(U[k+4] - A[k+6]) < 1e-7);
+    }
 
     for (std::size_t k = 0; k < 6; k++) {
-      BOOST_CHECK(abs(Vd[k] - VDout[k]) < 1e-5);
+      BOOST_CHECK(abs(Vd[k] - VDout[k]) < 1e-7);
     }
 
     for (std::size_t i = 0; i < N; i++)
