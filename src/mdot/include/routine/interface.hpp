@@ -27,7 +27,7 @@ void mm_to_theta_no_gate(dtbloc_t &dst_blocs, const dmbloc_t lhs_blocs,
                    about_indices_to_contract.second);
 }
 
-void theta_to_mm(dtbloc_t& theta_blocs, dmbloc_t &lhs_blocs,
+void theta_to_mm(dtbloc_t &theta_blocs, dmbloc_t &lhs_blocs,
                  dmbloc_t &rhs_blocs, dnum_t &dw, const index_t chi_max,
                  const bool normalize, const bool is_um,
                  const int direction_right, const double eps) {
@@ -40,24 +40,27 @@ void theta_to_mm(dtbloc_t& theta_blocs, dmbloc_t &lhs_blocs,
   auto out_nondeg_deg =
       degeneracy_in_theta(theta_indices, middle_indices, direction_right);
 
-    // subnewsize_deg: _List[_List] = []
-    // slices_degenerate_blocs(theta_blocs, deg, subnewsize_deg)
+  // subnewsize_deg: _List[_List] = []
+  // slices_degenerate_blocs(theta_blocs, deg, subnewsize_deg)
 
-    std::vector<std::vector<dnum_t>> array_of_U, array_of_V;
-    std::vector<std::vector<dnum_t>> array_of_S;
-    svd_nondeg(theta_blocs, out_nondeg_deg.first, array_of_U, array_of_S, array_of_V);
-    ///svd_deg(theta_blocs, deg, subnewsize_deg, array_of_U, array_of_S, array_of_V)
+  std::vector<std::vector<dnum_t>> array_of_U, array_of_V;
+  std::vector<std::vector<dnum_t>> array_of_S;
+  std::vector<t_shape_t> nondeg_dims;
+  svd_nondeg(theta_blocs, out_nondeg_deg.first, nondeg_dims, array_of_U,
+             array_of_S, array_of_V);
+  /// svd_deg(theta_blocs, deg, subnewsize_deg, array_of_U, array_of_S,
+  /// array_of_V)
 
-    auto cut = truncation_strategy(array_of_S, chi_max, dw, eps);
+  auto cut = truncation_strategy(array_of_S, chi_max, dw, eps);
 
-    if (normalize)
-      normalize_the_array(array_of_S, cut);
+  if (normalize)
+    normalize_the_array(array_of_S, cut);
 
-    std::vector<index_t> cut_nondeg, cut_deg;
-    for (std::size_t i=0;i<out_nondeg_deg.first.size();i++)
-      cut_nondeg.push_back(cut[i]);
-    // for (std::size_t i=0;i<out_nondeg_deg.second.size();i++)
-    //   cut_deg.push_back(cut[out_nondeg_deg.first.size()+i]);
+  std::vector<index_t> cut_nondeg, cut_deg;
+  for (std::size_t i = 0; i < out_nondeg_deg.first.size(); i++)
+    cut_nondeg.push_back(cut[i]);
+  // for (std::size_t i=0;i<out_nondeg_deg.second.size();i++)
+  //   cut_deg.push_back(cut[out_nondeg_deg.first.size()+i]);
 
   /*
     mul_usv_deg(

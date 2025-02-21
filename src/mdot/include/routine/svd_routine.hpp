@@ -22,7 +22,6 @@ void zgesvd_(const char *jobu, const char *jobvt, const size_t *m,
              znum_t *work, const int *lwork, double *rwork, int *info);
 }
 
-
 namespace mdot {
 
 void bloc_norm(const array_of_s_type &array_of_s,
@@ -106,40 +105,41 @@ truncation_strategy(const std::vector<std::vector<dnum_t>> list_of_array,
   return cut_at_index;
 }
 
-void svd_nondeg(dtbloc_t& theta_bloc,
-                std::vector<std::pair<index_t, t_index_t> > nondeg, 
-                // std::vector<bloc_index_t> ???nondeg_dims,
+void svd_nondeg(dtbloc_t &theta_bloc,
+                std::vector<std::pair<index_t, t_index_t>> nondeg,
+                std::vector<t_shape_t> &nondeg_dims,
                 std::vector<std::vector<dnum_t>> &array_of_U,
                 std::vector<std::vector<dnum_t>> &array_of_S,
                 std::vector<std::vector<dnum_t>> &array_of_V) {
 
-      for (auto& it: nondeg) {
-        auto key = it.second;
-        auto shape = theta_bloc[key].first;
-        
-        auto N = static_cast<std::size_t>(std::get<0>(shape)*std::get<1>(shape));
-        auto M = static_cast<std::size_t>(std::get<2>(shape)*std::get<3>(shape));
-        auto K = std::min(N,M);
-        ///
-        std::vector<double> Uout(N * K), Sout(K), VDout(K * M);
-        std::size_t ldA = M, ldu = N, ldvT = M < N ? M : N;
-        double worktest;
-        int info, lwork = -1;
-        
-        dgesvd_((char *)"S", (char *)"S", &M, &N, theta_bloc[key].second.data(), &ldA, Sout.data(), VDout.data(), &ldu, Uout.data(),
-            &ldvT, &worktest, &lwork, &info);
-        
-        lwork = (int)worktest;
-        double work[lwork];
-        dgesvd_((char *)"S", (char *)"S", &M, &N, theta_bloc[key].second.data(), &ldA, Sout.data(), VDout.data(), &ldu, Uout.data(),
-            &ldvT, work, &lwork, &info);
-        
-        array_of_U.push_back(Uout);
-        array_of_S.push_back(Sout);
-        array_of_V.push_back(VDout);
-        
-      } 
-      
+  for (auto &it : nondeg) {
+    auto key = it.second;
+    auto shape = theta_bloc[key].first;
+    nondeg_dims.push_back(shape);
+
+    auto N = static_cast<std::size_t>(std::get<0>(shape) * std::get<1>(shape));
+    auto M = static_cast<std::size_t>(std::get<2>(shape) * std::get<3>(shape));
+    auto K = std::min(N, M);
+    ///
+    std::vector<double> Uout(N * K), Sout(K), VDout(K * M);
+    std::size_t ldA = M, ldu = N, ldvT = M < N ? M : N;
+    double worktest;
+    int info, lwork = -1;
+
+    dgesvd_((char *)"S", (char *)"S", &M, &N, theta_bloc[key].second.data(),
+            &ldA, Sout.data(), VDout.data(), &ldu, Uout.data(), &ldvT,
+            &worktest, &lwork, &info);
+
+    lwork = (int)worktest;
+    double work[lwork];
+    dgesvd_((char *)"S", (char *)"S", &M, &N, theta_bloc[key].second.data(),
+            &ldA, Sout.data(), VDout.data(), &ldu, Uout.data(), &ldvT, work,
+            &lwork, &info);
+
+    array_of_U.push_back(Uout);
+    array_of_S.push_back(Sout);
+    array_of_V.push_back(VDout);
+  }
 }
 /*
 void svd_deg(
@@ -149,7 +149,7 @@ void svd_deg(
         : _List[_List], array_of_U
         : _List[_np.ndarray], array_of_S
         : _List[_np.array], array_of_V
-        : _List[_np.ndarray], ) 
+        : _List[_np.ndarray], )
                                   if len(theta_blocs.keys()) == 0:
                                       datatype = None
                                   else:
@@ -189,4 +189,4 @@ void svd_deg(
                                       array_of_S.append(S)
                                       array_of_V.append(V)
                               */
-}
+} // namespace mdot

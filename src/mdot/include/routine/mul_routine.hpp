@@ -64,4 +64,66 @@ void mul_mm_blocs_dup(
     std::cout << new_blocs[target].second[0] << " ";
   }
 }
+
+void mul_usv_nondeg(std::vector<std::vector<dnum_t>> &array_U,
+                    std::vector<std::vector<dnum_t>> &array_S,
+                    std::vector<index_t> &cut,
+                    std::vector<std::vector<dnum_t>> &array_V,
+                    std::vector<std::pair<index_t, t_index_t>> &nondeg,
+                    std::vector<t_shape_t> &nondeg_dims,
+                    dmbloc_t &dst_lhs_blocs, dmbloc_t &dst_rhs_blocs,
+                    const int is_um) {
+  for (std::size_t i = 0; i < nondeg.size(); i++) {
+    if (cut[i] > 0) {
+      auto middle_index = nondeg[i].first;
+      auto theta_index = nondeg[i].second;
+
+      /*
+        for _ in range(len(nondeg)):  # reversed, and passed by pop.
+            Dsi = cut.pop()
+            if Dsi > 0:
+                dims = nondeg_dims.pop()
+                tmp_nondeg = nondeg.pop()
+                if is_um is None:
+                    diag_sqrt = _np.diag(_np.sqrt(array_S.pop()[:Dsi]))
+                    # M
+                    mat_left = _np.dot(array_U.pop()[:, :Dsi],
+        diag_sqrt).reshape( dims[0], dims[1], Dsi
+                    )
+                    # M
+                    mat_right = _np.dot(diag_sqrt, array_V.pop()[:Dsi,
+        :]).reshape( Dsi, dims[2], dims[3]
+                    )
+                elif is_um:
+                    # U
+                    mat_left = array_U.pop()[:, :Dsi].reshape(dims[0], dims[1],
+        Dsi) # M mat_right = _np.dot( _np.diag(array_S.pop()[:Dsi]),
+        array_V.pop()[:Dsi, :]
+                    ).reshape(Dsi, dims[2], dims[3])
+                else:
+                    # M
+                    mat_left = _np.dot(
+                        array_U.pop()[:, :Dsi], _np.diag(array_S.pop()[:Dsi])
+                    ).reshape(dims[0], dims[1], Dsi)
+                    # V
+                    mat_right = array_V.pop()[:Dsi, :].reshape(Dsi, dims[2],
+        dims[3])
+
+                dst_lhs_blocs[
+                    (tmp_nondeg[1][0], tmp_nondeg[1][1], tmp_nondeg[0])
+                ] = mat_left
+                dst_rhs_blocs[
+                    (tmp_nondeg[0], tmp_nondeg[1][2], tmp_nondeg[1][3])
+                ] = mat_right
+            else:
+                array_U.pop()
+                array_V.pop()
+                array_S.pop()
+                nondeg_dims.pop()
+                nondeg.pop()
+                */
+    }
+  }
+}
+
 } // namespace mdot

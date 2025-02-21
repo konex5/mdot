@@ -33,17 +33,16 @@ BOOST_AUTO_TEST_CASE(test_routine_indices_potential_middle_indices) {
   BOOST_CHECK(middle[0] == 0);
   BOOST_CHECK(middle[1] == 1);
   auto out = mdot::degeneracy_in_theta(theta_indices, middle, 1);
-  BOOST_CHECK(std::get<0>(out.first[0].second)==0);
-  BOOST_CHECK(std::get<1>(out.first[0].second)==1);
-  BOOST_CHECK(std::get<2>(out.first[0].second)==0);
-  BOOST_CHECK(std::get<3>(out.first[0].second)==0);
-  BOOST_CHECK(std::get<0>(out.second[0].second[0])==0);
-  BOOST_CHECK(std::get<1>(out.second[0].second[0])==0);
-  BOOST_CHECK(std::get<2>(out.second[0].second[0])==0);
-  BOOST_CHECK(std::get<3>(out.second[0].second[0])==0);
-  BOOST_CHECK(std::get<0>(out.second[0].second[1])==0);
-  BOOST_CHECK(std::get<1>(out.second[0].second[1])==0);
-  BOOST_CHECK(std::get<2>(out.second[0].second[1])==1);
-  BOOST_CHECK(std::get<3>(out.second[0].second[1])==0);
-
+  BOOST_CHECK(std::get<0>(out.first[0].second) == 0);
+  BOOST_CHECK(std::get<1>(out.first[0].second) == 1);
+  BOOST_CHECK(std::get<2>(out.first[0].second) == 0);
+  BOOST_CHECK(std::get<3>(out.first[0].second) == 0);
+  BOOST_CHECK(std::get<0>(out.second[0].second[0]) == 0);
+  BOOST_CHECK(std::get<1>(out.second[0].second[0]) == 0);
+  BOOST_CHECK(std::get<2>(out.second[0].second[0]) == 0);
+  BOOST_CHECK(std::get<3>(out.second[0].second[0]) == 0);
+  BOOST_CHECK(std::get<0>(out.second[0].second[1]) == 0);
+  BOOST_CHECK(std::get<1>(out.second[0].second[1]) == 0);
+  BOOST_CHECK(std::get<2>(out.second[0].second[1]) == 1);
+  BOOST_CHECK(std::get<3>(out.second[0].second[1]) == 0);
 }
