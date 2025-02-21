@@ -19,18 +19,21 @@ This is a skeleton template for a C/C++ project. Please find all the documentati
 
 ## Use the software
 
-The [nokxpkgs](https://github.com/nokx5/nokxpkgs#add-nokxpkgs-to-your-nix-channel) channel and associate overlay can be imported with the `-I` command or by setting the `NIX_PATH` environment variable.
+> The channel will be locked by the flake in future nix releases. The following command would probably not be allowed anymore soon.
+> ```bash
+> nix-shell --version # before 2.3.15
+> nix-shell -I nixpkgs=https://github.com/nokx5/nokxpkgs/archive/main.tar.gz -p golden-cpp --command cli_golden
+> ```
 
+You can use the software with the following commands.
 ```bash
-nix-shell -I nixpkgs=https://github.com/nokx5/nokxpkgs/archive/main.tar.gz -p golden-cpp --command cli_golden
-# or
 nix shell github:nokx5/golden-cpp --command cli_golden
 nix shell github:nokx5/nokxpkgs#golden-cpp --command cli_golden
 ```
 
-## Develop the software (depreciated - new hash)
+## Develop the software with explicit channel (depreciated - new hash)
 
-> Please note that all commands of this section creates new hashes which means that the evaluation may require additional downloads.
+> Please note that all commands of this section creates new hashes depending on the channel which means that the evaluation may require additional downloads.
 
 Start by cloning the [git repository](https://github.com/nokx5/golden-cpp) locally and enter it.
 
@@ -48,7 +51,7 @@ nix-build --expr 'with import <nixpkgs> {}; callPackage ./derivation.nix {src = 
 
 Note that you can write the nix expression directly to the `default.nix` file to avoid typing `--expr` each time.
 
- #### Option 2: Develop the software (supercharged :artificial_satellite:)
+#### Option 2: Develop the software (supercharged :artificial_satellite:)
 
 You can enter the supercharged environment for development.
 
@@ -100,6 +103,16 @@ nix-shell . -A devShell.x86_64-linux
 ```
 
 ## Code Snippets
+
+Save the derivations so it does not get garbage collected.
+```bash
+nix-build . -A packages.x86_64-linux.golden-cpp --out-link result-golden-cpp
+nix-build . -A packages.x86_64-linux.golden-cpp.inputDerivation --out-link result-golden-cpp-dev
+nix-build . -A devShell.x86_64-linux.inputDerivation --out-link result-golden-cpp-dev-full
+
+nix-build . -A packages.x86_64-linux.golden-cpp-clang --out-link result-golden-cpp-clang
+nix-build . -A packages.x86_64-linux.golden-cpp-clang.inputDerivation --out-link result-golden-cpp-clang-dev
+```
 
 One line code formatter for C/C++ projects
 
