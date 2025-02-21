@@ -21,6 +21,7 @@ set(CMAKE_CXX_COMPILER $ENV{CXX})
 option(PROJECT_TESTS "Build Project's Tests" ON)
 option(PROJECT_SANDBOX "Build Sandbox" OFF)
 option(PROJECT_BENCHMARK "Build Benchmark" OFF)
+option(PROJECT_STATIC "Build Static Libraries" OFF)
 
 set(PROJECT_CXX_FLAGS_DEBUG -fno-omit-frame-pointer -fno-inline)
 set(PROJECT_CXX_FLAGS_RELEASE -mfma -mavx) # SIMD? -mftree-vectorize
@@ -59,14 +60,14 @@ include_directories(SYSTEM ${Boost_INCLUDE_DIR})
 # ##############################################################################
 # INCLUDE
 # ##############################################################################
-# configure_file("${PROJECT_SOURCE_DIR}/src/utils/path.hpp.in"
-# "${PROJECT_BINARY_DIR}/utils/path.hpp")
+configure_file("${PROJECT_SOURCE_DIR}/src/golden/utils/static.hpp.in"
+               "${PROJECT_BINARY_DIR}/golden/utils/static.hpp")
 include_directories("${PROJECT_SOURCE_DIR}/src" ${PROJECT_BINARY_DIR})
 
 # ##############################################################################
 # PROJECT
 # ##############################################################################
-add_subdirectory(src)
+add_subdirectory(src/golden)
 
 # ##############################################################################
 # TESTS and miscelaneous

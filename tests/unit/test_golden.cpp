@@ -1,6 +1,6 @@
 #include <boost/test/unit_test.hpp>
 
-#include "golden.hpp"
+#include "golden/include/gold.hpp"
 using namespace golden;
 
 BOOST_AUTO_TEST_CASE(my_test) {

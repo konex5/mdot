@@ -1,4 +1,4 @@
-#include "golden.hpp"
+#include "golden/include/gold.hpp"
 #include <iostream>
 
 int main(int argc, char *argv[]) {

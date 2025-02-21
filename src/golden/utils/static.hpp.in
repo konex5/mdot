@@ -1,0 +1,18 @@
+/* Helper to obtain static information from cmake */
+#ifndef PROJECT_CMAKE_STATIC
+#define PROJECT_CMAKE_STATIC
+
+#include <string>
+
+namespace project {
+
+  struct build_path {
+    const std::string static root_path(){
+      return "@PROJECT_SOURCE_DIR@/";
+    }
+  };
+  const std::string static version() {
+    return "@PROJECT_VERSION@/";
+  }  
+}
+#endif
