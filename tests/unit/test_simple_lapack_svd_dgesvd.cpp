@@ -154,18 +154,19 @@ BOOST_AUTO_TEST_CASE(test_dgesvd_overwrite_right) {
         BOOST_CHECK(abs(A[i * M + j] - sum) < 1e-5);
       };
 
-    double Uout[N * K], Sout[K], VDout[K * M];
-    // double* VDout = A;
-    std::size_t ldA = M, ldu = K, ldvT = M;
+    double Sout[K], VDout[K * M];
+    std::size_t ldA = M, ldvT = M;
     double worktest;
     int info, lwork = -1;
 
-    dgesvd_((char *)"S", (char *)"O", &M, &N, A, &ldA, Sout, VDout, &ldvT, Uout,
-            &ldu, &worktest, &lwork, &info);
+    dgesvd_((char *)"S", (char *)"O", &M, &N, A, &ldA, Sout, VDout, &ldvT, A,
+            &ldA, &worktest, &lwork, &info);
     lwork = (int)worktest;
     double work[lwork];
-    dgesvd_((char *)"S", (char *)"S", &M, &N, A, &ldA, Sout, VDout, &ldu, Uout,
-            &ldvT, work, &lwork, &info);
+    dgesvd_((char *)"S", (char *)"O", &M, &N, A, &ldA, Sout, VDout, &ldvT, A,
+            &ldA, work, &lwork, &info);
+
+    std::size_t Keff_given;
 
     for (std::size_t k = 0; k < Keff; k++)
       BOOST_CHECK(abs(S[k] - Sout[k]) < 1e-7);
@@ -182,10 +183,6 @@ BOOST_AUTO_TEST_CASE(test_dgesvd_overwrite_right) {
     }
 
     for (int i = 0; i < 9; i++) {
-      std::cout << "U is" << Uout[i] << std::endl;
-    }
-
-    for (int i = 0; i < 9; i++) {
       std::cout << "V is" << VDout[i] << std::endl;
     }
 
@@ -193,8 +190,8 @@ BOOST_AUTO_TEST_CASE(test_dgesvd_overwrite_right) {
       for (std::size_t j = 0; j < M; j++) {
         double sum = 0;
         for (std::size_t k = 0; k < Keff; k++)
-          sum += Uout[i * K + k] * Sout[k] * VDout[k * M + j];
-        std::cout << "A[i*5+j]=" << A[i * M + j] << " and the sum gives:" << sum
+          sum += A[i * K + k] * Sout[k] * VDout[k * M + j];
+        std::cout << "A[i*5+j]=" << Adeepcopy[i * M + j] << " and the sum gives:" << sum
                   << std::endl;
         BOOST_CHECK(abs(Adeepcopy[i * M + j] - sum) < 1e-5);
       };
