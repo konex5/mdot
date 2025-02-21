@@ -42,7 +42,7 @@ let
   };
 in
 mkCustomShell {
-  nativeBuildInputs = [ catch2 cmake gnumake ninja ] ++ [
+  nativeBuildInputs = [ cmake gnumake ninja ] ++ [
     bashCompletion
     cacert
     cppcheck

@@ -8,9 +8,10 @@ This is a skeleton template for a C/C++ project. Please find all the documentati
 - nix :snowflake: (packaging from hell :heart:)
 - clang-format (formatter)
 - vscode (IDE) with
+  - llvm-vs-code-extensions.vscode-clangd
   - ms-vscode.cmake-tools
   - ms-vscode.cpptools
-- ctest - or catch2 (unit testing)
+- ctest (unit testing)
 - markdown (documentation)
 
 ## Use the classic Nix commands
