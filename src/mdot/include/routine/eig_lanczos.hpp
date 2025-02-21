@@ -121,7 +121,8 @@ bool lanczos_ev(dnum_t *A, dnum_t *psi, size_t dim, const size_t max_iter,
     free(z), free(work);
   } else {
     // max_iter = 1;
-    eigval = 0;
+    eigval = 1.0;
+    //memset(eigvec, 1, N * sizeof(double));
     memcpy(eigvec, psi, N * sizeof(double));
   }
   free(Vm), free(As), free(Bs), free(d), free(e);

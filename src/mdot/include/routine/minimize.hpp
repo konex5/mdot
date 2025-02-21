@@ -76,6 +76,9 @@ void lanczos_on_mm(dtbloc_t &dst, dmmenvbloc_t env_bloc, dtbloc_t &psi,
       if (!result)
         printf("Lanczos failed to converge!");
 
+      for (auto& it : eigenvector)
+        it *= eigenvalue;
+
       dst[key] = {shape, eigenvector};
     }
   }
