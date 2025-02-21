@@ -145,6 +145,15 @@ void svd_nondeg(dtbloc_t &theta_bloc,
   }
 }
 
+void fill_matrix(std::vector<dnum_t> & dst, const size_t dst_N,const size_t dst_M,const size_t dst_off0,const size_t dst_off1,std::vector<dnum_t> & src, const size_t src_N,const size_t src_M) {
+  for (size_t i = 0; i<src_N;i++) {
+    for (size_t j = 0; j<src_M;j++) {
+      dst[(dst_off0+i)*dst_M+dst_off1+j] = src[i*src_M+j];
+    }
+  }
+}
+
+
 void svd_deg(dtbloc_t& theta_blocs,
     std::vector<std::pair<index_t, std::vector<t_index_t>>>& deg,
     std::vector<std::tuple<index_t, index_t,
@@ -163,16 +172,22 @@ void svd_deg(dtbloc_t& theta_blocs,
     auto dim1 = static_cast<size_t>(std::get<1>(subnewsize[i]));
     std::vector<dnum_t> tmp_theta(dim0*dim1,0);
     for (auto& theta_key : deg[i].second) {
-      auto tmp_for_findL = std::get<2>(subnewsize[i]);
-      std::tuple<index_t,index_small_t> tmp_indexL = {std::get<0>(theta_key),std::get<1>(theta_key)};
-      auto posL = std::find(tmp_for_findL.begin(),tmp_for_findL.end(),tmp_indexL) - tmp_for_findL.begin();
-      auto offL = std::get<3>(subnewsize[i])[posL];
-      auto dimL = std::get<4>(subnewsize[i])[posL];
-      auto tmp_for_findR = std::get<5>(subnewsize[i]);
-      std::tuple<index_t,index_small_t> tmp_indexR = {std::get<2>(theta_key),std::get<3>(theta_key)};
-      auto posR = std::find(tmp_for_findR.begin(),tmp_for_findR.end(),tmp_indexR) - tmp_for_findR.begin();
-      auto offR = std::get<6>(subnewsize[i])[posR];
-      auto dimR = std::get<7>(subnewsize[i])[posR];
+      // auto tmp_for_findL = std::get<2>(subnewsize[i]);
+      // std::tuple<index_t,index_small_t> tmp_indexL = {std::get<0>(theta_key),std::get<1>(theta_key)};
+      // auto posL = std::find(tmp_for_findL.begin(),tmp_for_findL.end(),tmp_indexL) - tmp_for_findL.begin();
+      // auto offL = static_cast<size_t>(std::get<3>(subnewsize[i])[posL]);
+      // auto dimL = std::get<4>(subnewsize[i])[posL];
+      // auto muldimL = static_cast<size_t>(std::get<0>(dimL))*static_cast<size_t>(std::get<1>(dimL));
+      // auto tmp_for_findR = std::get<5>(subnewsize[i]);
+      // std::tuple<index_t,index_small_t> tmp_indexR = {std::get<2>(theta_key),std::get<3>(theta_key)};
+      // auto posR = std::find(tmp_for_findR.begin(),tmp_for_findR.end(),tmp_indexR) - tmp_for_findR.begin();
+      // auto offR = static_cast<size_t>(std::get<6>(subnewsize[i])[posR]);
+      // auto dimR = std::get<7>(subnewsize[i])[posR];
+      // auto muldimR = static_cast<size_t>(std::get<0>(dimR))*static_cast<size_t>(std::get<1>(dimR));
+
+      //fill_matrix(tmp_theta,dim0,dim1,offL,offR,theta_blocs[theta_key].second,muldimL,muldimR);
+      for (auto & v : tmp_theta)
+      std::cout << v << " ";
     }
     //
 

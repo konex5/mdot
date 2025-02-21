@@ -40,16 +40,15 @@ void theta_to_mm(dtbloc_t &theta_blocs, dmbloc_t &lhs_blocs,
   auto out_nondeg_deg =
       degeneracy_in_theta(theta_indices, middle_indices, direction_right);
 
-  auto new_subsize =
-      slices_degenerate_blocs(theta_blocs, out_nondeg_deg.second);
+  //auto new_subsize =
+  //    slices_degenerate_blocs(theta_blocs, out_nondeg_deg.second);
 
   std::vector<std::vector<dnum_t>> array_of_U, array_of_V;
   std::vector<std::vector<dnum_t>> array_of_S;
   std::vector<t_shape_t> nondeg_dims;
   svd_nondeg(theta_blocs, out_nondeg_deg.first, nondeg_dims, array_of_U,
              array_of_S, array_of_V);
-  /// svd_deg(theta_blocs, deg, subnewsize_deg, array_of_U, array_of_S,
-  /// array_of_V)
+  //svd_deg(theta_blocs, out_nondeg_deg.second, new_subsize, array_of_U, array_of_S, array_of_V);
   auto cut = truncation_strategy(array_of_S, chi_max, dw, eps);
 
   // for (auto &arr : array_of_S)
