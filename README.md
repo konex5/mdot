@@ -1,11 +1,11 @@
-# [golden_cpp](https://nokx5.github.io/golden_cpp/)
+# Welcome to the golden cpp template
 
-This is a skeleton template for a C/C++ project. Please find all the documentation [here](https://nokx5.github.io/golden_cpp/).
+This is a skeleton template for a C/C++ project. Please find all the documentation [here](https://nokx5.github.io/golden_cpp) and the source code [here](https://github.com/nokx5/golden_cpp).
 
 ## My development tools are
 - nix :snowflake: (packaging from hell :heart:)
 - clang-format (formatter)
-- vscode (IDE) with 
+- vscode (IDE) with
   - ms-vscode.cmake-tools
   - ms-vscode.cpptools
 - ctest - sometimes catch2 (unit testing)
@@ -23,7 +23,7 @@ nix-shell -I nixpkgs=https://github.com/nokx5/nokxpkgs/archive/main.tar.gz -p go
 
 ### Develop the software
 
-Start by cloning the [git repository](#) locally and enter it. 
+Start by cloning the [git repository](https://github.com/nokx5/golden_cpp) locally and enter it.
 
 #### Option 1: Develop the software (minimal requirements)
 
@@ -72,7 +72,7 @@ nix shell github:nokx5/golden_cpp --command cli_golden
 
 ### Develop the software
 
-Start by cloning the [git repository](#) locally and enter it. 
+Start by cloning the [git repository](https://github.com/nokx5/golden_cpp) locally and enter it.
 
 #### Option 1: Develop the software
 
