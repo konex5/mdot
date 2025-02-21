@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE(test_zhemm_simple) {
       };
 
     znum_t Cout[N * M];
-    znum_t alpha = {1., 0}, beta = {0., 0};
+    znum_t alpha = {1., 0.}, beta = {0., 0.};
 
     zhemm_((char *)"L", (char *)"U", &M, &N, &alpha, B, &M, A, &K, &beta, Cout,
            &M);

@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(test_zgemm_simple) {
   { // real, column major
     const std::size_t M = 2;
     const std::size_t K = 2;
-    const std::size_t N = 3;
+    const std::size_t N = 2;
     const znum_t A[N * K] = {{1, 1}, {-1, 0}, {-1, 0}, {0, 2}};
     const znum_t B[K * M] = {{-1, 0}, {1, 0}, {1, 0}, {1, 1}};
     const znum_t C[N * M] = {{-2, -1}, {1, 2}, {0, 0}, {-3, 2}};
@@ -64,21 +64,16 @@ BOOST_AUTO_TEST_CASE(test_zgemm_simple) {
         znum_t sum = 0;
         for (std::size_t k = 0; k < K; k++)
           sum += A[i + k * M] * B[k + j * K];
-        // std::cout << "A[i+j*4]=" << C[i+j*N] << " and the sum gives:" << sum
-        // << std::endl;
         BOOST_CHECK(abs(C[i + j * M] - sum) < 1e-7);
       };
 
     znum_t Cout[N * M];
     znum_t alpha = 1., beta = 0.;
 
-    // zgemm_((char *)"T", (char *)"T", &N, &M, &K, &alpha, B, &K,
-    //          A, &M, &beta, Cout, &N); // gives C^T
     zgemm_((char *)"N", (char *)"N", &M, &N, &K, &alpha, A, &M, B, &K, &beta,
            Cout, &M);
 
     for (std::size_t k = 0; k < N * M; k++)
-      // std::cout << C[k] << "compared with" << Cout[k] << std::endl;
       BOOST_CHECK(abs(C[k] - Cout[k]) < 1e-7);
   }
 }
