@@ -26,3 +26,5 @@ foreach(clicommand ${clicommands})
     DESTINATION bin)
 
 endforeach()
+
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/src/mdot/include/ DESTINATION include/mdot/include)
