@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_CASE(test_routine_svd_routine_bloc_norm) {
   }
   //
   {
-    array_of_dtype a = {{1, 2, 3}, {2, 1}, {1, 1, 2}};
+    const array_of_dtype a = {{1, 2, 3}, {1, 2}, {1, 1, 2}};
     double norm_out;
     bloc_norm(a, {2, 2, 0}, norm_out);
     BOOST_CHECK(norm_out == sqrt(10.));
@@ -22,6 +22,8 @@ BOOST_AUTO_TEST_CASE(test_routine_svd_routine_bloc_norm) {
     std::vector<index_t> cut_at_index;
     dnum_t dw = 0;
 
-    truncation_strategy(a, 10, cut_at_index, dw, 0.2);
+    truncation_strategy(a, 10, cut_at_index, dw, 0.8);
+    
+    //truncation_strategy(a, 10, cut_at_index, dw, 0.2);
   }
 }

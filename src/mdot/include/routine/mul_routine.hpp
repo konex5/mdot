@@ -57,7 +57,7 @@ void mul_mm_blocs_dup(
            rhs_blocs[rhs_it].second.data(), &M, lhs_blocs[lhs_it].second.data(),
            &K, &beta, mat_out.data(), &M);
 
-#pragma omp
+#pragma omp parallel
     for (size_t i = 0; i < NM; i++) {
       new_blocs[target].second[i] += mat_out[i];
     }
