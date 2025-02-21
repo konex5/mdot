@@ -125,24 +125,24 @@ void svd_nondeg(dtbloc_t& theta_bloc,
         std::size_t ldA = M, ldu = N, ldvT = M < N ? M : N;
         double worktest;
         int info, lwork = -1;
-        /*
-        //
+        
         dgesvd_((char *)"S", (char *)"S", &M, &N, theta_bloc[key].second.data(), &ldA, Sout.data(), VDout.data(), &ldu, Uout.data(),
             &ldvT, &worktest, &lwork, &info);
+        
         lwork = (int)worktest;
         double work[lwork];
         dgesvd_((char *)"S", (char *)"S", &M, &N, theta_bloc[key].second.data(), &ldA, Sout.data(), VDout.data(), &ldu, Uout.data(),
             &ldvT, work, &lwork, &info);
-        //
+        
         array_of_U.push_back(Uout);
         array_of_S.push_back(Sout);
         array_of_V.push_back(VDout);
-        */
-        std::cout << "just do it";
         
-      }
-        std::cout << "just do it";
-
+        for (auto& it: Sout) {
+          std::cout << " " << it;
+        }
+      } 
+      
 }
 /*
 void svd_deg(
