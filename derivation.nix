@@ -2,12 +2,10 @@
 
 # lapack spdlog
 
-stdenv.mkDerivation rec {
-  pname = "mdot";
-  
-  name = "${pname}-${version}"
-  inherit src, version;
-
+stdenv.mkDerivation {
+  name = "mdot-${version}";
+  inherit src;
+  inherit version;
   buildInputs = [ boost17x lapack tbb ];
   nativeBuildInputs = [ cmakeMinimal gnumake ninja ] ++ lib.optional stdenv.hostPlatform.isDarwin fixDarwinDylibNames;
   cmakeFlags = [

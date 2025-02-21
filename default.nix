@@ -12,6 +12,6 @@
 with pkgs;
 
 callPackage ./derivation.nix {
-  src = ./.;
+  src = ../mdot/;
   stdenv = if clangSupport then clangStdenv else gccStdenv;
 }
