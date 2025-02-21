@@ -73,10 +73,8 @@ void lanczos_on_mm(dtbloc_t &dst, dmmenvbloc_t env_bloc, dtbloc_t &psi,
       result = lanczos_ev(a_ptr, mat_psi.data(), dim, max_iteration, tolerance,
                           eigenvalue, eigenvector.data());
       //
-      if (result)
-        printf("succeeded %f ", eigenvalue);
-      else
-        printf("failed %f ", eigenvalue);
+      if (!result)
+        printf("Lanczos failed to converge!");
 
       dst[key] = {shape, eigenvector};
     }
