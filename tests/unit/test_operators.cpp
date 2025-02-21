@@ -60,24 +60,25 @@ BOOST_AUTO_TEST_CASE(test_operators_sh_none_real) {
                            pow(shid_norm, 2) -
                        1) < 1e-7);
   //
-  /*
+  
   auto shsx = std::get<0>(single_operator_real("sh-sx", "sh-none"));
 
-  BOOST_CHECK((shsx[{0, 0}])[0 + 0 * 2] == 1);
-  BOOST_CHECK((shsx[{0, 0}])[1 + 0 * 2] == 0);
-  BOOST_CHECK((shsx[{0, 0}])[1 + 1 * 2] == -1);
-  BOOST_CHECK((shsx[{0, 0}])[0 + 1 * 2] == 0);
+  BOOST_CHECK((shsx[{0, 0}])[0 + 0 * 2] == 0);
+  BOOST_CHECK((shsx[{0, 0}])[1 + 0 * 2] == 1);
+  BOOST_CHECK((shsx[{0, 0}])[0 + 1 * 2] == 1);
+  BOOST_CHECK((shsx[{0, 0}])[1 + 1 * 2] == 0);
+  
 
   auto shsx_square = mul_twotwo(shid[{0, 0}], shid[{0, 0}]);
-  BOOST_CHECK(shsx_square[0 + 0 * 2] == 0);
-  BOOST_CHECK(shsx_square[1 + 0 * 2] == 1);
-  BOOST_CHECK(shsx_square[0 + 1 * 2] == 1);
-  BOOST_CHECK(shsx_square[1 + 1 * 2] == 0);
+  BOOST_CHECK(shsx_square[0 + 0 * 2] == 1);
+  BOOST_CHECK(shsx_square[1 + 0 * 2] == 0);
+  BOOST_CHECK(shsx_square[0 + 1 * 2] == 0);
+  BOOST_CHECK(shsx_square[1 + 1 * 2] == 1);
 
   BOOST_CHECK(std::abs((shsx_square[0 + 0 * 2] + shsx_square[1 + 1 * 2]) *
                            pow(shid_norm, 2) -
                        1) < 1e-7);
-*/
+
 }
 
 BOOST_AUTO_TEST_CASE(test_operators_sh_none_cplx) {}
