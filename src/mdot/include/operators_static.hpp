@@ -53,29 +53,21 @@ namespace mdot
 
   struct sh_id_no : real_operators_crtp<sh_id_no>
   {
-    // static constexpr dnum_t n_normalization = 1./sqrt(2);
     static constexpr index_t n_size = 4;
     static constexpr std::array<index_t, 2> n_shape = {2, 2};
     static constexpr std::array<dnum_t, 4> n_array = {1, 0, 0, 1};
-    // static constexpr std::map<index_t,typename std::array<dnum_t,4>> n_blocs = {1,{1,0,0,1}};
-
-    // inline static index_t qsub(index_t q1, index_t q2) {
-    //   (void)q1, (void)q2;
-    //   return 0;
-    // }
   };
-
-  struct sh_id_cplx_no : cplx_operators_crtp<sh_id_cplx_no>
+  struct sh_sz_no : real_operators_crtp<sh_sz_no>
   {
-    // static constexpr dnum_t n_normalization = 1./sqrt(2);
     static constexpr index_t n_size = 4;
     static constexpr std::array<index_t, 2> n_shape = {2, 2};
-    static constexpr std::array<znum_t, 4> n_array = {1 + 0i, 0, 0, 1 + 0i};
-
-    // inline static index_t qsub(index_t q1, index_t q2) {
-    //   (void)q1, (void)q2;
-    //   return 0;
-    // }
+    static constexpr std::array<dnum_t, 4> n_array = {1, 0, 0, -1};
+  };
+  struct sh_sy_cplx_no : cplx_operators_crtp<sh_sy_cplx_no>
+  {
+    static constexpr index_t n_size = 4;
+    static constexpr std::array<index_t, 2> n_shape = {2, 2};
+    static constexpr std::array<znum_t, 4> n_array = {0 , 0+ 1.i, 0- 1.i, 0};
   };
 
   /*

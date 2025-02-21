@@ -31,10 +31,10 @@ BOOST_AUTO_TEST_CASE(test_operators_static_so_none_real) {
 
 
 BOOST_AUTO_TEST_CASE(test_operators_static_so_none_cplx) {
-  BOOST_CHECK(mdot::cplx_operators_crtp<mdot::sh_id_cplx_no>::size == 4);
-  BOOST_CHECK(mdot::cplx_operators_crtp<mdot::sh_id_cplx_no>::shape[0] == 2);
-  BOOST_CHECK(mdot::cplx_operators_crtp<mdot::sh_id_cplx_no>::shape[1] == 2);
-  BOOST_CHECK(mdot::cplx_operators_crtp<mdot::sh_id_cplx_no>::array[0].real() == 1);
-  BOOST_CHECK(mdot::cplx_operators_crtp<mdot::sh_id_cplx_no>::array[3].imag() == 0);
+  BOOST_CHECK(mdot::cplx_operators_crtp<mdot::sh_sy_cplx_no>::size == 4);
+  BOOST_CHECK(mdot::cplx_operators_crtp<mdot::sh_sy_cplx_no>::shape[0] == 2);
+  BOOST_CHECK(mdot::cplx_operators_crtp<mdot::sh_sy_cplx_no>::shape[1] == 2);
+  BOOST_CHECK(mdot::cplx_operators_crtp<mdot::sh_sy_cplx_no>::array[1].imag() == 1);
+  BOOST_CHECK(mdot::cplx_operators_crtp<mdot::sh_sy_cplx_no>::array[3].real() == 0);
 
 }
