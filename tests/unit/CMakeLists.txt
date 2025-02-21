@@ -1,15 +1,15 @@
 set(UNIT_TESTS_NAMES blocs_static dummy indexdw operators operators_static utils_random_matrix
-			 simple_blas_add
-			 simple_blas_dnrm
-			 simple_blas_mul_dgemm
-		     simple_blas_mul_dsymm
-		     simple_blas_mul_zgemm
-		     simple_blas_mul_zhemm
-		     simple_lapack_svd_dgesdd
-		     simple_lapack_svd_dgesvd
-		     simple_lapack_svd_zgesvd
-		     simple_lapack_svd_zgesdd
-		     # simple_lapack_eig_zheev
+			 blas_add
+			 blas_dnrm
+			 blas_mul_dgemm
+		     blas_mul_dsymm
+		     blas_mul_zgemm
+		     blas_mul_zhemm
+		     lapack_svd_dgesdd
+		     lapack_svd_dgesvd
+		     lapack_svd_zgesvd
+		     lapack_svd_zgesdd
+		     # lapack_eig_zheev
 			 routine_svd_routine
 			 routine_eig_lanczos
 			 routine_mul_routine
