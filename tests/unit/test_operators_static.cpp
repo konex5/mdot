@@ -9,6 +9,8 @@ BOOST_AUTO_TEST_CASE(test_operators_static_so_none_real) {
   BOOST_CHECK(mdot::real_operators_crtp<mdot::sh_id_no>::shape[1] == 2);
   BOOST_CHECK(mdot::real_operators_crtp<mdot::sh_id_no>::array[0] == 1);
   BOOST_CHECK(mdot::real_operators_crtp<mdot::sh_id_no>::array[3] == 1);
+  BOOST_CHECK(mdot::real_operators_crtp<mdot::sh_id_no>::times(2)[0] == 2);
+  BOOST_CHECK(mdot::real_operators_crtp<mdot::sh_id_no>::square()[0] == 1);
   
 /* 
   auto soid = std::get<0>(single_operator_real("so-id", "so-none"));
