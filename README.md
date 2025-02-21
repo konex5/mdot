@@ -44,7 +44,7 @@ with pkgs; {
 }
 ```
 
-You can then enter the shell or buid the project.
+You can then enter the shell or build the project.
 
 ```bash
 # option a: develop the local software
@@ -56,27 +56,19 @@ nix-build -A golden_cpp
 unlink result
 ```
 
-### Use an experimental flake feature
+### Use the experimental flake feature
 
+NOTE: this section requires the experimental `flake` and `nix-command` features. Please refer to the official documentation for nix flakes.
+
+#### Option 1: develop the local software
 ```bash
 nix develop
 ```
-
-
+#### Option 2: build the local software
 
 ```bash
 nix build .#golden_cpp
 ```
-
-
-
-
-
-
-
-
-
-
 
 ## Code Snippets
 
