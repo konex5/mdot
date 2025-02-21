@@ -1,4 +1,4 @@
-{ pkgs, project_gcc, project_clang }:
+{ pkgs, project_clang, project_gcc }:
 
 with pkgs;
 
@@ -49,7 +49,9 @@ in (mkShell.override { inherit stdenv; }) rec {
     emacs-nox
     vscodeExt
   ] ++ [ pandoc hugo typora ] ++ project.nativeBuildInputs;
-  buildInputs = [ zlib ] ++ project.buildInputs;
+  buildInputs = [
+    zlib # stdenv.cc.cc.lib
+  ] ++ project.buildInputs;
 
   shellHook = ''
     export SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt

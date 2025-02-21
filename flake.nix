@@ -28,6 +28,20 @@
       in {
         packages = { golden_cpp = pkgs.project_gcc; };
         defaultPackage = self.packages.${system}.golden_cpp;
+
+        apps = {
+	  cli_golden = {
+            type = "app";
+            program = "${self.defaultPackage.${system}}/bin/cli_golden";
+          };
+	  cli_silver = {
+            type = "app";
+            program = "${self.defaultPackage.${system}}/bin/cli_silver";
+          };
+	};
+
+	defaultApp = self.apps.${system}.cli_golden;
+	
         devShell = pkgs.project_dev;
       });
 }
