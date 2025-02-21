@@ -242,3 +242,32 @@ BOOST_AUTO_TEST_CASE(test_dgesvd_overwrite_left_right) {
       */
   }
 }
+
+
+
+BOOST_AUTO_TEST_CASE(test_svd_validation) {
+  const size_t N = 2;
+  const size_t M = 3;
+
+  { // real, row major
+
+    const double A[N * M] = {1, 2,3,4,5,6};
+    
+    size_t ldu = N < M ? N : M;
+    double Uout[N * ldu], Sout[ldu], VDout[ldu * M];
+    size_t ldA = M, ldvT = M;
+    double worktest;
+    int info, lwork = -1;
+
+    dgesvd_((char *)"S", (char *)"S", &M, &N, A, &ldA, Sout, VDout, &ldvT, Uout,
+            &ldu, &worktest, &lwork, &info);
+    lwork = (int)worktest;
+    double work[lwork];
+    dgesvd_((char *)"S", (char *)"S", &M, &N, A, &ldA, Sout, VDout, &ldvT, Uout,
+            &ldu, work, &lwork, &info);
+
+    BOOST_CHECK(Uout[0] == 0.38631770311861136);
+    BOOST_CHECK(Sout[0] == 9.5080320006957262);
+    BOOST_CHECK(VDout[0] == -0.42866713354862607);    
+  }
+}
