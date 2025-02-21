@@ -87,25 +87,25 @@ split_degenerate_indices_with_gate(
 }
 
 std::vector<std::tuple<t_index_t, t_index_t, g_index_t>>
-indices_dst_theta_with_gate(const std::vector<t_index_t> left_indices,
-                          const std::vector<g_index_t> right_indices,
+indices_dst_theta_with_gate(const std::vector<t_index_t> theta_indices,
+                          const std::vector<g_index_t> gate_indices,
                           const bool conserve_left_right = false) {
   std::vector<std::tuple<t_index_t, t_index_t, g_index_t>>
       dst_about_indices_to_contract;
-  for (auto &left_index : left_indices) {
-    for (auto &right_index : right_indices) {
-      if (std::get<1>(left_index) == std::get<0>(right_index) && std::get<2>(left_index) == std::get<3>(right_index)) {
+  for (auto &theta_index : theta_indices) {
+    for (auto &gate_index : gate_indices) {
+      if (std::get<1>(theta_index) == std::get<0>(gate_index) && std::get<2>(theta_index) == std::get<3>(gate_index)) {
         if ((!conserve_left_right) ||
             (conserve_left_right &&
-             std::get<0>(left_index) +
-                     static_cast<index_t>(std::get<1>(right_index)) +
-                     static_cast<index_t>(std::get<2>(right_index)) ==
-                 std::get<2>(left_index))) {
+             std::get<0>(theta_index) +
+                     static_cast<index_t>(std::get<1>(gate_index)) +
+                     static_cast<index_t>(std::get<2>(gate_index)) ==
+                 std::get<2>(theta_index))) {
           dst_about_indices_to_contract.push_back(
-              {{std::get<0>(left_index), std::get<1>(right_index),
-                std::get<2>(right_index), std::get<3>(left_index)},
-               left_index,
-               right_index});
+              {{std::get<0>(theta_index), std::get<1>(gate_index),
+                std::get<2>(gate_index), std::get<3>(theta_index)},
+               theta_index,
+               gate_index});
         }
       }
     }
