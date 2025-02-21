@@ -65,36 +65,22 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd) {
 
     for (std::size_t k = 0; k < N; k++)
       BOOST_CHECK(abs(S[k] - Sout[k]) < 1e-5);
-    /*
-    for (std::size_t k = 0; k < N*N; k++) {
-      std::cout << U[k] << " and " << Uout[k] << std::endl;
-      BOOST_CHECK_NE(abs(U[k] -Uout[k]) < 1e-5);
-    }
-
-    for (std::size_t k = 0; k < N*N; k++) {
-      std::cout << Vd[k] << " and " << VDout[k] << std::endl;
-      BOOST_CHECK_NE(abs(Vd[k] - conj(VDout[k])) < 1e-5);
-    }
-*/
-  /*
-    for (std::size_t i = 0; i < N; i++)
-      for (std::size_t k = 0; k < N; k++)
-        if (!((k != 3 && i != N) || (i == 0 && k == 1))) // some freedom in SVD
-          BOOST_CHECK(abs(U[i * N + k] - Uout[i * N + k]) < 1e-5);
-
-    for (std::size_t j = 0; j < N; j++)
-      for (std::size_t k = 0; k < N; k++) {
-        BOOST_CHECK(abs(Vd[k * N + j] - VDout[k * N + j]) < 1e-5);
-      }
+    // for (std::size_t k = 0; k < N*N; k++) {
+    //   std::cout << U[k] << " and " << Uout[k] << std::endl;
+    //   // BOOST_CHECK(!(abs(U[k] -Uout[k]) < 1e-5));
+    // }
+    // for (std::size_t k = 0; k < N*N; k++) {
+    //   std::cout << Vd[k] << " and " << VDout[k] << std::endl;
+    //   // BOOST_CHECK(!(abs(Vd[k] - conj(VDout[k])) < 1e-5));
+    // }
 
     for (std::size_t i = 0; i < N; i++)
       for (std::size_t j = 0; j < N; j++) {
         znum_t sum = 0;
         for (std::size_t k = 0; k < N; k++)
-          sum += conj(Uout[i * N + k]) * Sout[k] * (Vd[k * N + j]);
+          sum += Uout[i * N + k] * Sout[k] * VDout[k * N + j];
         BOOST_CHECK(abs(Adeepcopy[i * N + j] - sum) < 1e-5);
       };
-*/  
   
   }
   { // real, column major
