@@ -4,7 +4,8 @@
 #include "mdot/include/indexdw.hpp"
 
 BOOST_AUTO_TEST_CASE(test_indexdw) {
-  const array_of_s_type array_of_s = {{0.9, 0}, {0.8, 0.6, 0.01, 0}, {0.3, 0}};
+  const std::vector<std::vector<dnum_t>> array_of_s = {
+      {0.9, 0}, {0.8, 0.6, 0.01, 0}, {0.3, 0}};
 
   BOOST_CHECK(array_of_s[0][0] == 0.9);
   for (auto &it : array_of_s)

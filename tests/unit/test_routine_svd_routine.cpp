@@ -5,7 +5,7 @@
 
 BOOST_AUTO_TEST_CASE(test_routine_svd_routine_bloc_norm) {
   {
-    array_of_dtype a = {{1, 2, 3}, {2, 1}, {1, 1, 2}};
+    std::vector<std::vector<dnum_t>> a = {{1, 2, 3}, {2, 1}, {1, 1, 2}};
     double norm_out;
     mdot::bloc_norm(a, {}, norm_out);
     BOOST_CHECK(norm_out == 5.);
@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_CASE(test_routine_svd_routine_bloc_norm) {
   }
   //
   {
-    const array_of_dtype a = {{3, 2, 1}, {2, 1}, {2, 1, 1}};
+    const std::vector<std::vector<dnum_t>> a = {{3, 2, 1}, {2, 1}, {2, 1, 1}};
     double norm_out;
     mdot::bloc_norm(a, {3, 2, 3}, norm_out);
     BOOST_CHECK(norm_out == 5);

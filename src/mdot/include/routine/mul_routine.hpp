@@ -67,10 +67,9 @@ void mul_mm_blocs_dup(
   }
 }
 
-void mul_mat_diag(std::vector<dnum_t> &destination,
-                         std::vector<dnum_t> &mat, const size_t &N,
-                         const size_t &M, std::vector<dnum_t> &diag,
-                         const size_t &cut) {
+void mul_mat_diag(std::vector<dnum_t> &destination, std::vector<dnum_t> &mat,
+                  const size_t &N, const size_t &M, std::vector<dnum_t> &diag,
+                  const size_t &cut) {
   // const size_t inc = 1;
   // daxpy_(&cut, &(diag[i]), &(mat[i*N]), &inc, destination.data(), &inc);
   for (size_t i = 0; i < N; i++)
@@ -79,10 +78,9 @@ void mul_mat_diag(std::vector<dnum_t> &destination,
       destination[i * cut + j] = diag[j] * mat[i * M + j];
 }
 
-void mul_diag_mat(std::vector<dnum_t> &destination,
-                         std::vector<dnum_t> &mat, const size_t &N,
-                         const size_t &M, std::vector<dnum_t> &diag,
-                         const size_t &cut) {
+void mul_diag_mat(std::vector<dnum_t> &destination, std::vector<dnum_t> &mat,
+                  const size_t &N, const size_t &M, std::vector<dnum_t> &diag,
+                  const size_t &cut) {
   // const size_t inc = 1;
   // daxpy_(&cut, &(diag[i]), &(mat[i*N]), &inc, destination.data(), &inc);
   for (size_t i = 0; i < cut; i++)
@@ -126,32 +124,33 @@ void mul_usv_nondeg(std::vector<std::vector<dnum_t>> &array_U,
 
         for (auto &s : array_S[i])
           s = sqrt(s);
-            std::cout << "dim0=" << dim0 << "dim1=" << dim1 << "sizeU=" << array_U[i].size() << "cut" << cut[i] << "sizeS" << array_S[i].size() << std::endl;
-          /*
-          mul_mat_diag(mat_left, array_U[i], dim0 * dim1, array_S.size(),
-                     array_S[i], cut[i]);
-          */
+        std::cout << "dim0=" << dim0 << "dim1=" << dim1
+                  << "sizeU=" << array_U[i].size() << "cut" << cut[i] << "sizeS"
+                  << array_S[i].size() << std::endl;
+        /*
+        mul_mat_diag(mat_left, array_U[i], dim0 * dim1, array_S.size(),
+                   array_S[i], cut[i]);
+        */
         /*
         mul_diag_mat(mat_right, array_V[i], array_S[i].size(), dim2 * dim3,
                      array_S[i], cut[i]);
                      */
-                    
+
       } else if (is_um == 1) {
-        //mat_left.swap(array_U[i]);
-        //mul_diag_mat(mat_right, array_V[i], array_S[i].size(), dim2 * dim3,
+        // mat_left.swap(array_U[i]);
+        // mul_diag_mat(mat_right, array_V[i], array_S[i].size(), dim2 * dim3,
         //             array_S[i], cut[i]);
       } else {
-        //mul_mat_diag(mat_left, array_U[i], dim0 * dim1, array_S[i].size(),
+        // mul_mat_diag(mat_left, array_U[i], dim0 * dim1, array_S[i].size(),
         //             array_S[i], cut[i]);
-        //mat_right.swap(array_V[i]);
+        // mat_right.swap(array_V[i]);
       }
-      
+
       dst_lhs_blocs[{std::get<0>(theta_index), std::get<1>(theta_index),
                      middle_index}] = {shape_left, mat_left};
       dst_rhs_blocs[{middle_index, std::get<2>(theta_index),
                      std::get<3>(theta_index)}] = {shape_right, mat_right};
     }
-    
   }
 }
 

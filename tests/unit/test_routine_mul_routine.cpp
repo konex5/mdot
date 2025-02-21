@@ -33,7 +33,6 @@ BOOST_AUTO_TEST_CASE(test_routine_mul_routine) {
   }
 }
 
-
 BOOST_AUTO_TEST_CASE(test_routine_mul_routine_two) {
   const size_t N = 3;
   const size_t M = 2;

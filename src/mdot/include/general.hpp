@@ -65,7 +65,7 @@ create_maximal_entangled_state(std::size_t size, std::size_t spin_name,
   std::vector<dnum_t> coef;
   std::vector<dtbloc_t> dmps;
   t_index_t tmp_indices;
-  darr_t tmp_vec;
+  std::vector<dnum_t> tmp_vec;
   for (std::size_t i = 0; i < size; i++) {
     coef.push_back(1. / sqrt(2));
     if (spin_name == 0 && qn_name == 0) {

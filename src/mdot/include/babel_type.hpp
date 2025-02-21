@@ -14,39 +14,33 @@ using data_t = float;
 using dnum_t = data_t;
 using znum_t = std::complex<data_t>;
 
-using darr_t = std::vector<dnum_t>;
-using zarr_t = std::vector<znum_t>;
-
-// to remove
-typedef typename std::vector<darr_t> array_of_s_type;
-typedef typename std::vector<darr_t> array_of_dtype;
-typedef typename std::vector<zarr_t> array_of_ztype;
-//
+using _darr_t = std::vector<dnum_t>;
+using _zarr_t = std::vector<znum_t>;
 
 using index_small_t = uint8_t;
 using index_t = uint16_t;
 
 using op_index_t = std::tuple<index_small_t, index_small_t>;
 using op_shape_t = std::tuple<op_index_t, op_index_t>;
-using dopbloc_t = std::map<op_index_t, darr_t>;
-using zopbloc_t = std::map<op_index_t, zarr_t>;
+using dopbloc_t = std::map<op_index_t, _darr_t>;
+using zopbloc_t = std::map<op_index_t, _zarr_t>;
 
 using m_index_t = std::tuple<index_t, index_small_t, index_t>;
 using m_shape_t = std::tuple<index_t, index_small_t, index_t>;
-using dmbloc_t = std::map<m_index_t, std::pair<m_shape_t, darr_t>>;
-using zmbloc_t = std::map<m_index_t, std::pair<m_shape_t, zarr_t>>;
+using dmbloc_t = std::map<m_index_t, std::pair<m_shape_t, _darr_t>>;
+using zmbloc_t = std::map<m_index_t, std::pair<m_shape_t, _zarr_t>>;
 
 using t_index_t = std::tuple<index_t, index_small_t, index_small_t, index_t>;
 using t_shape_t = std::tuple<index_t, index_small_t, index_small_t, index_t>;
-using dtbloc_t = std::map<t_index_t, std::pair<t_shape_t, darr_t>>;
-using ztbloc_t = std::map<t_index_t, std::pair<t_shape_t, zarr_t>>;
+using dtbloc_t = std::map<t_index_t, std::pair<t_shape_t, _darr_t>>;
+using ztbloc_t = std::map<t_index_t, std::pair<t_shape_t, _zarr_t>>;
 
 using g_index_t =
     std::tuple<index_small_t, index_small_t, index_small_t, index_small_t>;
 using g_shape_t =
     std::tuple<index_small_t, index_small_t, index_small_t, index_small_t>;
-using dgbloc_t = std::map<g_shape_t, darr_t>;
-using zgbloc_t = std::map<g_shape_t, zarr_t>;
+using dgbloc_t = std::map<g_shape_t, _darr_t>;
+using zgbloc_t = std::map<g_shape_t, _zarr_t>;
 
 template <typename, typename = void> struct real_type;
 

@@ -24,7 +24,7 @@ void zgesvd_(const char *jobu, const char *jobvt, const size_t *m,
 
 namespace mdot {
 
-void bloc_norm(const array_of_s_type &array_of_s,
+void bloc_norm(const std::vector<std::vector<dnum_t>> &array_of_s,
                const std::vector<index_t> &cut, dnum_t &norm_out) {
   norm_out = 0;
   const size_t inc = 1;
