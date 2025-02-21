@@ -1,4 +1,4 @@
-{ stdenv, src, boost17x, catch2, cmake, gnumake, ninja, pandoc }:
+{ stdenv, src, boost17x, catch2, cmake, curl, gnumake, hugo, ninja, pandoc }:
 
 stdenv.mkDerivation rec {
   pname = "golden_cpp";
@@ -6,7 +6,7 @@ stdenv.mkDerivation rec {
   inherit src;
 
   buildInputs = [ boost17x ];
-  nativeBuildInputs = [ catch2 cmake gnumake ninja ] ++ [pandoc];
+  nativeBuildInputs = [ catch2 cmake gnumake ninja ] ++ [ curl hugo ];
   cmakeFlags = [
     "-DCMAKE_BUILD_TYPE=Release"
     "-DPROJECT_TESTS=On"
@@ -25,8 +25,6 @@ stdenv.mkDerivation rec {
     mkdir -p $bin $dev $doc $lib $out
     mkdir -p $out/share/doc/
     # install your doc here
-    for docinputs in $src/docs/*.md; do  # -H $src/docs/simple.css
-        pandoc $docinputs --from markdown --to html5 -c $src/docs/mvp.css -s -o $out/share/doc/$(basename $docinputs .md).html --template $src/docs/template.html --toc --toc-depth=2 --lua-filter=$src/docs/links-to-html.lua
-    done
+    # make -C $src/docs DESTINATION=$out/share/doc/target-doc
 '';
 }

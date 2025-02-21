@@ -175,3 +175,4 @@ dkms.conf
 .b*
 **/build
 tests/sandbox
+docs/target-doc

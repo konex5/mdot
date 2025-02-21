@@ -48,7 +48,7 @@ in (mkShell.override { inherit stdenv; }) rec {
     pkg-config
     emacs-nox
     vscodeExt
-  ] ++ [ pandoc hugo typora ] ++ project.nativeBuildInputs;
+  ] ++ [ hugo typora ] ++ project.nativeBuildInputs;
   buildInputs = [
     zlib # stdenv.cc.cc.lib
   ] ++ project.buildInputs;

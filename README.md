@@ -56,7 +56,7 @@ unlink result
 
 ### Use the experimental flake feature
 
-NOTE: this section requires the experimental `flake` and `nix-command` features. Please refer to the official documentation for nix flakes. We highly recommand you to have a look to nix flakes since the issue of channel pinning is locked in the `flake.lock` file.
+NOTE: this section requires the experimental `flake` and `nix-command` features. Please refer to the official documentation for nix flakes. We highly recommand you to have a look to nix flakes since the issue of channel pinning is fixed with the `flake.lock` file.
 
 #### Option 1: use the software
 
