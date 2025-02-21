@@ -122,21 +122,21 @@ void svd_nondeg(dtbloc_t &theta_bloc,
 
     auto N = static_cast<size_t>(std::get<0>(shape) * std::get<1>(shape));
     auto M = static_cast<size_t>(std::get<2>(shape) * std::get<3>(shape));
-    auto K = std::min(N, M);
+    auto K = M < N ? M : N;
     ///
     std::vector<double> Uout(N * K), Sout(K), VDout(K * M);
-    size_t ldA = M, ldu = N, ldvT = M < N ? M : N;
+    size_t ldA = M, ldu = K, ldvT = M;
     double worktest;
     int info, lwork = -1;
 
     dgesvd_((char *)"S", (char *)"S", &M, &N, theta_bloc[key].second.data(),
-            &ldA, Sout.data(), VDout.data(), &ldu, Uout.data(), &ldvT,
+            &ldA, Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu,
             &worktest, &lwork, &info);
 
     lwork = (int)worktest;
     double work[lwork];
     dgesvd_((char *)"S", (char *)"S", &M, &N, theta_bloc[key].second.data(),
-            &ldA, Sout.data(), VDout.data(), &ldu, Uout.data(), &ldvT, work,
+            &ldA, Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, work,
             &lwork, &info);
 
     array_of_U.push_back(Uout);
