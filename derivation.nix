@@ -1,4 +1,4 @@
-{ stdenv, src, boost17x, cmakeMinimal, fixDarwinDylibNames, gnumake, lapack, lib, ninja, tbb, version ? "0.0.2" }:
+{ stdenv, boost17x, cmakeMinimal, fixDarwinDylibNames, gnumake, lapack, lib, ninja, tbb, src ? ./., version ? "0.0.2" }:
 
 # lapack spdlog
 
