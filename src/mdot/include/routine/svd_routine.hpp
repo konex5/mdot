@@ -147,15 +147,15 @@ void svd_nondeg(dtbloc_t &theta_bloc,
             &ldA, Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, work,
             &lwork, &info);
 #else
-    int iwork;
+    int iwork[8*K];
     dgesdd_((char *)"S", &M, &N, theta_bloc[key].second.data(), &ldA,
             Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, &worktest,
-            &lwork, &iwork, &info);
+            &lwork, iwork, &info);
 
     lwork = (int)worktest;
     double work[lwork];
     dgesdd_((char *)"S", &M, &N, theta_bloc[key].second.data(), &ldA,
-            Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, work, &lwork, &iwork,
+            Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, work, &lwork, iwork,
             &info);
 #endif
     array_of_U.push_back(Uout);
@@ -239,15 +239,15 @@ void svd_deg(
             Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, work, &lwork,
             &info);
 #else
-    int iwork;
+    int iwork[8*K];
     dgesdd_((char *)"S", &M, &N, tmp_theta.data(), &ldA,
             Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, &worktest,
-            &lwork, &iwork, &info);
+            &lwork, iwork, &info);
 
     lwork = (int)worktest;
     double work[lwork];
     dgesdd_((char *)"S", &M, &N, tmp_theta.data(), &ldA,
-            Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, work, &lwork, &iwork,
+            Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, work, &lwork, iwork,
             &info);
 #endif
 
