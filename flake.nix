@@ -42,41 +42,45 @@
         let pkgs = nixpkgsFor.${system}; in pkgs.callPackage ./shell.nix { clangSupport = false; }
       );
 
-      hydraJobs = forDevSystems (system: {
+      hydraJobs = {
 
-        build = nixpkgsFor.${system}.golden-cpp;
-        build-clang = nixpkgsFor.${system}.golden-cpp-clang;
+        build = forDevSystems (system: nixpkgsFor.${system}.golden-cpp);
+        build-clang = forDevSystems (system: nixpkgsFor.${system}.golden-cpp-clang);
 
-        docker = with nixpkgsFor.${system}; dockerTools.buildLayeredImage {
-          name = "${repoName}-docker-${repoVersion}";
-          tag = "latest";
-          created = "now";
-          contents = [ golden-cpp ];
-          config = {
-            Cmd = [ "cli_golden" ];
-            # Env = [ "CMDLINE=ENABLED" ];
-            # ExposedPorts = { "8000" = { }; };
-          };
-        };
+        docker = forDevSystems (system:
+          with nixpkgsFor.${system}; dockerTools.buildLayeredImage {
+            name = "${repoName}-docker-${repoVersion}";
+            tag = "latest";
+            created = "now";
+            contents = [ golden-cpp ];
+            config = {
+              Cmd = [ "cli_golden" ];
+              # Env = [ "CMDLINE=ENABLED" ];
+              # ExposedPorts = { "8000" = { }; };
+            };
+          });
 
-        # deb = with nixpkgsFor.x86_64-linux; releaseTools.debBuild {
+        # deb = forCustomSystems ["x86_64-linux"] (system: 
+        #   with nixpkgsFor.x86_64-linux; releaseTools.debBuild {
+        #   inherit stdenv;
         #   name = "${repoName}-debian";
         #   diskImage = vmTools.diskImageFuns.debian8x86_64 {};
         #   src = golden-cpp.src;
         #   # buildInputs = [];
-        # };
+        # });
 
-        # rpm = with nixpkgsFor.x86_64-linux; releaseTools.rpmBuild {
+        # rpm = forCustomSystems ["x86_64-linux"] (system: 
+        #   with nixpkgsFor.x86_64-linux; releaseTools.rpmBuild {
         #   name = "${repoName}-redhat";
         #   diskImage = vmTools.diskImageFuns.centos7x86_64 {};
         #   src = golden-cpp.src;
         #   # buildInputs = [];
-        # };
+        # });
 
         # tarball =
         #   nixpkgsFor.${system}.releaseTools.sourceTarball {
         #     name = "${repoName} - tarball";
-        #     src = "./.";
+        #     src = autoconf missing;
         #   };
 
         # clang-analysis =
@@ -92,23 +96,23 @@
         #     #lcovFilter = [ "*/tests/*" ];
         #   };
 
-        release = nixpkgsFor.${system}.releaseTools.aggregate
-          {
-            name = "${repoName}-release-${repoVersion}";
-            constituents =
-              [
-                self.hydraJobs.x86_64-linux.build
-                self.hydraJobs.${system}.build-clang                
-                #self.hydraJobs.${system}.docker
-                #self.hydraJobs.x86_64-linux.deb
-                #self.hydraJobs.x86_64-linux.rpm
-                #self.hydraJobs.${system}.tarball
-                #self.hydraJobs.${system}.coverage
-              ];
-            meta.description = "hydraJobs: ${repoDescription}";
-          };
-
-      });
+        release = forDevSystems (system:
+          with nixpkgsFor.${system}; releaseTools.aggregate
+            {
+              name = "${repoName}-release-${repoVersion}";
+              constituents =
+                [
+                  self.hydraJobs.build.${system}
+                  self.hydraJobs.build-clang.${system}
+                  #self.hydraJobs.docker.${system}
+                ] ++ lib.optionals (hostPlatform.isLinux) [
+                  #self.hydraJobs.deb.x86_64-linux
+                  #self.hydraJobs.rpm.x86_64-linux
+                  #self.hydraJobs.coverage.x86_64-linux
+                ];
+              meta.description = "hydraJobs: ${repoDescription}";
+            });
+      };
 
       packages = forAllSystems (system:
         with nixpkgsFor.${system}; {
