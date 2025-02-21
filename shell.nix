@@ -4,9 +4,9 @@
 }:
 
 with pkgs;
+assert hostPlatform.isx86_64;
 
 let
-  stdenv = if clangSupport then clangStdenv else gccStdenv;
   vscodeExt = vscode-with-extensions.override {
     vscodeExtensions = with vscode-extensions;
       [ bbenoist.Nix eamodio.gitlens ms-vscode.cpptools ]
@@ -31,11 +31,12 @@ let
         }
       ];
   };
-
+  mkCustomShell = mkShell.override {
+    stdenv = if clangSupport then clangStdenv else gccStdenv;
+  };
 in
-(mkShell.override { inherit stdenv; }) rec {
+mkCustomShell {
   nativeBuildInputs = [ catch2 cmake gnumake ninja ] ++ [
-    # libcxxabi
     bashCompletion
     cacert
     clang-tools
@@ -47,13 +48,13 @@ in
     nixpkgs-fmt
     pkg-config
     emacs-nox
-    vscodeExt
-  ] ++ [ hugo typora ];
+  ] ++ lib.optionals (hostPlatform.isLinux) [ typora vscodeExt ] ++ [ hugo ];
   buildInputs = [
+    # libcxxabi
     boost17x
     spdlog
     zlib
-  ];
+  ] ++ lib.optionals (hostPlatform.isLinux) [ glibcLocales ];
 
   shellHook = ''
     export SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt

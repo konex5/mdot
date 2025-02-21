@@ -10,8 +10,9 @@
     let
       forCustomSystems = custom: f: nixpkgs.lib.genAttrs custom (system: f system);
       allSystems = [ "x86_64-linux" "i686-linux" "aarch64-linux" "x86_64-darwin" ];
-      supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" ];
-      forAllSystems = forCustomSystems supportedSystems;
+      devSystems = [ "x86_64-linux" "x86_64-darwin" ];
+      forAllSystems = forCustomSystems allSystems;
+      forDevSystems = forCustomSystems devSystems;
 
       nixpkgsFor = forAllSystems (system:
         import nixpkgs {
@@ -20,10 +21,9 @@
           overlays = [ self.overlay ];
         }
       );
-      #pkgs = nixpkgsFor.${"x86_64-linux"};
 
       repoName = "golden-cpp";
-      version = nixpkgsFor.${"x86_64-linux"}.golden-cpp.version;
+      version = nixpkgsFor.x86_64-linux.golden-cpp.version;
     in
     {
       overlay = final: prev: {
@@ -37,57 +37,57 @@
         };
       };
 
-      devShell = forCustomSystems [ "x86_64-linux" ] (system:
+      devShell = forDevSystems (system:
         let pkgs = nixpkgsFor.${system}; in pkgs.callPackage ./shell.nix { clangSupport = false; }
       );
 
-      # hydraJobs = forAllSystems (system: {
+      hydraJobs = forDevSystems (system: {
 
-      #   build = self.packages.${system}.golden-cpp;
+        build = self.packages.${system}.golden-cpp;
 
-      #   tarball =
-      #     nixpkgsFor.${system}.releaseTools.sourceTarball rec {
-      #       name = "${repoName}-tarball";
-      #       inherit version;
-      #       src = self;
-      #       postDist = ''
-      #         cp README.md $out/
-      #       '';
-      #     };
+        tarball =
+          nixpkgsFor.${system}.releaseTools.sourceTarball rec {
+            name = "${repoName}-tarball";
+            inherit version;
+            src = self;
+            postDist = ''
+              cp README.md $out/
+            '';
+          };
 
-      #   dockerImage = nixpkgsFor.${system}.dockerTools.buildLayeredImage {
-      #     name = "${repoName}-docker";
-      #     tag = "flake";
-      #     created = "now";
-      #     contents = [ self.defaultApp ];
-      #     config = {
-      #       Cmd = [ "cli_golden" ];
-      #       # Env = [ "CMDLINE=ENABLED" ];
-      #       # ExposedPorts = { "8000" = { }; };
-      #     };
-      #   };
+        docker = nixpkgsFor.${system}.dockerTools.buildLayeredImage {
+          name = "${repoName}-docker";
+          tag = "flake";
+          created = "now";
+          contents = [ self.defaultApp ];
+          config = {
+            Cmd = [ "cli_golden" ];
+            # Env = [ "CMDLINE=ENABLED" ];
+            # ExposedPorts = { "8000" = { }; };
+          };
+        };
 
 
-      #   coverage =
-      #     nixpkgsFor.${system}.releaseTools.coverageAnalysis {
-      #       name = "${repoName}-coverage";
-      #       src = self.hydraJobs.tarball;
-      #       lcovFilter = [ "*/tests/*" ];
-      #     };
+        coverage =
+          nixpkgsFor.${system}.releaseTools.coverageAnalysis {
+            name = "${repoName}-coverage";
+            src = self.hydraJobs.tarball;
+            lcovFilter = [ "*/tests/*" ];
+          };
 
-      #   release = nixpkgsFor.${system}.releaseTools.aggregate
-      #     {
-      #       name = "${repoName}-${self.hydraJobs.tarball.version}";
-      #       constituents =
-      #         [
-      #           self.hydraJobs.tarball
-      #           self.hydraJobs.build.x86_64-linux
-      #           self.hydraJobs.build.i686-linux
-      #         ];
-      #       meta.description = "Release golden-cpp";
-      #     };
+        release = nixpkgsFor.${system}.releaseTools.aggregate
+          {
+            name = "${repoName}-${self.hydraJobs.tarball.version}";
+            constituents =
+              [
+                self.hydraJobs.build
+                self.hydraJobs.docker
+                self.hydraJobs.tarball
+              ];
+            meta.description = "Release golden-cpp";
+          };
 
-      # });
+      });
 
       packages = forAllSystems (system:
         with nixpkgsFor.${system}; {
@@ -113,12 +113,12 @@
 
       templates = {
         golden-cpp = {
-          description = "C/C++ template";
-          path = "${self.packages.${"x86_64-linux"}.golden-cpp}";
+          description = "A simple C/C++ template";
+          path = "${self.packages.x86_64-linux.golden-cpp}";
         };
         golden-cpp-clang = {
-          description = "C/C++ template";
-          path = "${self.packages.${"x86_64-linux"}.golden-cpp-clang}";
+          description = "A simple C/C++ template";
+          path = "${self.packages.x86_64-linux.golden-cpp-clang}";
         };
       };
 

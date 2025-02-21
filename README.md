@@ -8,8 +8,8 @@ This is a skeleton template for a C/C++ project. Please find all the documentati
 - vscode (IDE) with
   - ms-vscode.cmake-tools
   - ms-vscode.cpptools
-- ctest - sometimes catch2 (unit testing)
-- Markdown (documentation)
+- ctest - or catch2 (unit testing)
+- markdown (documentation)
 
 ## Use the classic Nix commands
 
@@ -79,17 +79,23 @@ Start by cloning the [git repository](https://github.com/nokx5/golden-cpp) local
 ```bash
 # option a: develop with a local shell
 nix develop .#golden-cpp
+# or
+nix-shell . -A packages.x86_64-linux.golden-cpp
 
 # option b: build the local project
 nix build .#golden-cpp
+# or
+nix-build . -A packages.x86_64-linux.golden-cpp
 ```
 
 #### Option 2: Develop the software (supercharged :artificial_satellite:)
 
-You can enter the development supercharged environment.
+You can enter the supercharged development environment.
 
 ```bash
 nix develop
+# or
+nix-shell . -A devShell
 ```
 
 ## Code Snippets
