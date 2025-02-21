@@ -64,6 +64,9 @@ configure_file("${PROJECT_SOURCE_DIR}/src/utils/static.hpp.in"
                "${PROJECT_BINARY_DIR}/utils/static.hpp")
 include_directories("${PROJECT_SOURCE_DIR}/src" ${PROJECT_BINARY_DIR})
 
+# add_compile_definitions(COMPLEX_NUMBERS)
+# add_compile_definitions(FLOAT_NUMBERS)
+
 # ##############################################################################
 # PROJECT
 # ##############################################################################
