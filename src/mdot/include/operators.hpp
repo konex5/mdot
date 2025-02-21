@@ -39,7 +39,7 @@ std::pair<dopbloc_t, dnum_t> single_operator_real(std::string name,
   single_operators_real["sh-sx"]["sh-u1"][{0, 1}] = {1};
   single_operators_real["sh-sx"]["sh-u1"][{1, 0}] = {1};
   /// ///
-  normalization["so-id"]["sh-none"] = 1. / sqrt(3);
+  normalization["so-id"]["so-none"] = 1. / sqrt(3);
   single_operators_real["so-id"]["so-none"][{0, 0}] = {1, 0, 0, 0, 1,
                                                        0, 0, 0, 1};
   //

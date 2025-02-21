@@ -16,6 +16,19 @@ std::vector<Tp> mul_twotwo(std::vector<T> a, std::vector<Tp> b) {
   return c;
 }
 
+template <typename T, typename Tp>
+std::vector<Tp> mul_threethree(std::vector<T> a, std::vector<Tp> b) {
+  std::vector<Tp> c(9);
+  for (int i = 0; i < 3; i++)
+    for (int j = 0; j < 3; j++) {
+      T sum = 0;
+      for (int k = 0; k < 3; k++)
+        sum += a[i * 3 + k] * b[k * 3 + j];
+      c[i + 3 * j] = sum;
+    }
+  return c;
+}
+
 BOOST_AUTO_TEST_CASE(test_operators_sh_none_real) {
 
   auto shid = std::get<0>(single_operator_real("sh-id", "sh-none"));
@@ -116,8 +129,10 @@ BOOST_AUTO_TEST_CASE(test_operators_so_none_real) {
   BOOST_CHECK((soid[{0, 0}])[2 + 2 * 3] == 1);
   BOOST_CHECK((soid[{0, 0}])[0 + 1 * 3] == 0);
 
-  BOOST_CHECK(
-      std::abs((soid_square[0 + 0 * 3] + soid_square[1 + 1 * 3] + soid_square[2 + 2 * 3]) *
-                   pow(soid_norm, 2) -
-               1) < 1e-7);
+  auto soid_square = mul_threethree(soid[{0, 0}], soid[{0, 0}]);
+
+  BOOST_CHECK(std::abs((soid_square[0 + 0 * 3] + soid_square[1 + 1 * 3] +
+                        soid_square[2 + 2 * 3]) *
+                           pow(soid_norm, 2) -
+                       1) < 1e-7);
 }
