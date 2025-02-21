@@ -9,7 +9,7 @@ assert hostPlatform.isx86_64;
 let
   vscodeExt = vscode-with-extensions.override {
     vscodeExtensions = with vscode-extensions;
-      [ bbenoist.Nix eamodio.gitlens ms-vscode.cpptools ]
+      [ bbenoist.nix eamodio.gitlens ms-vscode.cpptools ]
       ++ vscode-utils.extensionsFromVscodeMarketplace [
         {
           name = "vscode-clangd";
