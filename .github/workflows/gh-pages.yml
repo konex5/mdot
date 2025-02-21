@@ -1,10 +1,9 @@
-name: github pages
+name: update github pages
 
 on:
   push:
-    branches:
-      - main  # Set a branch to deploy
-  pull_request:
+    # branches:
+    #   - doc-deploy  # Set a branch to deploy
 
 jobs:
   deploy:
@@ -22,7 +21,7 @@ jobs:
           # extended: true
 
       - name: Build
-        run: cd docs && make doc-deploy && cd ..
+        run: make doc-build -C ./docs HUGO_OPTS="--baseURL https":"//nokx5.github.io/golden_cpp/"
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
