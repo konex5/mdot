@@ -108,7 +108,7 @@ One line code formatter for C/C++ projects
 ```bash
 nixpkgs-fmt .
 
-clang-format -i $(find . -path "./build*" -prune  -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp")
+clang-format -i $(find . -path "./b*" -prune  -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp")
 
-cmake-format -i $(find . -path "./build*" -prune  -name "*.cmake" -o -name "CMakeLists.txt")
+cmake-format -i $(find . -path "./b*" -prune  -name "*.cmake" -o -name "CMakeLists.txt")
 ```
