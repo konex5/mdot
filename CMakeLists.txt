@@ -30,18 +30,32 @@ option(PROJECT_STATIC "Build Static Libraries" OFF)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# # https://stackoverflow.com/questions/45955272/modern-way-to-set-compiler-flags-in-cross-platform-cmake-project
+# #
+# https://stackoverflow.com/questions/45955272/modern-way-to-set-compiler-flags-in-cross-platform-cmake-project
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND APPLE)
   add_compile_options("-Wa" "-q")
 else()
   add_compile_options(-Wall -Wextra)
-  add_compile_options($<$<CONFIG:DEBUG>:-Werror> $<$<CONFIG:DEBUG>:-pedantic> $<$<CONFIG:DEBUG>:-Wunused-macros> $<$<CONFIG:DEBUG>:-Wshadow>)
-  add_compile_options($<$<CONFIG:RELEASE>:-mfma> $<$<CONFIG:RELEASE>:-mavx>) # ?=> -mftree-vectorize  
+  add_compile_options(
+    $<$<CONFIG:DEBUG>:-Werror> $<$<CONFIG:DEBUG>:-pedantic>
+    $<$<CONFIG:DEBUG>:-Wunused-macros> $<$<CONFIG:DEBUG>:-Wshadow>)
+  add_compile_options($<$<CONFIG:RELEASE>:-mfma> $<$<CONFIG:RELEASE>:-mavx>
+  )# ?=> -mftree-vectorize
   if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") # -O1 ?
-    add_compile_options($<$<CONFIG:ASAN>:-g> $<$<CONFIG:ASAN>:-fsanitize=address> $<$<CONFIG:ASAN>:-fno-omit-frame-pointer>)
-    add_compile_options($<$<CONFIG:MSAN>:-g> $<$<CONFIG:MSAN>:-fsanitize=memory> $<$<CONFIG:MSAN>:-fsanitize-memory-track-origins=2> $<$<CONFIG:MSAN>:-fno-omit-frame-pointer> $<$<CONFIG:MSAN>:-fno-optimize-sibling-calls>) 
-    add_compile_options($<$<CONFIG:TSAN>:-g> $<$<CONFIG:TSAN>:-fsanitize=thread>)
-    add_compile_options($<$<CONFIG:CODECOV>:-g> $<$<CONFIG:CODECOV>:-fprofile-instr-generate> $<$<CONFIG:CODECOV>:-fcoverage-mapping> $<$<CONFIG:CODECOV>:-fno-inline>)
+    add_compile_options(
+      $<$<CONFIG:ASAN>:-g> $<$<CONFIG:ASAN>:-fsanitize=address>
+      $<$<CONFIG:ASAN>:-fno-omit-frame-pointer>)
+    add_compile_options(
+      $<$<CONFIG:MSAN>:-g>
+      $<$<CONFIG:MSAN>:-fsanitize=memory>
+      $<$<CONFIG:MSAN>:-fsanitize-memory-track-origins=2>
+      $<$<CONFIG:MSAN>:-fno-omit-frame-pointer>
+      $<$<CONFIG:MSAN>:-fno-optimize-sibling-calls>)
+    add_compile_options($<$<CONFIG:TSAN>:-g>
+                        $<$<CONFIG:TSAN>:-fsanitize=thread>)
+    add_compile_options(
+      $<$<CONFIG:CODECOV>:-g> $<$<CONFIG:CODECOV>:-fprofile-instr-generate>
+      $<$<CONFIG:CODECOV>:-fcoverage-mapping> $<$<CONFIG:CODECOV>:-fno-inline>)
   else()
     add_compile_options($<$<CONFIG:ASAN>:-g> $<$<CONFIG:ASAN>:-Wshadow>)
     add_compile_options($<$<CONFIG:TSAN>:-g> $<$<CONFIG:TSAN>:-Wshadow>)
@@ -61,8 +75,9 @@ find_package(
 include_directories(SYSTEM ${Boost_INCLUDE_DIR})
 
 mark_as_advanced(
-  Boost_SYSTEM_LIBRARY_RELEASE
-)
+  Boost_SYSTEM_LIBRARY_RELEASE Boost_FILESYSTEM_LIBRARY_RELEASE
+  Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE
+  Boost_UNIT_TEST_FRAMEWORK_LIBRARY_RELEASE)
 
 # * TBB
 find_package(TBB REQUIRED tbb tbbmalloc_proxy)
@@ -84,7 +99,7 @@ add_subdirectory(src/silver)
 # TESTS and miscelaneous
 # ##############################################################################
 include(CTest)
-enable_testing()
+# enable_testing()
 if(${PROJECT_UNIT_TESTS})
   add_subdirectory(tests/unit)
 endif()
