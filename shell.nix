@@ -1,19 +1,9 @@
-{ pkgs ? import <nixpkgs> { }
-, # the two lines are for usual and flakes nix compatibility
-project_clang ? pkgs.callPackage ./derivation.nix {
-  stdenv = pkgs.clangStdenv;
-  src = ./.;
-}, project_gcc ? pkgs.callPackage ./derivation.nix {
-  stdenv = pkgs.gccStdenv;
-  src = ./.;
-}, clangSupport ? true, cudaSupport ? false }:
+{ pkgs ? import <nixpkgs> { }, clangSupport ? true, cudaSupport ? false }:
 
 with pkgs;
 
 let
   stdenv = if clangSupport then clangStdenv else gccStdenv;
-  project = if clangSupport then project_clang else project_gcc;
-
   vscodeExt = vscode-with-extensions.override {
     vscodeExtensions = with vscode-extensions;
       [ bbenoist.Nix eamodio.gitlens ms-vscode.cpptools ]
@@ -40,7 +30,7 @@ let
   };
 
 in (mkShell.override { inherit stdenv; }) rec {
-  nativeBuildInputs = [
+  nativeBuildInputs = [ catch2 cmake gnumake ninja ] ++ [
     # stdenv.cc.cc
     # libcxxabi	      
     bashCompletion
@@ -55,10 +45,12 @@ in (mkShell.override { inherit stdenv; }) rec {
     pkg-config
     emacs-nox
     vscodeExt
-  ] ++ [ hugo typora ] ++ project.nativeBuildInputs;
+  ] ++ [ hugo typora ];
   buildInputs = [
+    boost17x
+    spdlog
     zlib # stdenv.cc.cc.lib
-  ] ++ project.buildInputs;
+  ];
 
   shellHook = ''
     export SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt

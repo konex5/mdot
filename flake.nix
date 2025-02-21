@@ -10,15 +10,15 @@
     utils.lib.eachSystem [ "x86_64-linux" ] (system:
       let
         overlay = pkgs-self: pkgs-super: {
-          project_gcc = pkgs-super.callPackage ./derivation.nix {
+          golden-cpp = pkgs-super.callPackage ./derivation.nix {
             src = self;
             stdenv = pkgs-self.gccStdenv;
           };
-          project_clang = pkgs-super.callPackage ./derivation.nix {
+          golden-cpp-clang = pkgs-super.callPackage ./derivation.nix {
             src = self;
             stdenv = pkgs-self.clangStdenv;
           };
-          project_dev = pkgs-super.callPackage ./derivation-shell.nix { };
+          shell-dev = pkgs-super.callPackage ./shell.nix { pkgs = pkgs-self; };
         };
         pkgs = import nixpkgs {
           inherit system;
@@ -26,7 +26,9 @@
           overlays = [ overlay ];
         };
       in {
-        packages = { golden-cpp = pkgs.project_gcc; };
+        packages = with pkgs; {
+          inherit golden-cpp golden-cpp-clang shell-dev;
+        };
         defaultPackage = self.packages.${system}.golden-cpp;
 
         apps = {
@@ -42,6 +44,6 @@
 
         defaultApp = self.apps.${system}.cli_golden;
 
-        devShell = pkgs.project_dev;
+        devShell = self.packages.${system}.shell-dev;
       });
 }

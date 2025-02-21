@@ -1,5 +1,4 @@
-{ stdenv, src, boost17x, catch2, cmake, cacert, curl, gnumake, hugo, ninja
-, pandoc }:
+{ stdenv, src, boost17x, catch2, cmake, gnumake, hugo, ninja, pandoc }:
 
 stdenv.mkDerivation rec {
   pname = "golden-cpp";
@@ -7,7 +6,7 @@ stdenv.mkDerivation rec {
   inherit src;
 
   buildInputs = [ boost17x ];
-  nativeBuildInputs = [ catch2 cmake gnumake ninja ] ++ [ cacert curl hugo ];
+  nativeBuildInputs = [ catch2 cmake gnumake ninja ] ++ [ hugo ];
   cmakeFlags = [
     "-DCMAKE_BUILD_TYPE=Release"
     "-DPROJECT_TESTS=On"
