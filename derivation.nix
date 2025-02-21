@@ -4,7 +4,8 @@
 
 stdenv.mkDerivation rec {
   pname = "mdot";
-  version = "0.0.1";
+  version = "0.0.2";
+  name = "${pname}-${version}"
   inherit src;
 
   buildInputs = [ boost17x lapack tbb ];
