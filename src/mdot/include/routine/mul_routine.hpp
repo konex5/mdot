@@ -158,7 +158,75 @@ void mul_usv_deg(
         &new_subsize,
     dmbloc_t &dst_lhs_blocs, dmbloc_t &dst_rhs_blocs, const int is_um) {
 
-  std::cout << "hello";
+  for (size_t i = 0; i < deg.size(); i++) {
+    if (cut[i]>0) {
+      std::cout << "hello";
+    }
+  }
+/*
+      if (is_um == 0) {
+        for (auto &s : array_S[i])
+          s = sqrt(s);
+        mat_left.resize(dim0 * dim1 * cut[i]);
+        mat_right.resize(cut[i] * dim2 * dim3);
+        mul_mat_diag(mat_left, array_U[i], dim0 * dim1, array_S[i].size(),
+                     array_S[i], cut[i]);
+        mul_diag_mat(mat_right, array_V[i], array_S[i].size(), dim2 * dim3,
+                     array_S[i], cut[i]);
+      } else if (is_um == 1) {
+        mat_left.swap(array_U[i]);
+        mat_right.resize(cut[i] * dim2 * dim3);
+        mul_diag_mat(mat_right, array_V[i], array_S[i].size(), dim2 * dim3,
+                     array_S[i], cut[i]);
+      } else {
+        mat_left.resize(dim0 * dim1 * cut[i]);
+        mul_mat_diag(mat_left, array_U[i], dim0 * dim1, array_S[i].size(),
+                     array_S[i], cut[i]);
+        mat_right.swap(array_V[i]);
+      }
+
+for _ in range(len(deg)):  # reversed, and pop each value.
+        Dsi = cut.pop()
+        if Dsi > 0:
+            if is_um is None:
+                diag_sqrt = _np.diag(_np.sqrt(array_S.pop()[:Dsi]))
+                # M
+                mat_left = _np.dot(array_U.pop()[:, :Dsi], diag_sqrt)
+                # M
+                mat_right = _np.dot(diag_sqrt, array_V.pop()[:Dsi, :])
+            elif is_um:
+                # U
+                mat_left = array_U.pop()  # [:,:Dsi]
+                # M
+                mat_right = _np.dot(
+                    _np.diag(array_S.pop()[:Dsi]), array_V.pop()[:Dsi, :]
+                )
+            else:
+                # M
+                mat_left = _np.dot(
+                    array_U.pop()[:, :Dsi], _np.diag(array_S.pop()[:Dsi])
+                )
+                # V
+                mat_right = array_V.pop()  # [Dsi:,:]
+
+            tmp = subnewsize.pop()
+            tmp_deg = deg.pop()
+            for it in tmp_deg[1]:
+                posL = tmp[2].index((it[0], it[1]))
+                offL = tmp[3][posL]
+                dimL = tmp[4][posL]
+                posR = tmp[5].index((it[2], it[3]))
+                offR = tmp[6][posR]
+                dimR = tmp[7][posR]
+
+                dst_lhs_blocs[(it[0], it[1], tmp_deg[0])] = mat_left[
+                    slice(offL, offL + dimL[0] * dimL[1]), :Dsi
+                ].reshape(dimL[0], dimL[1], Dsi)
+                dst_rhs_blocs[(tmp_deg[0], it[2], it[3])] = mat_right[
+                    :Dsi, slice(offR, offR + dimR[0] * dimR[1])
+                ].reshape(Dsi, dimR[0], dimR[1])
+*/
+
 }
 
 } // namespace mdot
