@@ -62,7 +62,7 @@ void normalize_the_array(std::vector<darr_t> &list_of_array,
 }
 
 void truncation_strategy(const std::vector<darr_t> list_of_array,
-                         const size_t chi_max,
+                         const index_t chi_max,
                          std::vector<index_t> &cut_at_index, dnum_t &dw,
                          const double eps_truncation_error = 1e-8) {
   // epsilon = || forall bloc s_bloc ||_2^2
@@ -94,7 +94,7 @@ void truncation_strategy(const std::vector<darr_t> list_of_array,
 
   std::cout << "stop_criterion=" << stop_criterion << std::endl;
   std::cout << "tmp_acc.size=" << tmp_acc.size() << std::endl;
-  auto lower = std::lower_bound(tmp_acc.begin(), tmp_acc.end(), stop_criterion);
+  auto lower = std::lower_bound(tmp_acc.begin(), tmp_acc.end(), stop_criterion,std::less_equal<dnum_t>{});
   
   index_to_cut = std::distance(tmp_acc.begin(), lower);
   dw += std::accumulate(tmp_acc.begin(), lower, 0);
@@ -103,7 +103,7 @@ void truncation_strategy(const std::vector<darr_t> list_of_array,
   for (size_t i = 0; i < index_to_cut; i++) {
     std::cout << "acc " << tmp_acc[i] << " ";
     }
-  for (size_t i = 0; i < tmp.size(); i++) {
+  for (size_t i = 0; i < index_to_cut; i++) {
     std::cout << "tmp " << tmp[i] << " ";
     }
   dnum_t maxcutvalue = tmp[index_to_cut];
@@ -111,10 +111,18 @@ void truncation_strategy(const std::vector<darr_t> list_of_array,
 
   cut_at_index.reserve(list_of_array.size());
   for (size_t i = 0; i < list_of_array.size(); i++) {
-     //std::lower_bound(tmp_acc.begin(), tmp_acc.end(), maxcutvalue);
-     //cut_at_index.push_back(min(,chi_max));
+    auto it = std::lower_bound(list_of_array[i].begin(), list_of_array[i].end(), maxcutvalue,std::less<dnum_t>{});
+    auto value =  static_cast<index_t>(std::distance(list_of_array[i].begin(), it));
+    std::cout << value;
+    cut_at_index.push_back(std::min(value,chi_max));
 
   }
+
+
+  for (size_t i = 0; i < cut_at_index.size(); i++) {
+    std::cout << "cut_at_index " << cut_at_index[i] << " ";
+    }
+  
 
   //        return cut_at_index;
 }
