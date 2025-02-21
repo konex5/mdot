@@ -29,7 +29,7 @@ void mm_to_theta_no_gate(dtbloc_t &dst_blocs, const dmbloc_t lhs_blocs,
 
 void theta_to_mm(dtbloc_t &theta_blocs, dmbloc_t &lhs_blocs,
                  dmbloc_t &rhs_blocs, dnum_t &dw, const index_t chi_max,
-                 const bool normalize, const bool is_um,
+                 const bool normalize, const int is_um,
                  const int direction_right, const double eps) {
   std::vector<t_index_t> theta_indices;
   for (auto &[key, _] : theta_blocs)

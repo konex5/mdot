@@ -123,6 +123,7 @@ void mul_usv_nondeg(std::vector<std::vector<dnum_t>> &array_U,
       std::vector<dnum_t> mat_right(cut[i], dim2 * dim3);
 
       if (is_um == 0) {
+        /*
         for (auto &s : array_S[i])
           s = sqrt(s);
         mul_mat_diag(mat_left, array_U[i], dim0 * dim1, array_S[i].size(),
@@ -130,19 +131,22 @@ void mul_usv_nondeg(std::vector<std::vector<dnum_t>> &array_U,
         mul_diag_mat(mat_right, array_V[i], array_S[i].size(), dim2 * dim3,
                      array_S[i], cut[i]);
       } else if (is_um == 1) {
-        mat_left.swap(array_U[i]);
+        //mat_left.swap(array_U[i]);
         mul_diag_mat(mat_right, array_V[i], array_S[i].size(), dim2 * dim3,
                      array_S[i], cut[i]);
       } else {
         mul_mat_diag(mat_left, array_U[i], dim0 * dim1, array_S[i].size(),
                      array_S[i], cut[i]);
-        mat_right.swap(array_V[i]);
+        //mat_right.swap(array_V[i]);
+        */
       }
+      
       dst_lhs_blocs[{std::get<0>(theta_index), std::get<1>(theta_index),
                      middle_index}] = {shape_left, mat_left};
       dst_rhs_blocs[{middle_index, std::get<2>(theta_index),
                      std::get<3>(theta_index)}] = {shape_right, mat_right};
     }
+    
   }
 }
 
