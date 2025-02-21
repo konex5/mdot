@@ -8,8 +8,9 @@ project(
   VERSION "${PROJECT_VERSION}"
   DESCRIPTION "MDOT - Matrix Dot")
 
-set(CMAKE_C_COMPILER $ENV{CC})
-set(CMAKE_CXX_COMPILER $ENV{CXX})
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake)
 
@@ -28,46 +29,18 @@ option(PROJECT_MEMCHECK "Enable memcheck test with valgrind" OFF)
 # FLAGS
 # ##############################################################################
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(PROJECT_CXX_FLAGS -Wall -Wextra)
+set(PROJECT_CXX_FLAGS_DEBUG -g -fno-inline -fno-omit-frame-pointer) # -pedantic
+# set(PROJECT_CXX_FLAGS_RELWITHDEBUG -g -O2) set(PROJECT_CXX_FLAGS_RELEASE -O3)
+# set(PROJECT_CXX_FLAGS_MINSIZERELEASE -O2) -fno-inline)
+# set(PROJECT_CXX_FLAGS_RELEASE -mfma -mavx) # -q openmp-simd -mftree-vectorize
 
-add_compile_options(-Wall -Wextra)
-# #
-# https://stackoverflow.com/questions/45955272/modern-way-to-set-compiler-flags-in-cross-platform-cmake-project
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND APPLE)
-  add_compile_options("-Wa" "-q")
-else()
-  add_compile_options( # -fno-omit-frame-pointer -fno-inline
-    $<$<CONFIG:DEBUG>:-Werror> $<$<CONFIG:DEBUG>:-pedantic>
-    $<$<CONFIG:DEBUG>:-Wunused-macros> $<$<CONFIG:DEBUG>:-Wshadow>)
-  add_compile_options($<$<CONFIG:RELEASE>:-mfma> $<$<CONFIG:RELEASE>:-mavx>
-  )# ?=> -mftree-vectorize
-  if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    add_compile_options(
-      $<$<CONFIG:ASAN>:-fsanitize=address> $<$<CONFIG:ASAN>:-g>
-      $<$<CONFIG:ASAN>:-O1> $<$<CONFIG:ASAN>:-fno-omit-frame-pointer>)
-    add_compile_options(
-      $<$<CONFIG:MSAN>:-g>
-      $<$<CONFIG:MSAN>:-O2>
-      $<$<CONFIG:MSAN>:-fsanitize=memory>
-      $<$<CONFIG:MSAN>:-fsanitize-memory-track-origins=2>
-      $<$<CONFIG:MSAN>:-fno-omit-frame-pointer>
-      $<$<CONFIG:MSAN>:-fno-optimize-sibling-calls>)
-    add_compile_options($<$<CONFIG:TSAN>:-g> $<$<CONFIG:TSAN>:-O1>
-                        $<$<CONFIG:TSAN>:-fsanitize=thread>)
-    add_compile_options(
-      $<$<CONFIG:UBSAN>:-g> $<$<CONFIG:UBSAN>:-fno-omit-frame-pointer>
-      $<$<CONFIG:UBSAN>:-fsanitize=undefined>)
-    add_compile_options(
-      $<$<CONFIG:CODECOV>:-g> $<$<CONFIG:CODECOV>:-fprofile-instr-generate>
-      $<$<CONFIG:CODECOV>:-fcoverage-mapping> $<$<CONFIG:CODECOV>:-fno-inline>)
-  else()
-    add_compile_options($<$<CONFIG:ASAN>:-g> $<$<CONFIG:ASAN>:-Wshadow>)
-    add_compile_options($<$<CONFIG:TSAN>:-g> $<$<CONFIG:TSAN>:-Wshadow>)
-    add_compile_options($<$<CONFIG:CODECOV>:-g> $<$<CONFIG:CODECOV>:-Wshadow>)
-    add_compile_options($<$<CONFIG:CODECOV>:-g> $<$<CONFIG:CODECOV>:-Wshadow>)
-  endif()
-endif()
+add_compile_options(
+  ${PROJECT_CXX_FLAGS}
+  "$<$<CONFIG:Debug>:${PROJECT_CXX_FLAGS_DEBUG}>"
+  "$<$<CONFIG:Release>:${PROJECT_CXX_FLAGS_RELEASE}>"
+  "$<$<CONFIG:RelWithDebug>:${PROJECT_CXX_FLAGS_RELWITHDEBUG}>"
+  "$<$<CONFIG:MinSizeRelease>:${PROJECT_CXX_FLAGS_MINSIZERELEASE}>")
 
 # ##############################################################################
 # FIND PACKAGES
