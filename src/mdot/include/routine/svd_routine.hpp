@@ -68,62 +68,34 @@ void truncation_strategy(const std::vector<darr_t> list_of_array,
   // epsilon = || forall bloc s_bloc ||_2^2
   // chi_max = max chi of bloc
   // eps_truncation_error < sum_{i>chi_max} s_all,i^2
-
   dnum_t norm;
   bloc_norm(list_of_array, {}, norm);
+  const dnum_t stop_criterion = eps_truncation_error * pow(norm, 2);
   //
   std::vector<dnum_t> tmp;
   for (auto &arr : list_of_array)
     tmp.insert(tmp.end(), arr.begin(), arr.end());
-
   std::sort(tmp.begin(), tmp.end());
-  //
-  size_t index_to_cut;
-  const dnum_t stop_criterion = eps_truncation_error * pow(norm, 2);
   // square
   std::vector<dnum_t> tmp_square;
-  for (dnum_t &i : tmp)
-    tmp_square.push_back(i * i);
+  for (dnum_t &v : tmp)
+    tmp_square.push_back(v * v);
 
   std::vector<dnum_t> tmp_acc(tmp_square.size());
   std::partial_sum(tmp_square.begin(), tmp_square.end(), tmp_acc.begin());
 
-  for (size_t i = 0; i < tmp_acc.size(); i++) {
-    std::cout << " " << tmp_acc[i] << " ";
-  }
-
-  std::cout << "stop_criterion=" << stop_criterion << std::endl;
-  std::cout << "tmp_acc.size=" << tmp_acc.size() << std::endl;
   auto lower = std::lower_bound(tmp_acc.begin(), tmp_acc.end(), stop_criterion,std::less_equal<dnum_t>{});
-  
-  index_to_cut = std::distance(tmp_acc.begin(), lower);
+  size_t index_to_cut = std::distance(tmp_acc.begin(), lower);
   dw += std::accumulate(tmp_acc.begin(), lower, 0);
-  
-  std::cout << "AAA AAA=" << index_to_cut;
-  for (size_t i = 0; i < index_to_cut; i++) {
-    std::cout << "acc " << tmp_acc[i] << " ";
-    }
-  for (size_t i = 0; i < index_to_cut; i++) {
-    std::cout << "tmp " << tmp[i] << " ";
-    }
   dnum_t maxcutvalue = tmp[index_to_cut];
-  std::cout << "maxcutvalue=" << maxcutvalue << std::endl;
-
-  cut_at_index.reserve(list_of_array.size());
+  
+  //cut_at_index.reserve(list_of_array.size());
   for (size_t i = 0; i < list_of_array.size(); i++) {
     auto it = std::lower_bound(list_of_array[i].begin(), list_of_array[i].end(), maxcutvalue,std::less<dnum_t>{});
     auto value =  static_cast<index_t>(std::distance(list_of_array[i].begin(), it));
-    std::cout << value;
     cut_at_index.push_back(std::min(value,chi_max));
-
   }
-
-
-  for (size_t i = 0; i < cut_at_index.size(); i++) {
-    std::cout << "cut_at_index " << cut_at_index[i] << " ";
-    }
   
-
   //        return cut_at_index;
 }
 
