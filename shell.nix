@@ -23,7 +23,7 @@ in
 mkCustomShell {
   buildInputs = [ boost17x hdf5-cpp lapack tbb ];
   nativeBuildInputs = [ together cmakeMinimal gnumake ninja ] ++ lib.optional stdenv.hostPlatform.isDarwin fixDarwinDylibNames;
-
+  hardeningDisable = [ "all" ];
   shellHook = ''
     mkdir -p $(pwd)/.trash_config
     export HOME=$(pwd)/.trash_config
