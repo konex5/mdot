@@ -14,7 +14,7 @@ doc-assets:
 
 .PHONY: doc-build
 doc-build:
-	cd $(DESTINATION); hugo --minify --config=$(CURRENTDIR)/config.toml  --contentDir=$(CURRENTDIR)/content/
+	cd $(DESTINATION); hugo --minify --config=$(CURRENTDIR)/config.toml  --contentDir=$(CURRENTDIR)/content/ --baseURL docs/target-doc/public
 
 .PHONY: clean
 clean:
