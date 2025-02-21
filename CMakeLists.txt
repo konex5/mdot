@@ -14,7 +14,6 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_C_COMPILER $ENV{CC})
 set(CMAKE_CXX_COMPILER $ENV{CXX})
 
-
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake)
 
 # ##############################################################################
@@ -33,10 +32,10 @@ option(PROJECT_MEMCHECK "Enable memcheck test with valgrind" OFF)
 # ##############################################################################
 
 set(PROJECT_CXX_FLAGS -Wall -Wextra)
-set(PROJECT_CXX_FLAGS_DEBUG -g -fno-inline -fno-omit-frame-pointer) # -pedantic
-# set(PROJECT_CXX_FLAGS_RELWITHDEBUG -g -O2) set(PROJECT_CXX_FLAGS_RELEASE -O3)
-# set(PROJECT_CXX_FLAGS_MINSIZERELEASE -O2) -fno-inline)
-# set(PROJECT_CXX_FLAGS_RELEASE -mfma -mavx) # -q openmp-simd -mftree-vectorize
+set(PROJECT_CXX_FLAGS_DEBUG -g -O -fno-inline -fno-omit-frame-pointer) # -pedantic
+set(PROJECT_CXX_FLAGS_RELEASE -O3 -mfma -mavx) # -q openmp-simd -mftree-vectorize
+set(PROJECT_CXX_FLAGS_RELWITHDEBUG -g -O2)
+set(PROJECT_CXX_FLAGS_MINSIZERELEASE -O2)
 
 add_compile_options(
   ${PROJECT_CXX_FLAGS}
