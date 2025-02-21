@@ -142,6 +142,18 @@ void mul_usv_nondeg(std::vector<std::vector<dnum_t>> &array_U,
   }
 }
 
+
+void slice_matrix(std::vector<dnum_t> &dst, const size_t dst_N,
+                 const size_t dst_M, std::vector<dnum_t> &src,
+                 const size_t src_off0,
+                 const size_t src_off1) {
+  for (size_t i = 0; i < dst_N; i++) {
+    for (size_t j = 0; j < dst_M; j++) {
+      dst[i * dst_M + j] = src[(src_off0 + i) * dst_M + src_off1 + j];
+    }
+  }
+}
+
 void mul_usv_deg(
     std::vector<std::vector<dnum_t>> &array_U,
     std::vector<std::vector<dnum_t>> &array_S, std::vector<index_t> &cut,
@@ -215,13 +227,11 @@ void mul_usv_deg(
         m_shape_t shape_left = {std::get<0>(dimL),std::get<1>(dimL),cut[i]};
         std::vector<dnum_t> out_mat_right(cut[i]*muldimR);
         m_shape_t shape_right = {cut[i],std::get<0>(dimR),std::get<1>(dimR)};
-        
-        dst_lhs_blocs[{std::get<0>(theta_key),std::get<1>(theta_key),middle_index}] = {shape_left,out_mat_left};
-        dst_rhs_blocs[{middle_index,std::get<2>(theta_key),std::get<3>(theta_key)}] = {shape_right,out_mat_right};
-      }
 
-    }
-  }
+        //std::cout << "mat_left.size" << mat_left.size() << "muldimL" << muldimL << " cut" << cut[i] ; 
+        slice_matrix(out_mat_left,muldimL,cut[i],mat_left,offL,0); 
+        //std::cout << "mat_right.size" << mat_right.size() << "muldimR" << muldimR << " cut" << cut[i]; 
+        slice_matrix(out_mat_right,cut[i],muldimR,mat_right,0,offR); 
 /*
             tmp = subnewsize.pop()
             tmp_deg = deg.pop()
@@ -240,6 +250,14 @@ void mul_usv_deg(
                     :Dsi, slice(offR, offR + dimR[0] * dimR[1])
                 ].reshape(Dsi, dimR[0], dimR[1])
 */
+
+        dst_lhs_blocs[{std::get<0>(theta_key),std::get<1>(theta_key),middle_index}] = {shape_left,out_mat_left};
+        dst_rhs_blocs[{middle_index,std::get<2>(theta_key),std::get<3>(theta_key)}] = {shape_right,out_mat_right};
+      }
+
+    }
+  }
+
 
 }
 
