@@ -26,13 +26,20 @@ int main(int argc, char *argv[]) {
       std::cout << desc << "\n";
       return 0;
     }
-    boost::filesystem::path hamiltonian_path;
-    hamiltonian_path =
-        boost::filesystem::path(vm["hamiltonian"].as<std::string>());
+    boost::filesystem::path hamiltonian_path(
+        vm["hamiltonian"].as<std::string>());
+    boost::filesystem::path output_path(vm["output"].as<std::string>());
+
     if (!boost::filesystem::exists(hamiltonian_path)) {
       std::cout << "cli, create_maximal_entangled_state: the hamiltonian path "
-                << vm["hamiltonian"].as<std::string>() << " is not a valid path"
-                << std::endl;
+                << hamiltonian_path << " is not a valid path." << std::endl;
+      return 1;
+    }
+
+    auto output_dir = output_path.parent_path();
+    if (!boost::filesystem::is_directory(output_dir)) {
+      std::cout << "cli, create_maximal_entangled_state: the output dirpath "
+                << output_dir << " is not a valid directory." << std::endl;
       return 1;
     }
 
