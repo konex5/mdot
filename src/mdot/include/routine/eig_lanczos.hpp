@@ -1,8 +1,5 @@
 #pragma once
 
-#include <ostream>
-#include <stdexcept>
-
 #include "mdot/include/babel_type.hpp"
 
 extern "C" {
@@ -40,11 +37,11 @@ bool lanczos_ev(dnum_t *A, dnum_t *psi, size_t dim, const size_t max_iter,
 
   const size_t min_iter = 2;
   const dnum_t beta_err = 1E-15;
-  if (!(max_iter > min_iter)) {
-    std::ostringstream err;
-    err << "Maximum iteration number should be set greater than 2.";
-    throw std::runtime_error(err.str());
-  }
+  // if (!(max_iter > min_iter)) {
+  //   std::ostringstream err;
+  //   err << "Maximum iteration number should be set greater than 2.";
+  //   throw std::runtime_error(err.str());
+  // }
   dnum_t a = 1;
   dnum_t alpha;
   dnum_t beta = 1;
@@ -90,11 +87,11 @@ bool lanczos_ev(dnum_t *A, dnum_t *psi, size_t dim, const size_t max_iter,
       memcpy(d, As, it * sizeof(double));
       memcpy(e, Bs, it * sizeof(double));
       dstev_((char *)"N", &it, d, e, z, &it, work, &info);
-      if (info != 0) {
-        std::ostringstream err;
-        err << "Error in Lapack function 'dstev': Lapack INFO = " << info;
-        throw std::runtime_error(err.str());
-      }
+      // if (info != 0) {
+      //   std::ostringstream err;
+      //   err << "Error in Lapack function 'dstev': Lapack INFO = " << info;
+      //   throw std::runtime_error(err.str());
+      // }
       dnum_t base = fabs(d[0]) > 1 ? fabs(d[0]) : 1;
       e_diff = fabs(d[0] - e0_old) / base;
       e0_old = d[0];
@@ -109,11 +106,11 @@ bool lanczos_ev(dnum_t *A, dnum_t *psi, size_t dim, const size_t max_iter,
     dnum_t *work = (dnum_t *)malloc(4 * it * sizeof(double));
     int info;
     dstev_((char *)"V", &it, d, e, z, &it, work, &info);
-    if (info != 0) {
-      std::ostringstream err;
-      err << "Error in Lapack function 'dstev': Lapack INFO = " << info;
-      throw std::runtime_error(err.str());
-    }
+    // if (info != 0) {
+    //   std::ostringstream err;
+    //   err << "Error in Lapack function 'dstev': Lapack INFO = " << info;
+    //   throw std::runtime_error(err.str());
+    // }
     memset(eigvec, 0, N * sizeof(double));
 
     for (size_t k = 0; k < it; k++) {
