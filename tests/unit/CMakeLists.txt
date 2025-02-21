@@ -11,6 +11,7 @@ set(UNIT_TESTS_NAMES blocs_static dummy indexdw operators operators_static utils
 		     # simple_lapack_eig_zheev
 			 routine_svd_routine
 			 routine_indices
+			 routine_interface
  )
 
 foreach(UNIT_TEST_NAME ${UNIT_TESTS_NAMES})
