@@ -8,8 +8,6 @@ void dgemm_(const char *transa, const char *transb, const size_t *m,
             const dnum_t *a, const size_t *lda, const dnum_t *b,
             const size_t *ldb, const dnum_t *beta, dnum_t *c,
             const size_t *ldc);
-void daxpy_(const size_t *N, const dnum_t *alpha, const dnum_t *X,
-            const size_t *incX, dnum_t *Y, const size_t *incY);
 }
 
 namespace mdot {
