@@ -1,11 +1,11 @@
-{ stdenv, boost17x, cmakeMinimal, fixDarwinDylibNames, gnumake, lapack, lib, nix-gitignore, ninja, tbb, version ? "0.0.2" }:
+{ stdenv, boost17x, cmakeMinimal, fixDarwinDylibNames, gnumake, lapack, lib, nix-gitignore, ninja, tbb, src ? nix-gitignore.gitignoreSourcePure [ ".gitignore" "buil*" ] ./., version ? "0.0.2" }:
 
 # lapack spdlog
 
 stdenv.mkDerivation {
   pname = "mdot";
   inherit version;
-  src = nix-gitignore.gitignoreSourcePure [ ".gitignore" "buil*" ] ./.;
+  inherit src;
   buildInputs = [ boost17x lapack tbb ];
   nativeBuildInputs = [ cmakeMinimal gnumake ninja ] ++ lib.optional stdenv.hostPlatform.isDarwin fixDarwinDylibNames;
   cmakeFlags = [
