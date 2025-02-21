@@ -8,9 +8,6 @@ project(
   VERSION "${PROJECT_VERSION}"
   DESCRIPTION "CPP Golden Project")
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 set(CMAKE_C_COMPILER $ENV{CC})
 set(CMAKE_CXX_COMPILER $ENV{CXX})
 
@@ -21,38 +18,38 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake)
 # ##############################################################################
 
 option(PROJECT_BENCHMARK "Compile the performance in ctest" OFF)
-option(PROJECT_INTEGRATION "Compile the integration tests in ctest" ON)
+option(PROJECT_INTEGRATION "Compile the integration tests in ctest" OFF)
 option(PROJECT_UNIT_TESTS "Compile the unit tests in ctest" ON)
 option(PROJECT_SANDBOX "Compile the sandbox folder" OFF)
 option(PROJECT_STATIC "Build Static Libraries" OFF)
 
-set(PROJECT_CXX_FLAGS_DEBUG -fno-omit-frame-pointer -fno-inline)
-set(PROJECT_CXX_FLAGS_RELEASE -mfma -mavx) # SIMD? -mftree-vectorize
-set(PROJECT_CXX_FLAGS_RELWITHDEBUG ${PROJECT_CXX_FLAGS_RELEASE} -g)
-set(PROJECT_CXX_FLAGS_MINSIZERELEASE ${PROJECT_CXX_FLAGS_RELEASE})
+# ##############################################################################
+# FLAGS
+# ##############################################################################
 
-add_compile_options(
-  ${CMAKE_CXX_FLAGS}
-  "$<$<CONFIG:Debug>:${PROJECT_CXX_FLAGS_DEBUG}>"
-  "$<$<CONFIG:Release>:${PROJECT_CXX_FLAGS_RELEASE}>"
-  "$<$<CONFIG:RelWithDebug>:${PROJECT_CXX_FLAGS_RELWITHDEBUG}>"
-  "$<$<CONFIG:MinSizeRelease>:${PROJECT_CXX_FLAGS_MINSIZERELEASE}>")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# option(PROJECT_SANITIZER_ASAN "Sanitizer ASAN" OFF)
-# option(PROJECT_SANITIZER_MSAN "Sanitizer MSAN" OFF)
-# option(PROJECT_SANITIZER_TSAN "Sanitizer TSAN" OFF)
-
-# if(${PROJECT_ASAN}) set(CMAKE_CXX_FLAGS "-O -g -fsanitize=address") endif()
-
-# if(${PROJECT_TSAN}) set(CMAKE_CXX_FLAGS "-O -g -fsanitize=thread -fopenmp")
-# endif()
-
-# if(${PROJECT_MSAN}) set(CMAKE_CXX_FLAGS "-fsanitize=memory -fPIE -pie
-# -fno-omit-frame-pointer -g -O2") endif()
-
+# # https://stackoverflow.com/questions/45955272/modern-way-to-set-compiler-flags-in-cross-platform-cmake-project
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND APPLE)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wa,-q")
+  add_compile_options("-Wa" "-q")
+else()
+  add_compile_options(-Wall -Wextra)
+  add_compile_options($<$<CONFIG:DEBUG>:-Werror> $<$<CONFIG:DEBUG>:-pedantic> $<$<CONFIG:DEBUG>:-Wunused-macros> $<$<CONFIG:DEBUG>:-Wshadow>)
+  add_compile_options($<$<CONFIG:RELEASE>:-mfma> $<$<CONFIG:RELEASE>:-mavx>) # ?=> -mftree-vectorize  
+  if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") # -O1 ?
+    add_compile_options($<$<CONFIG:ASAN>:-g> $<$<CONFIG:ASAN>:-fsanitize=address> $<$<CONFIG:ASAN>:-fno-omit-frame-pointer>)
+    add_compile_options($<$<CONFIG:MSAN>:-g> $<$<CONFIG:MSAN>:-fsanitize=memory> $<$<CONFIG:MSAN>:-fsanitize-memory-track-origins=2> $<$<CONFIG:MSAN>:-fno-omit-frame-pointer> $<$<CONFIG:MSAN>:-fno-optimize-sibling-calls>) 
+    add_compile_options($<$<CONFIG:TSAN>:-g> $<$<CONFIG:TSAN>:-fsanitize=thread>)
+    add_compile_options($<$<CONFIG:CODECOV>:-g> $<$<CONFIG:CODECOV>:-fprofile-instr-generate> $<$<CONFIG:CODECOV>:-fcoverage-mapping> $<$<CONFIG:CODECOV>:-fno-inline>)
+  else()
+    add_compile_options($<$<CONFIG:ASAN>:-g> $<$<CONFIG:ASAN>:-Wshadow>)
+    add_compile_options($<$<CONFIG:TSAN>:-g> $<$<CONFIG:TSAN>:-Wshadow>)
+    add_compile_options($<$<CONFIG:CODECOV>:-g> $<$<CONFIG:CODECOV>:-Wshadow>)
+    add_compile_options($<$<CONFIG:CODECOV>:-g> $<$<CONFIG:CODECOV>:-Wshadow>)
+  endif()
 endif()
+
 # ##############################################################################
 # FIND PACKAGES
 # ##############################################################################
@@ -62,6 +59,10 @@ find_package(
   COMPONENTS filesystem system program_options unit_test_framework
   REQUIRED)
 include_directories(SYSTEM ${Boost_INCLUDE_DIR})
+
+mark_as_advanced(
+  Boost_SYSTEM_LIBRARY_RELEASE
+)
 
 # * TBB
 find_package(TBB REQUIRED tbb tbbmalloc_proxy)
