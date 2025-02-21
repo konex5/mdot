@@ -53,8 +53,16 @@ void theta_to_mm(dtbloc_t &theta_blocs, dmbloc_t &lhs_blocs,
 
   auto cut = truncation_strategy(array_of_S, chi_max, dw, eps);
 
+  for (auto &arr : array_of_S)
+    for (auto &it : arr)
+      std::cout << " " << it;
+
   if (normalize)
     normalize_the_array(array_of_S, cut);
+
+  for (auto &arr : array_of_S)
+    for (auto &it : arr)
+      std::cout << " " << it;
 
   std::vector<index_t> cut_nondeg, cut_deg;
   for (std::size_t i = 0; i < out_nondeg_deg.first.size(); i++)
@@ -73,19 +81,10 @@ void theta_to_mm(dtbloc_t &theta_blocs, dmbloc_t &lhs_blocs,
         lhs_blocs,
         rhs_blocs,
         is_um=is_um,
-    )
-    mul_usv_nondeg(
-        array_of_U,
-        array_of_S,
-        cut_nondeg,
-        array_of_V,
-        nondeg,
-        nondeg_dims,
-        lhs_blocs,
-        rhs_blocs,
-        is_um=is_um,
-    )
-  */
+    )*/
+  mul_usv_nondeg(array_of_U, array_of_S, cut_nondeg, array_of_V,
+                 out_nondeg_deg.first, nondeg_dims, lhs_blocs, rhs_blocs,
+                 is_um);
 }
 
 } // namespace mdot

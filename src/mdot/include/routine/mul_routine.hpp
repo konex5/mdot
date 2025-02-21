@@ -74,6 +74,9 @@ void mul_usv_nondeg(std::vector<std::vector<dnum_t>> &array_U,
                     dmbloc_t &dst_lhs_blocs, dmbloc_t &dst_rhs_blocs,
                     const int is_um) {
   for (std::size_t i = 0; i < nondeg.size(); i++) {
+    std::cout << "hello world!" << std::endl;
+    std::cout << cut[i] << " and " << cut.size() << std::endl;
+
     if (cut[i] > 0) {
       auto middle_index = nondeg[i].first;
       auto theta_index = nondeg[i].second;
