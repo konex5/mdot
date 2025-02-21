@@ -21,18 +21,11 @@ set(CMAKE_CXX_COMPILER $ENV{CXX})
 option(PROJECT_TESTS "Build Cpp Tests" ON)
 option(PROJECT_SANDBOX "Build Sandbox" OFF)
 option(PROJECT_BENCHMARK "Build Benchmark" OFF)
-option(PROJECT_SANITIZER_ASAN "Sanitizer ASAN" OFF)
-option(PROJECT_SANITIZER_MSAN "Sanitizer MSAN" OFF)
-option(PROJECT_SANITIZER_TSAN "Sanitizer TSAN" OFF)
-
-# if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang") elseif(CMAKE_CXX_COMPILER_ID
-# STREQUAL "GNU") elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
-# elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") endif()
 
 set(PROJECT_CXX_FLAGS_DEBUG -fno-omit-frame-pointer -fno-inline)
 set(PROJECT_CXX_FLAGS_RELEASE -mfma -mavx) # SIMD? -mftree-vectorize
 set(PROJECT_CXX_FLAGS_RELWITHDEBUG ${PROJECT_CXX_FLAGS_RELEASE} -g)
-set(PROJECT_CXX_FLAGS_MINSIZERELEASE ${PROJECT_CXX_FLAGS_RELEASE} -g)
+set(PROJECT_CXX_FLAGS_MINSIZERELEASE ${PROJECT_CXX_FLAGS_RELEASE})
 
 add_compile_options(
   ${CMAKE_CXX_FLAGS}
@@ -41,18 +34,22 @@ add_compile_options(
   "$<$<CONFIG:RelWithDebug>:${PROJECT_CXX_FLAGS_RELWITHDEBUG}>"
   "$<$<CONFIG:MinSizeRelease>:${PROJECT_CXX_FLAGS_MINSIZERELEASE}>")
 
-if(${PROJECT_ASAN})
-  set(CMAKE_CXX_FLAGS "-O -g -fsanitize=address")
-endif()
+# option(PROJECT_SANITIZER_ASAN "Sanitizer ASAN" OFF)
+# option(PROJECT_SANITIZER_MSAN "Sanitizer MSAN" OFF)
+# option(PROJECT_SANITIZER_TSAN "Sanitizer TSAN" OFF)
 
-if(${PROJECT_TSAN})
-  set(CMAKE_CXX_FLAGS "-O -g -fsanitize=thread -fopenmp")
-endif()
+# if(${PROJECT_ASAN})
+#   set(CMAKE_CXX_FLAGS "-O -g -fsanitize=address")
+# endif()
 
-if(${PROJECT_MSAN})
-  set(CMAKE_CXX_FLAGS
-      "-fsanitize=memory -fPIE -pie -fno-omit-frame-pointer -g -O2")
-endif()
+# if(${PROJECT_TSAN})
+#   set(CMAKE_CXX_FLAGS "-O -g -fsanitize=thread -fopenmp")
+# endif()
+
+# if(${PROJECT_MSAN})
+#   set(CMAKE_CXX_FLAGS
+#       "-fsanitize=memory -fPIE -pie -fno-omit-frame-pointer -g -O2")
+# endif()
 
 # ##############################################################################
 # FIND PACKAGES
