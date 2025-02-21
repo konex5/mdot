@@ -142,4 +142,23 @@ void mul_usv_nondeg(std::vector<std::vector<dnum_t>> &array_U,
   }
 }
 
+void mul_usv_deg(
+    std::vector<std::vector<dnum_t>> &array_U,
+    std::vector<std::vector<dnum_t>> &array_S, std::vector<index_t> &cut,
+    std::vector<std::vector<dnum_t>> &array_V,
+    std::vector<std::pair<index_t, std::vector<t_index_t>>> &deg,
+    std::vector<
+        std::tuple<index_t, index_t,
+                   typename std::vector<std::tuple<index_t, index_small_t>>,
+                   typename std::vector<index_t>,
+                   typename std::vector<std::pair<index_t, index_small_t>>,
+                   typename std::vector<std::tuple<index_small_t, index_t>>,
+                   typename std::vector<index_t>,
+                   typename std::vector<std::pair<index_small_t, index_t>>>>
+        &new_subsize,
+    dmbloc_t &dst_lhs_blocs, dmbloc_t &dst_rhs_blocs, const int is_um) {
+
+  std::cout << "hello";
+}
+
 } // namespace mdot
