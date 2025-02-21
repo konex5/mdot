@@ -1,6 +1,7 @@
 {
   description = "golden-cpp - A simple C/C++ flake";
-  nixConfig.bash-prompt = "\[dev-golden-cpp\]$ ";
+
+  nixConfig.bash-prompt = "\\033[0;33m\\033[1m\[dev-golden-cpp\] \\w\\033[0m\\033[0m$ ";
   
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
