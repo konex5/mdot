@@ -11,5 +11,6 @@ BOOST_AUTO_TEST_CASE(test_indexdw) {
     BOOST_CHECK(it.at(it.size() - 1) == 0);
 
   dnum_t norm_out;
-  norm_non_optimal(array_of_s, &norm_out);
+  norm_non_optimal(array_of_s, norm_out);
+  BOOST_CHECK(norm_out == 1.3784411485442534);
 }
