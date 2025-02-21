@@ -9,10 +9,9 @@ using namespace std;
 #define znum_t std::complex<double>
 
 extern "C" {
-  void zheev_(const char *jobz, const char *uplo, 
-             const size_t *n, const znum_t *a, const size_t *lda, double *w,
-             znum_t *work, const int *lwork, double *rwork, int *info);
-  
+void zheev_(const char *jobz, const char *uplo, const size_t *n,
+            const znum_t *a, const size_t *lda, double *w, znum_t *work,
+            const int *lwork, double *rwork, int *info);
 }
 
 #undef size_t
@@ -24,22 +23,21 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd) {
   { // real, row major // eigenvalues only
     const znum_t A[N * N] = {{1., +1.}, {-1., -1.}, {-1., -1.}, {1., 0.}};
 
-
     double wout[N];
     std::size_t ldA = N;
     znum_t worktest;
-    double rwork[3*N-2];
+    double rwork[3 * N - 2];
     int info, lwork = -1;
 
-    zheev_((char *)"N", (char *)"U", &N, A, &ldA, wout, &worktest, &lwork, rwork, &info);
+    zheev_((char *)"N", (char *)"U", &N, A, &ldA, wout, &worktest, &lwork,
+           rwork, &info);
 
     lwork = (int)worktest.real();
     znum_t work[lwork];
 
-    zheev_((char *)"N", (char *)"U", &N, A, &ldA, wout, work, &lwork, rwork, &info);
+    zheev_((char *)"N", (char *)"U", &N, A, &ldA, wout, work, &lwork, rwork,
+           &info);
 
-    
-    
   /*
   }
   { // real, column major // eigenvector too

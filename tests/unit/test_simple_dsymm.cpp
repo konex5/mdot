@@ -45,36 +45,32 @@ BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
     for (std::size_t k = 0; k < N * M; k++)
       BOOST_CHECK_EQUAL(C[k], Cout[k]);
   }
-  /*
+
   { // real, column major
     const std::size_t M = 2;
     const std::size_t K = 2;
-    const std::size_t N = 3;
-    const double A[M * K] = {0, 1, 1, -1};
-    const double B[K * N] = {1, 1, 1, -1, 0, 1};
-    const double C[M * N] = {1, 0, -1, 2, 1, -1};
+    const std::size_t N = 2;
+
+    const double A[N * N] = {1, 1, 1, 1};
+    const double B[N * N] = {2, -1, -1, -1};
+    const double C[N * N] = {1, 1, -2, -2};
 
     for (std::size_t i = 0; i < M; i++)
       for (std::size_t j = 0; j < N; j++) {
         double sum = 0;
         for (std::size_t k = 0; k < K; k++)
           sum += A[i + k * M] * B[k + j * K];
-        // std::cout << "A[i+j*4]=" << C[i+j*N] << " and the sum gives:" << sum
-        // << std::endl;
         BOOST_CHECK_EQUAL(C[i + j * M], sum);
       };
 
     double Cout[N * M];
     double alpha = 1., beta = 0.;
 
-    // dgemm_((char *)"T", (char *)"T", &N, &M, &K, &alpha, B, &K,
-    //          A, &M, &beta, Cout, &N); // gives C^T
-    dgemm_((char *)"N", (char *)"N", &M, &N, &K, &alpha, A, &M, B, &K, &beta,
-           Cout, &M);
+    dsymm_((char *)"U", (char *)"U", &N, &M, &alpha, A, &N, B, &K, &beta, Cout,
+           &N);
 
     for (std::size_t k = 0; k < N * M; k++)
       // std::cout << C[k] << "compared with" << Cout[k] << std::endl;
       BOOST_CHECK_EQUAL(C[k], Cout[k]);
   }
-  */
 }
