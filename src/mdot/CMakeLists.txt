@@ -12,13 +12,13 @@ foreach(library ${libraries})
 
 endforeach()
 
-set(clicommands create_maximal_entangled_state climdot cliprintoperator)
+set(clicommands climdot cliprintoperator)
 
 foreach(clicommand ${clicommands})
 
   add_executable(cli_${clicommand} cli/${clicommand}.cpp)
   target_link_libraries(cli_${clicommand} ${BOOST_LIBRARIES}
-                        Boost::filesystem Boost::program_options)
+                        Boost::program_options)
 
   install(
     TARGETS cli_${clicommand}
