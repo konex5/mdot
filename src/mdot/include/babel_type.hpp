@@ -26,7 +26,7 @@ using index_small_t = uint8_t;
 using index_t = uint16_t;
 
 using op_index_t = std::tuple<index_small_t, index_small_t>;
-using op_shape_t = std::array<op_index_t, 2>;
+using op_shape_t = std::tuple<op_index_t, op_index_t>;
 using dopbloc_t = std::map<op_index_t, darr_t>;
 using zopbloc_t = std::map<op_index_t, zarr_t>;
 
