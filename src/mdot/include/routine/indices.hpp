@@ -71,114 +71,129 @@ static inline constexpr index_t internal_qn_sub(const index_t lhs,
   return lhs - rhs;
 }
 
-std::vector<index_t> potential_middle_indices(
-    const std::vector<t_index_t> theta_indices, const int direction_right = -1
-) {
+std::vector<index_t>
+potential_middle_indices(const std::vector<t_index_t> theta_indices,
+                         const int direction_right = -1) {
   std::vector<index_t> middle_indices;
   if (direction_right == -2) {
-      for (auto& theta_index : theta_indices) {
-        middle_indices.push_back(internal_qn_sum(std::get<0>(theta_index),std::get<1>(theta_index)));
-        middle_indices.push_back(internal_qn_sub(std::get<3>(theta_index),std::get<2>(theta_index)));
-      } 
-    } else if (direction_right == -1) {
-      for (auto& theta_index : theta_indices) {
-        middle_indices.push_back(internal_qn_sum(std::get<0>(theta_index),std::get<1>(theta_index)));
-        middle_indices.push_back(internal_qn_sum(std::get<2>(theta_index),std::get<3>(theta_index)));
-      } 
-    } else if (direction_right == 1) {
-      for (auto& theta_index : theta_indices) {
-        middle_indices.push_back(internal_qn_sum(std::get<0>(theta_index),std::get<1>(theta_index)));
-      }
-    } else if (direction_right == 2) {
-      for (auto& theta_index : theta_indices) {
-        middle_indices.push_back(internal_qn_sub(std::get<3>(theta_index),std::get<2>(theta_index)));
-      }
-    } else if (direction_right == 3) {
-      for (auto& theta_index : theta_indices) {
-        middle_indices.push_back(internal_qn_sum(std::get<2>(theta_index),std::get<3>(theta_index)));
-      }
+    for (auto &theta_index : theta_indices) {
+      middle_indices.push_back(
+          internal_qn_sum(std::get<0>(theta_index), std::get<1>(theta_index)));
+      middle_indices.push_back(
+          internal_qn_sub(std::get<3>(theta_index), std::get<2>(theta_index)));
     }
-    std::sort(middle_indices.begin(), middle_indices.end());
-    middle_indices.erase(std::unique(middle_indices.begin(), middle_indices.end()), middle_indices.end());
-    return middle_indices;
+  } else if (direction_right == -1) {
+    for (auto &theta_index : theta_indices) {
+      middle_indices.push_back(
+          internal_qn_sum(std::get<0>(theta_index), std::get<1>(theta_index)));
+      middle_indices.push_back(
+          internal_qn_sum(std::get<2>(theta_index), std::get<3>(theta_index)));
+    }
+  } else if (direction_right == 1) {
+    for (auto &theta_index : theta_indices) {
+      middle_indices.push_back(
+          internal_qn_sum(std::get<0>(theta_index), std::get<1>(theta_index)));
+    }
+  } else if (direction_right == 2) {
+    for (auto &theta_index : theta_indices) {
+      middle_indices.push_back(
+          internal_qn_sub(std::get<3>(theta_index), std::get<2>(theta_index)));
+    }
+  } else if (direction_right == 3) {
+    for (auto &theta_index : theta_indices) {
+      middle_indices.push_back(
+          internal_qn_sum(std::get<2>(theta_index), std::get<3>(theta_index)));
+    }
+  }
+  std::sort(middle_indices.begin(), middle_indices.end());
+  middle_indices.erase(
+      std::unique(middle_indices.begin(), middle_indices.end()),
+      middle_indices.end());
+  return middle_indices;
 }
 
-std::pair<std::vector<std::pair<index_t,t_index_t>>,std::vector<std::pair<index_t,std::vector<t_index_t>>>> degeneracy_in_theta(
-    const std::vector<t_index_t> theta_indices,
-    const std::vector<index_t> middle_indices,
-    const int direction_right = -1
-) {
-  std::vector<std::pair<index_t,t_index_t>> nondeg;
-  std::vector<std::pair<index_t,std::vector<t_index_t>>> degenerate;
+std::pair<std::vector<std::pair<index_t, t_index_t>>,
+          std::vector<std::pair<index_t, std::vector<t_index_t>>>>
+degeneracy_in_theta(const std::vector<t_index_t> theta_indices,
+                    const std::vector<index_t> middle_indices,
+                    const int direction_right = -1) {
+  std::vector<std::pair<index_t, t_index_t>> nondeg;
+  std::vector<std::pair<index_t, std::vector<t_index_t>>> degenerate;
 
   index_t middle_length = static_cast<index_t>(middle_indices.size());
 
   if (direction_right == -2) {
     for (index_t j = 0; j < middle_length; j++) {
       std::vector<t_index_t> tmp;
-      for (auto& theta_index : theta_indices) {
-        if (internal_qn_sum(std::get<0>(theta_index),std::get<1>(theta_index)) == middle_indices[j] && internal_qn_sub(std::get<3>(theta_index),std::get<2>(theta_index)) == middle_indices[j])
+      for (auto &theta_index : theta_indices) {
+        if (internal_qn_sum(std::get<0>(theta_index),
+                            std::get<1>(theta_index)) == middle_indices[j] &&
+            internal_qn_sub(std::get<3>(theta_index),
+                            std::get<2>(theta_index)) == middle_indices[j])
           tmp.push_back(theta_index);
       }
-      if (tmp.size()==1)
-        nondeg.push_back({j,tmp[0]});
+      if (tmp.size() == 1)
+        nondeg.push_back({j, tmp[0]});
       else
-        degenerate.push_back({j,tmp});
+        degenerate.push_back({j, tmp});
     }
   } else if (direction_right == -1) {
     for (index_t j = 0; j < middle_length; j++) {
       std::vector<t_index_t> tmp;
-      for (auto& theta_index : theta_indices) {
-        if (internal_qn_sum(std::get<0>(theta_index),std::get<1>(theta_index)) == middle_indices[j] && internal_qn_sum(std::get<2>(theta_index),std::get<3>(theta_index)) == middle_indices[j])
+      for (auto &theta_index : theta_indices) {
+        if (internal_qn_sum(std::get<0>(theta_index),
+                            std::get<1>(theta_index)) == middle_indices[j] &&
+            internal_qn_sum(std::get<2>(theta_index),
+                            std::get<3>(theta_index)) == middle_indices[j])
           tmp.push_back(theta_index);
       }
-      if (tmp.size()==1)
-        nondeg.push_back({j,tmp[0]});
+      if (tmp.size() == 1)
+        nondeg.push_back({j, tmp[0]});
       else
-        degenerate.push_back({j,tmp});
+        degenerate.push_back({j, tmp});
     }
   } else if (direction_right == 1) {
     for (index_t j = 0; j < middle_length; j++) {
       std::vector<t_index_t> tmp;
-      for (auto& theta_index : theta_indices) {
-        if (internal_qn_sum(std::get<0>(theta_index),std::get<1>(theta_index)) == middle_indices[j])
+      for (auto &theta_index : theta_indices) {
+        if (internal_qn_sum(std::get<0>(theta_index),
+                            std::get<1>(theta_index)) == middle_indices[j])
           tmp.push_back(theta_index);
       }
-      if (tmp.size()==1)
-        nondeg.push_back({j,tmp[0]});
+      if (tmp.size() == 1)
+        nondeg.push_back({j, tmp[0]});
       else
-        degenerate.push_back({j,tmp});
+        degenerate.push_back({j, tmp});
     }
   } else if (direction_right == 2) {
     for (index_t j = 0; j < middle_length; j++) {
       std::vector<t_index_t> tmp;
-      for (auto& theta_index : theta_indices) {
-        if (internal_qn_sub(std::get<3>(theta_index),std::get<2>(theta_index)) == middle_indices[j])
+      for (auto &theta_index : theta_indices) {
+        if (internal_qn_sub(std::get<3>(theta_index),
+                            std::get<2>(theta_index)) == middle_indices[j])
           tmp.push_back(theta_index);
       }
-      if (tmp.size()==1)
-        nondeg.push_back({j,tmp[0]});
+      if (tmp.size() == 1)
+        nondeg.push_back({j, tmp[0]});
       else
-        degenerate.push_back({j,tmp});
+        degenerate.push_back({j, tmp});
     }
   } else if (direction_right == 3) {
     for (index_t j = 0; j < middle_length; j++) {
       std::vector<t_index_t> tmp;
-      for (auto& theta_index : theta_indices) {
-        if (internal_qn_sum(std::get<2>(theta_index),std::get<3>(theta_index)) == middle_indices[j])
+      for (auto &theta_index : theta_indices) {
+        if (internal_qn_sum(std::get<2>(theta_index),
+                            std::get<3>(theta_index)) == middle_indices[j])
           tmp.push_back(theta_index);
       }
-      if (tmp.size()==1)
-        nondeg.push_back({j,tmp[0]});
+      if (tmp.size() == 1)
+        nondeg.push_back({j, tmp[0]});
       else
-        degenerate.push_back({j,tmp});
+        degenerate.push_back({j, tmp});
     }
   }
 
-  return {nondeg,degenerate};
+  return {nondeg, degenerate};
 }
-
-
-
 
 } // namespace mdot
