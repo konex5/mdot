@@ -1,4 +1,6 @@
 # Welcome to the official documentation of the Golden C/C++ Project
 
-This is great and powered by Hugo
+This template structure will be used for other documentations!
+
+
 

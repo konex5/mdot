@@ -1,3 +1,3 @@
-# Welcome to golden C/C++ documentation
+This software is a personal template project.
 
-This is an experimental documentation from markdown language using Hugo
+You can find the welcome page [here](..).
