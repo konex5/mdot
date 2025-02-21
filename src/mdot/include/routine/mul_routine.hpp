@@ -10,6 +10,8 @@ void dgemm_(const char *transa, const char *transb, const size_t *m,
             const dnum_t *a, const size_t *lda, const dnum_t *b,
             const size_t *ldb, const dnum_t *beta, dnum_t *c,
             const size_t *ldc);
+void daxpy_(const size_t *N, const dnum_t *alpha, const dnum_t *X,
+            const size_t *incX, dnum_t *Y, const size_t *incY);
 }
 
 namespace mdot {
@@ -65,6 +67,30 @@ void mul_mm_blocs_dup(
   }
 }
 
+inline void mul_mat_diag(std::vector<dnum_t> &destination,
+                         std::vector<dnum_t> &mat, const size_t &N,
+                         const size_t &M, std::vector<dnum_t> &diag,
+                         const size_t &cut) {
+  // const size_t inc = 1;
+  // daxpy_(&cut, &(diag[i]), &(mat[i*N]), &inc, destination.data(), &inc);
+  for (size_t i = 0; i < N; i++)
+#pragma omp parallel
+    for (size_t j = 0; j < cut; j++)
+      destination[i * cut + j] = diag[j] * mat[i * M + j];
+}
+
+inline void mul_diag_mat(std::vector<dnum_t> &destination,
+                         std::vector<dnum_t> &mat, const size_t &N,
+                         const size_t &M, std::vector<dnum_t> &diag,
+                         const size_t &cut) {
+  // const size_t inc = 1;
+  // daxpy_(&cut, &(diag[i]), &(mat[i*N]), &inc, destination.data(), &inc);
+  for (size_t i = 0; i < cut; i++)
+#pragma omp parallel
+    for (size_t j = 0; j < M; j++)
+      destination[i * M + j] = diag[i] * mat[i * M + j];
+}
+
 void mul_usv_nondeg(std::vector<std::vector<dnum_t>> &array_U,
                     std::vector<std::vector<dnum_t>> &array_S,
                     std::vector<index_t> &cut,
@@ -95,6 +121,8 @@ void mul_usv_nondeg(std::vector<std::vector<dnum_t>> &array_U,
       const std::size_t dim3 =
           static_cast<std::size_t>(std::get<2>(shape_right));
       if (is_um == 0) {
+        for (auto &s : array_S[i])
+          s = sqrt(s);
 
       } else if (is_um == 1) {
 

@@ -50,9 +50,9 @@ void theta_to_mm(dtbloc_t &theta_blocs, dmbloc_t &lhs_blocs,
              array_of_S, array_of_V);
   /// svd_deg(theta_blocs, deg, subnewsize_deg, array_of_U, array_of_S,
   /// array_of_V)
-
+  std::cout << "discarded weight before:" << dw;
   auto cut = truncation_strategy(array_of_S, chi_max, dw, eps);
-
+  std::cout << "discarded weight after:" << dw;
   for (auto &arr : array_of_S)
     for (auto &it : arr)
       std::cout << " " << it;
