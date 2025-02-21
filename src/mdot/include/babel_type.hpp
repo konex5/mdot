@@ -26,6 +26,7 @@ using index_small_t = uint8_t;
 using index_t = uint16_t;
 
 using op_index_t = std::tuple<index_small_t, index_small_t>;
+using op_shape_t = std::array<op_index_t, 2>;
 using dopbloc_t = std::map<op_index_t, darr_t>;
 using zopbloc_t = std::map<op_index_t, zarr_t>;
 
@@ -56,3 +57,6 @@ struct real_type<T, std::enable_if_t<std::is_arithmetic_v<T>>> {
 template <typename T> struct real_type<std::complex<T>, void> {
   using type = T;
 };
+
+//
+using sh_array_t = std::array<dnum_t, 4>;

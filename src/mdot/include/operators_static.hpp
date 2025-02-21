@@ -1,19 +1,6 @@
 #pragma once
 
 #include "mdot/include/babel_type.hpp"
-#include <array>
-#include <cmath>
-#include <complex>
-
-// todo CRTP name, qname
-/*
-::normalization
-::indices_blocs_pair
-
-::nsize
-::nshape
-::array
-*/
 
 namespace mdot {
 
