@@ -1,4 +1,4 @@
-{ stdenv, src, boost17x, catch2, cmake, gnumake, hugo, ninja, pandoc, lib, fixDarwinDylibNames }:
+{ stdenv, src, boost17x, catch2, cmake, fixDarwinDylibNames, gnumake, hugo, lib, ninja, pandoc }:
 
 stdenv.mkDerivation rec {
   pname = "golden-cpp";

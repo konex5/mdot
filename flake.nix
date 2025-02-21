@@ -30,7 +30,7 @@
       overlay = final: prev: {
         golden-cpp = prev.callPackage ./derivation.nix {
           src = self;
-          stdenv = final.gccStdenv;
+          stdenv = if prev.stdenv.hostPlatform.isDarwin then final.clangStdenv else final.gccStdenv;
         };
         golden-cpp-clang = prev.callPackage ./derivation.nix {
           src = self;
