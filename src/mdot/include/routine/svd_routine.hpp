@@ -145,49 +145,62 @@ void svd_nondeg(dtbloc_t &theta_bloc,
   }
 }
 
-void fill_matrix(std::vector<dnum_t> & dst, const size_t dst_N,const size_t dst_M,const size_t dst_off0,const size_t dst_off1,std::vector<dnum_t> & src, const size_t src_N,const size_t src_M) {
-  for (size_t i = 0; i<src_N;i++) {
-    for (size_t j = 0; j<src_M;j++) {
-      dst[(dst_off0+i)*dst_M+dst_off1+j] = src[i*src_M+j];
+void fill_matrix(std::vector<dnum_t> &dst, const size_t dst_N,
+                 const size_t dst_M, const size_t dst_off0,
+                 const size_t dst_off1, std::vector<dnum_t> &src,
+                 const size_t src_N, const size_t src_M) {
+  for (size_t i = 0; i < src_N; i++) {
+    for (size_t j = 0; j < src_M; j++) {
+      dst[(dst_off0 + i) * dst_M + dst_off1 + j] = src[i * src_M + j];
     }
   }
 }
 
-
-void svd_deg(dtbloc_t& theta_blocs,
-    std::vector<std::pair<index_t, std::vector<t_index_t>>>& deg,
-    std::vector<std::tuple<index_t, index_t,
-                       typename std::vector<std::tuple<index_t, index_small_t>>,
-                       typename std::vector<index_t>,
-                       typename std::vector<std::pair<index_t, index_small_t>>,
-                       typename std::vector<std::tuple<index_small_t, index_t>>,
-                       typename std::vector<index_t>,
-                       typename std::vector<std::pair<index_small_t, index_t>>>>& subnewsize,
-    std::vector<std::vector<dnum_t>> & array_of_U,
-    std::vector<std::vector<dnum_t>> & array_of_S,
-    std::vector<std::vector<dnum_t>> & array_of_V
-) {
-  for (size_t i = 0; i< deg.size(); i++) {
+void svd_deg(
+    dtbloc_t &theta_blocs,
+    std::vector<std::pair<index_t, std::vector<t_index_t>>> &deg,
+    std::vector<
+        std::tuple<index_t, index_t,
+                   typename std::vector<std::tuple<index_t, index_small_t>>,
+                   typename std::vector<index_t>,
+                   typename std::vector<std::pair<index_t, index_small_t>>,
+                   typename std::vector<std::tuple<index_small_t, index_t>>,
+                   typename std::vector<index_t>,
+                   typename std::vector<std::pair<index_small_t, index_t>>>>
+        &subnewsize,
+    std::vector<std::vector<dnum_t>> &array_of_U,
+    std::vector<std::vector<dnum_t>> &array_of_S,
+    std::vector<std::vector<dnum_t>> &array_of_V) {
+  for (size_t i = 0; i < deg.size(); i++) {
     auto dim0 = static_cast<size_t>(std::get<0>(subnewsize[i]));
     auto dim1 = static_cast<size_t>(std::get<1>(subnewsize[i]));
-    std::vector<dnum_t> tmp_theta(dim0*dim1,0);
-    for (auto& theta_key : deg[i].second) {
+    std::vector<dnum_t> tmp_theta(dim0 * dim1, 0);
+    for (auto &theta_key : deg[i].second) {
       auto tmp_for_findL = std::get<2>(subnewsize[i]);
-      std::tuple<index_t,index_small_t> tmp_indexL = {std::get<0>(theta_key),std::get<1>(theta_key)};
-      auto posL = std::find(tmp_for_findL.begin(),tmp_for_findL.end(),tmp_indexL) - tmp_for_findL.begin();
+      std::tuple<index_t, index_small_t> tmp_indexL = {std::get<0>(theta_key),
+                                                       std::get<1>(theta_key)};
+      auto posL =
+          std::find(tmp_for_findL.begin(), tmp_for_findL.end(), tmp_indexL) -
+          tmp_for_findL.begin();
       auto offL = static_cast<size_t>(std::get<3>(subnewsize[i])[posL]);
       auto dimL = std::get<4>(subnewsize[i])[posL];
-      auto muldimL = static_cast<size_t>(std::get<0>(dimL))*static_cast<size_t>(std::get<1>(dimL));
+      auto muldimL = static_cast<size_t>(std::get<0>(dimL)) *
+                     static_cast<size_t>(std::get<1>(dimL));
       auto tmp_for_findR = std::get<5>(subnewsize[i]);
-      std::tuple<index_t,index_small_t> tmp_indexR = {std::get<2>(theta_key),std::get<3>(theta_key)};
-      auto posR = std::find(tmp_for_findR.begin(),tmp_for_findR.end(),tmp_indexR) - tmp_for_findR.begin();
+      std::tuple<index_t, index_small_t> tmp_indexR = {std::get<2>(theta_key),
+                                                       std::get<3>(theta_key)};
+      auto posR =
+          std::find(tmp_for_findR.begin(), tmp_for_findR.end(), tmp_indexR) -
+          tmp_for_findR.begin();
       auto offR = static_cast<size_t>(std::get<6>(subnewsize[i])[posR]);
       auto dimR = std::get<7>(subnewsize[i])[posR];
-      auto muldimR = static_cast<size_t>(std::get<0>(dimR))*static_cast<size_t>(std::get<1>(dimR));
+      auto muldimR = static_cast<size_t>(std::get<0>(dimR)) *
+                     static_cast<size_t>(std::get<1>(dimR));
       //
-      fill_matrix(tmp_theta,dim0,dim1,offL,offR,theta_blocs[theta_key].second,muldimL,muldimR);
+      fill_matrix(tmp_theta, dim0, dim1, offL, offR,
+                  theta_blocs[theta_key].second, muldimL, muldimR);
     }
-    /*
+
     auto N = dim0;
     auto M = dim1;
     auto K = std::min(N, M);
@@ -197,20 +210,19 @@ void svd_deg(dtbloc_t& theta_blocs,
     double worktest;
     int info, lwork = -1;
 
-    dgesvd_((char *)"S", (char *)"S", &M, &N, tmp_theta.data(),
-            &ldA, Sout.data(), VDout.data(), &ldu, Uout.data(), &ldvT,
-            &worktest, &lwork, &info);
+    // dgesvd_((char *)"S", (char *)"S", &M, &N, tmp_theta.data(),
+    //         &ldA, Sout.data(), VDout.data(), &ldu, Uout.data(), &ldvT,
+    //         &worktest, &lwork, &info);
+    //
+    // lwork = (int)worktest;
+    // double work[lwork];
+    // dgesvd_((char *)"S", (char *)"S", &M, &N, tmp_theta.data(),
+    //         &ldA, Sout.data(), VDout.data(), &ldu, Uout.data(), &ldvT, work,
+    //         &lwork, &info);
 
-    lwork = (int)worktest;
-    double work[lwork];
-    dgesvd_((char *)"S", (char *)"S", &M, &N, tmp_theta.data(),
-            &ldA, Sout.data(), VDout.data(), &ldu, Uout.data(), &ldvT, work,
-            &lwork, &info);
-    
     array_of_U.push_back(Uout);
     array_of_S.push_back(Sout);
     array_of_V.push_back(VDout);
-    */
   }
 }
 

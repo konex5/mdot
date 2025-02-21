@@ -31,7 +31,7 @@ void theta_to_mm(dtbloc_t &theta_blocs, dmbloc_t &lhs_blocs,
                  dmbloc_t &rhs_blocs, dnum_t &dw, const index_t chi_max,
                  const bool normalize, const int is_um,
                  const int direction_right, const double eps) {
-  
+
   std::vector<t_index_t> theta_indices;
   for (auto &[key, _] : theta_blocs)
     theta_indices.push_back(key);
@@ -40,33 +40,33 @@ void theta_to_mm(dtbloc_t &theta_blocs, dmbloc_t &lhs_blocs,
 
   auto out_nondeg_deg =
       degeneracy_in_theta(theta_indices, middle_indices, direction_right);
-  
+
   auto new_subsize =
       slices_degenerate_blocs(theta_blocs, out_nondeg_deg.second);
 
   std::vector<std::vector<dnum_t>> array_of_U, array_of_V;
   std::vector<std::vector<dnum_t>> array_of_S;
   std::vector<t_shape_t> nondeg_dims;
-  
+
   svd_nondeg(theta_blocs, out_nondeg_deg.first, nondeg_dims, array_of_U,
              array_of_S, array_of_V);
-  svd_deg(theta_blocs, out_nondeg_deg.second, new_subsize, array_of_U, array_of_S, array_of_V);
-  
+  svd_deg(theta_blocs, out_nondeg_deg.second, new_subsize, array_of_U,
+          array_of_S, array_of_V);
+
   std::vector<index_t> cut;
   if (array_of_S.size() > 0) {
-  cut = truncation_strategy(array_of_S, chi_max, dw, eps);
-  
-  if (normalize)
-    normalize_the_array(array_of_S, cut);
+    cut = truncation_strategy(array_of_S, chi_max, dw, eps);
+
+    if (normalize)
+      normalize_the_array(array_of_S, cut);
   }
-  
+
   std::vector<index_t> cut_nondeg, cut_deg;
   for (std::size_t i = 0; i < out_nondeg_deg.first.size(); i++)
     cut_nondeg.push_back(cut[i]);
-  //for (std::size_t i=0;i<out_nondeg_deg.second.size();i++)
-  //  cut_deg.push_back(cut[out_nondeg_deg.first.size()+i]);
+  for (std::size_t i = 0; i < out_nondeg_deg.second.size(); i++)
+    cut_deg.push_back(cut[out_nondeg_deg.first.size() + i]);
 
-  
   // mul_usv_deg(
   //     array_of_U,
   //     array_of_S,
@@ -81,8 +81,6 @@ void theta_to_mm(dtbloc_t &theta_blocs, dmbloc_t &lhs_blocs,
   mul_usv_nondeg(array_of_U, array_of_S, cut_nondeg, array_of_V,
                  out_nondeg_deg.first, nondeg_dims, lhs_blocs, rhs_blocs,
                  is_um);
-                 
-  
 }
 
 } // namespace mdot
