@@ -39,10 +39,12 @@ mkCustomShell {
   nativeBuildInputs = [ catch2 cmake gnumake ninja ] ++ [
     bashCompletion
     cacert
+    cppcheck
     clang-tools
     cmake-format
     cmakeCurses
     cmake-language-server
+    fmt
     gdb
     git
     gnumake
