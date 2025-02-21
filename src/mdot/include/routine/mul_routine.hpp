@@ -155,60 +155,74 @@ void mul_usv_deg(
                    typename std::vector<std::tuple<index_small_t, index_t>>,
                    typename std::vector<index_t>,
                    typename std::vector<std::pair<index_small_t, index_t>>>>
-        &new_subsize,
+        &subnewsize,
     dmbloc_t &dst_lhs_blocs, dmbloc_t &dst_rhs_blocs, const int is_um) {
 
   for (size_t i = 0; i < deg.size(); i++) {
     if (cut[i]>0) {
       std::cout << "hello";
-    }
-  }
-/*
+      const index_t middle_index = deg[i].first;
+      auto theta_indices = deg[i].second;
+      auto dimtotL = static_cast<size_t>(std::get<0>(subnewsize[i]));
+      auto dimtotR = static_cast<size_t>(std::get<1>(subnewsize[i]));
+      //
+      std::vector<dnum_t> mat_left, mat_right;
+      //
       if (is_um == 0) {
         for (auto &s : array_S[i])
           s = sqrt(s);
-        mat_left.resize(dim0 * dim1 * cut[i]);
-        mat_right.resize(cut[i] * dim2 * dim3);
-        mul_mat_diag(mat_left, array_U[i], dim0 * dim1, array_S[i].size(),
+        mat_left.resize(dimtotL * cut[i]);
+        mat_right.resize(cut[i] * dimtotR);
+        mul_mat_diag(mat_left, array_U[i], dimtotL, array_S[i].size(),
                      array_S[i], cut[i]);
-        mul_diag_mat(mat_right, array_V[i], array_S[i].size(), dim2 * dim3,
+        mul_diag_mat(mat_right, array_V[i], array_S[i].size(), dimtotR,
                      array_S[i], cut[i]);
       } else if (is_um == 1) {
         mat_left.swap(array_U[i]);
-        mat_right.resize(cut[i] * dim2 * dim3);
-        mul_diag_mat(mat_right, array_V[i], array_S[i].size(), dim2 * dim3,
+        mat_right.resize(cut[i] * dimtotR);
+        mul_diag_mat(mat_right, array_V[i], array_S[i].size(), dimtotR,
                      array_S[i], cut[i]);
       } else {
-        mat_left.resize(dim0 * dim1 * cut[i]);
-        mul_mat_diag(mat_left, array_U[i], dim0 * dim1, array_S[i].size(),
+        mat_left.resize(dimtotL * cut[i]);
+        mul_mat_diag(mat_left, array_U[i], dimtotL, array_S[i].size(),
                      array_S[i], cut[i]);
         mat_right.swap(array_V[i]);
       }
+      for (auto & theta_key : theta_indices) {
+        auto tmp_for_findL = std::get<2>(subnewsize[i]);
+        std::tuple<index_t, index_small_t> tmp_indexL = {std::get<0>(theta_key),
+                                                         std::get<1>(theta_key)};
+        auto posL =
+            std::find(tmp_for_findL.begin(), tmp_for_findL.end(), tmp_indexL) -
+            tmp_for_findL.begin();
+        auto offL = static_cast<size_t>(std::get<3>(subnewsize[i])[posL]);
+        auto dimL = std::get<4>(subnewsize[i])[posL];
+        auto muldimL = static_cast<size_t>(std::get<0>(dimL)) *
+                       static_cast<size_t>(std::get<1>(dimL));
+        auto tmp_for_findR = std::get<5>(subnewsize[i]);
+        std::tuple<index_t, index_small_t> tmp_indexR = {std::get<2>(theta_key),
+                                                         std::get<3>(theta_key)};
+        auto posR =
+            std::find(tmp_for_findR.begin(), tmp_for_findR.end(), tmp_indexR) -
+            tmp_for_findR.begin();
+        auto offR = static_cast<size_t>(std::get<6>(subnewsize[i])[posR]);
+        auto dimR = std::get<7>(subnewsize[i])[posR];
+        auto muldimR = static_cast<size_t>(std::get<0>(dimR)) *
+                       static_cast<size_t>(std::get<1>(dimR));
+        
+        std::cout << " all world";
+        std::vector<dnum_t> out_mat_left(muldimL*cut[i]);
+        m_shape_t shape_left = {std::get<0>(dimL),std::get<1>(dimL),cut[i]};
+        std::vector<dnum_t> out_mat_right(cut[i]*muldimR);
+        m_shape_t shape_right = {cut[i],std::get<0>(dimR),std::get<1>(dimR)};
+        
+        dst_lhs_blocs[{std::get<0>(theta_key),std::get<1>(theta_key),middle_index}] = {shape_left,out_mat_left};
+        dst_rhs_blocs[{middle_index,std::get<2>(theta_key),std::get<3>(theta_key)}] = {shape_right,out_mat_right};
+      }
 
-for _ in range(len(deg)):  # reversed, and pop each value.
-        Dsi = cut.pop()
-        if Dsi > 0:
-            if is_um is None:
-                diag_sqrt = _np.diag(_np.sqrt(array_S.pop()[:Dsi]))
-                # M
-                mat_left = _np.dot(array_U.pop()[:, :Dsi], diag_sqrt)
-                # M
-                mat_right = _np.dot(diag_sqrt, array_V.pop()[:Dsi, :])
-            elif is_um:
-                # U
-                mat_left = array_U.pop()  # [:,:Dsi]
-                # M
-                mat_right = _np.dot(
-                    _np.diag(array_S.pop()[:Dsi]), array_V.pop()[:Dsi, :]
-                )
-            else:
-                # M
-                mat_left = _np.dot(
-                    array_U.pop()[:, :Dsi], _np.diag(array_S.pop()[:Dsi])
-                )
-                # V
-                mat_right = array_V.pop()  # [Dsi:,:]
-
+    }
+  }
+/*
             tmp = subnewsize.pop()
             tmp_deg = deg.pop()
             for it in tmp_deg[1]:
