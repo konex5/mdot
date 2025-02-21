@@ -6,7 +6,6 @@
 #include <tbb/tbb.h>
 
 #include "mdot/include/babel_type.hpp"
-#include <iostream>
 
 extern "C" {
 dnum_t dnrm2_(const size_t *n, const dnum_t *x, const size_t *incX);

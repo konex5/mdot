@@ -2,8 +2,6 @@
 
 #include "mdot/include/babel_type.hpp"
 
-#include <iostream>
-
 extern "C" {
 void dgemm_(const char *transa, const char *transb, const size_t *m,
             const size_t *n, const size_t *k, const dnum_t *alpha,
