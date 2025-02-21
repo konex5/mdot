@@ -1,5 +1,7 @@
-{ pkgs ? import <nixpkgs> { config.allowUnfree = true; }, clangSupport ? true
-, cudaSupport ? false }:
+{ pkgs ? import <nixpkgs> { config.allowUnfree = true; }
+, clangSupport ? true
+, cudaSupport ? false
+}:
 
 with pkgs;
 
@@ -30,10 +32,11 @@ let
       ];
   };
 
-in (mkShell.override { inherit stdenv; }) rec {
+in
+(mkShell.override { inherit stdenv; }) rec {
   nativeBuildInputs = [ catch2 cmake gnumake ninja ] ++ [
     # stdenv.cc.cc
-    # libcxxabi	      
+    # libcxxabi
     bashCompletion
     cacert
     clang-tools
@@ -42,7 +45,7 @@ in (mkShell.override { inherit stdenv; }) rec {
     gdb
     git
     gnumake
-    nixfmt
+    nixpkgs-fmt
     pkg-config
     emacs-nox
     vscodeExt

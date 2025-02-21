@@ -97,7 +97,7 @@ nix develop .#fullDev
 One line code formatter for C/C++ projects
 
 ```bash
-nixfmt $(find -name "*.nix")
+nixpkgs-fmt .
 
 clang-format -i $(find . -path "./build*" -prune  -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp")
 
