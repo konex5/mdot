@@ -40,11 +40,11 @@ void mm_to_theta_with_gate(dtbloc_t &dst_blocs, const dmbloc_t lhs_blocs,
   for (auto &[key, _] : gate_blocs)
     gate_indices.push_back(key);
 
-  /* 
-  auto about_indices_to_contract =
-      split_degenerate_indices(indices_dst_theta_with_gate(
-          th_indices, gate_indices, conserve_left_right));
+  
+  auto about_indices_to_contract = split_degenerate_indices_with_gate( 
+    indices_dst_theta_with_gate(th_indices, gate_indices, conserve_left_right));
 
+  /* 
   mul_mm_blocs_new(dst_blocs, tmp_dst_blocs, gate_blocs,
                    about_indices_to_contract.first);
   mul_mm_blocs_dup(dst_blocs, tmp_dst_blocs, gate_blocs,
