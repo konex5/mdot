@@ -3,6 +3,7 @@
 #include "mdot/include/babel_type.hpp"
 #include "mdot/include/routine/indices.hpp"
 #include "mdot/include/routine/mul_routine.hpp"
+#include "mdot/include/routine/svd_routine.hpp"
 
 namespace mdot {
 
@@ -26,7 +27,7 @@ void mm_to_theta_no_gate(dtbloc_t &dst_blocs, const dmbloc_t lhs_blocs,
                    about_indices_to_contract.second);
 }
 
-void theta_to_mm(const dtbloc_t theta_blocs, dmbloc_t &lhs_blocs,
+void theta_to_mm(dtbloc_t& theta_blocs, dmbloc_t &lhs_blocs,
                  dmbloc_t &rhs_blocs, dnum_t &dw_dict, const index_t chi_max,
                  const bool normalize, const bool is_um,
                  const int direction_right, const double eps) {
@@ -39,21 +40,14 @@ void theta_to_mm(const dtbloc_t theta_blocs, dmbloc_t &lhs_blocs,
   auto out_nondeg_deg =
       degeneracy_in_theta(theta_indices, middle_indices, direction_right);
 
+    // subnewsize_deg: _List[_List] = []
+    // slices_degenerate_blocs(theta_blocs, deg, subnewsize_deg)
+
+    std::vector<std::vector<dnum_t>> array_of_U, array_of_V;
+    std::vector<std::vector<dnum_t>> array_of_S;
+    svd_nondeg(theta_blocs, out_nondeg_deg.first, array_of_U, array_of_S, array_of_V);
+
   /*
-    keys = list(theta_blocs.keys())
-    middle = potential_middle_indices(keys, direction_right=direction_right)
-
-    nondeg, deg = degeneracy_in_theta(keys, middle,
-    direction_right=direction_right)
-
-    subnewsize_deg: _List[_List] = []
-    slices_degenerate_blocs(theta_blocs, deg, subnewsize_deg)
-    nondeg_dims = [theta_blocs[_[1]].shape for _ in nondeg]
-
-    array_of_U: _List[_np.ndarray] = []
-    array_of_S: _List[_np.array] = []
-    array_of_V: _List[_np.ndarray] = []
-
     svd_nondeg(theta_blocs, nondeg, nondeg_dims, array_of_U, array_of_S,
     array_of_V) svd_deg(theta_blocs, deg, subnewsize_deg, array_of_U,
     array_of_S, array_of_V)
