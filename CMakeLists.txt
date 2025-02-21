@@ -22,6 +22,7 @@ option(PROJECT_INTEGRATION "Compile the integration tests in ctest" OFF)
 option(PROJECT_UNIT_TESTS "Compile the unit tests in ctest" ON)
 option(PROJECT_SANDBOX "Compile the sandbox folder" OFF)
 option(PROJECT_STATIC "Build Static Libraries" OFF)
+option(PROJECT_MEMCHECK "Enable memcheck test with valgrind" OFF)
 
 # ##############################################################################
 # FLAGS
