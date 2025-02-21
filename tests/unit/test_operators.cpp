@@ -17,7 +17,8 @@ inline darr_t mul_twotwo(darr_t a, darr_t b) {
 
 BOOST_AUTO_TEST_CASE(test_operators) {
 
-  auto shid = real_single_operator("sh-id", "sh-none");
+  auto shid = std::get<0>(real_single_operator("sh-id", "sh-none"));
+  auto shid_norm = std::get<1>(real_single_operator("sh-id", "sh-none"));
 
   BOOST_CHECK((shid[{0, 0}])[0 + 0 * 2] == 1);
   BOOST_CHECK((shid[{0, 0}])[1 + 0 * 2] == 0);
@@ -29,12 +30,27 @@ BOOST_AUTO_TEST_CASE(test_operators) {
   BOOST_CHECK(shid_square[1 + 0 * 2] == 0);
   BOOST_CHECK(shid_square[1 + 1 * 2] == 1);
   BOOST_CHECK(shid_square[0 + 1 * 2] == 0);
+
+  // BOOST_CHECK(abs(shid_square[0+3]*pow(shid_norm,2)-1)<1e-7);
   //
-  auto shsp = real_single_operator("sh-sp", "sh-none");
+  auto shsp = std::get<0>(real_single_operator("sh-sp", "sh-none"));
   BOOST_CHECK((shsp[{0, 0}])[1 + 0 * 2] == 1);
-  auto shsm = real_single_operator("sh-sm", "sh-none");
+  auto shsm = std::get<0>(real_single_operator("sh-sm", "sh-none"));
   BOOST_CHECK((shsm[{0, 0}])[0 + 1 * 2] == 1);
   //
   auto shspsm = mul_twotwo(shsp[{0, 0}], shsm[{0, 0}]);
   BOOST_CHECK(shspsm[0 + 0 * 2] == 1);
+  //
+  auto shsz = std::get<0>(real_single_operator("sh-sz", "sh-none"));
+
+  BOOST_CHECK((shsz[{0, 0}])[0 + 0 * 2] == 1);
+  BOOST_CHECK((shsz[{0, 0}])[1 + 0 * 2] == 0);
+  BOOST_CHECK((shsz[{0, 0}])[1 + 1 * 2] == -1);
+  BOOST_CHECK((shsz[{0, 0}])[0 + 1 * 2] == 0);
+
+  auto shsz_square = mul_twotwo(shid[{0, 0}], shid[{0, 0}]);
+  BOOST_CHECK(shsz_square[0 + 0 * 2] == 1);
+  BOOST_CHECK(shsz_square[1 + 0 * 2] == 0);
+  BOOST_CHECK(shsz_square[1 + 1 * 2] == 1);
+  BOOST_CHECK(shsz_square[0 + 1 * 2] == 0);
 }
