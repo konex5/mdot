@@ -47,12 +47,12 @@ void bloc_norm(const array_of_s_type &array_of_s,
   }
 }
 
-void normalize_the_array(std::vector<darr_t> &list_of_array,
+void normalize_the_array(std::vector<std::vector<dnum_t>> &list_of_array,
                          std::vector<index_t> cut) {
   double norm;
   bloc_norm(list_of_array, cut, norm);
   std::for_each(list_of_array.begin(), list_of_array.end(),
-                [&norm](darr_t &itout) {
+                [&norm](std::vector<dnum_t> &itout) {
                   // std::for_each(itout.begin(),itout.end(),[&norm](dnum_t& x)
                   // { x /=norm;});
                   std::for_each(tbb::counting_iterator<size_t>(0),
@@ -62,7 +62,7 @@ void normalize_the_array(std::vector<darr_t> &list_of_array,
 }
 
 std::vector<index_t>
-truncation_strategy(const std::vector<darr_t> list_of_array,
+truncation_strategy(const std::vector<std::vector<dnum_t>> list_of_array,
                     const index_t chi_max, dnum_t &dw,
                     const double eps_truncation_error = 1e-8) {
   // epsilon = || forall bloc s_bloc ||_2^2
@@ -103,17 +103,15 @@ truncation_strategy(const std::vector<darr_t> list_of_array,
   return cut_at_index;
 }
 
-template <typename T>
-void svd_nondeg(std::map<t_index_t, std::vector<T>> block_dict,
+void svd_nondeg(std::map<t_index_t, std::vector<dnum_t>> block_dict,
                 std::vector<std::tuple<int, t_index_t, t_shape_t>>
                     nondeg, //: _List[_Tuple[int, _Tuple[int, int, int, int]]],
                 // std::vector<bloc_index_t> nondeg_dims,//: _List[_Tuple[int,
                 // int, int, int]],
-                std::vector<std::vector<T>> &array_of_U,
-                std::vector<darr_t> &array_of_S,
-                std::vector<std::vector<T>> &array_of_V) {
-
-  /*-> None:
+                std::vector<std::vector<dnum_t>> &array_of_U,
+                std::vector<std::vector<dnum_t>> &array_of_S,
+                std::vector<std::vector<dnum_t>> &array_of_V) {
+  /*
                  for i in range(len(nondeg)):
                      dims = nondeg_dims[i]
                      try:
