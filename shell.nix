@@ -42,6 +42,7 @@ mkCustomShell {
     clang-tools
     cmake-format
     cmakeCurses
+    cmake-language-server
     gdb
     git
     gnumake
@@ -53,6 +54,7 @@ mkCustomShell {
     # libcxxabi
     boost17x
     spdlog
+    tbb
     zlib
   ] ++ lib.optionals (hostPlatform.isLinux) [ glibcLocales ];
 

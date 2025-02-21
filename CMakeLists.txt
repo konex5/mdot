@@ -14,6 +14,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_COMPILER $ENV{CC})
 set(CMAKE_CXX_COMPILER $ENV{CXX})
 
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/.CMake)
+
 # ##############################################################################
 # OPTIONS
 # ##############################################################################
@@ -59,6 +61,9 @@ find_package(
   COMPONENTS filesystem system program_options unit_test_framework
   REQUIRED)
 include_directories(SYSTEM ${Boost_INCLUDE_DIR})
+
+# * TBB
+find_package(TBB REQUIRED tbb tbbmalloc_proxy)
 
 # ##############################################################################
 # INCLUDE
