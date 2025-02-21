@@ -1,4 +1,4 @@
-THEME_VERSION := v0.8.2
+THEME_VERSION := v0.13.2
 THEME := hugo-geekdoc
 DESTINATION := target-doc
 THEMEDIR := $(DESTINATION)/themes
@@ -21,11 +21,8 @@ doc-build: doc-assets
 	cd $(DESTINATION); hugo --minify --config=$(CURRENTDIR)/config.toml  --contentDir=$(CURRENTDIR)/content/
 
 .PHONY: doc-deploy
-doc-deploy:
+doc-deploy: clean doc-assets doc-deploy
 	cd $(DESTINATION); hugo --minify --config=$(CURRENTDIR)/config.toml  --contentDir=$(CURRENTDIR)/content/ --baseURL https://nokx5.github.io/golden_cpp/
-
-.PHONY: doc-deploy-force
-doc-deploy-force: clean doc-assets doc-deploy
 
 .PHONY: clean
 clean:

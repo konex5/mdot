@@ -1,4 +1,4 @@
-# golden_cpp
+# [golden_cpp](https://nokx5.github.io/golden_cpp/)
 
 This is a skeleton template for a C/C++ project.
 

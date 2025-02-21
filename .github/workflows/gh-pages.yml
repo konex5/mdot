@@ -22,7 +22,7 @@ jobs:
           # extended: true
 
       - name: Build
-        run: cd docs && make doc-deploy-force && cd ..
+        run: cd docs && make doc-deploy && cd ..
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
