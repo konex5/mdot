@@ -28,4 +28,4 @@ jobs:
           name: nokx5-golden-cpp
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: Build MacOS Release (run tests)
-        run: nix-build . -A hydraJobs.x86_64-darwin.release --show-trace
+        run: nix-build . -A hydraJobs.x86_64-darwin.build-clang --show-trace
