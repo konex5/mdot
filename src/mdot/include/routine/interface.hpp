@@ -34,14 +34,14 @@ void theta_to_mm(dtbloc_t &theta_blocs, dmbloc_t &lhs_blocs,
   std::vector<t_index_t> theta_indices;
   for (auto &[key, _] : theta_blocs)
     theta_indices.push_back(key);
+
   auto middle_indices =
       potential_middle_indices(theta_indices, direction_right);
-
   auto out_nondeg_deg =
       degeneracy_in_theta(theta_indices, middle_indices, direction_right);
 
-  // subnewsize_deg: _List[_List] = []
-  // slices_degenerate_blocs(theta_blocs, deg, subnewsize_deg)
+  // auto subnewsize_deg = : _List[_List] = []
+  //  slices_degenerate_blocs(theta_blocs, deg, subnewsize_deg)
 
   std::vector<std::vector<dnum_t>> array_of_U, array_of_V;
   std::vector<std::vector<dnum_t>> array_of_S;
@@ -50,19 +50,18 @@ void theta_to_mm(dtbloc_t &theta_blocs, dmbloc_t &lhs_blocs,
              array_of_S, array_of_V);
   /// svd_deg(theta_blocs, deg, subnewsize_deg, array_of_U, array_of_S,
   /// array_of_V)
-  std::cout << "discarded weight before:" << dw;
   auto cut = truncation_strategy(array_of_S, chi_max, dw, eps);
-  std::cout << "discarded weight after:" << dw;
-  for (auto &arr : array_of_S)
-    for (auto &it : arr)
-      std::cout << " " << it;
+
+  // for (auto &arr : array_of_S)
+  //   for (auto &it : arr)
+  //     std::cout << " " << it;
 
   if (normalize)
     normalize_the_array(array_of_S, cut);
 
-  for (auto &arr : array_of_S)
-    for (auto &it : arr)
-      std::cout << " " << it;
+  // for (auto &arr : array_of_S)
+  //   for (auto &it : arr)
+  //     std::cout << " " << it;
 
   std::vector<index_t> cut_nondeg, cut_deg;
   for (std::size_t i = 0; i < out_nondeg_deg.first.size(); i++)

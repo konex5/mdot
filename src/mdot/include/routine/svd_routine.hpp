@@ -89,8 +89,11 @@ truncation_strategy(const std::vector<std::vector<dnum_t>> list_of_array,
   auto lower = std::lower_bound(tmp_acc.begin(), tmp_acc.end(), stop_criterion,
                                 std::less_equal<dnum_t>{});
   size_t index_to_cut = std::distance(tmp_acc.begin(), lower);
-  dw +=
-      std::accumulate(tmp_square.begin(), tmp_square.begin() + index_to_cut, 0);
+  for (auto it = tmp_square.begin(); it < tmp_square.begin() + index_to_cut;
+       it++)
+    dw += *it; // std::accumulate(tmp_square.begin(), tmp_square.begin() +
+               // index_to_cut, 0);
+
   dnum_t maxcutvalue = tmp[index_to_cut];
 
   std::vector<index_t> cut_at_index;
