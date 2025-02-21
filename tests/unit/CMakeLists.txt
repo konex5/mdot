@@ -5,7 +5,7 @@ set(UNIT_TESTS_NAMES blocs_static dummy indexdw operators operators_static utils
 		     simple_blas_mul_zhemm
 		     simple_lapack_svd_dgesvd
 		     # simple_lapack_svd_dsysvd
-		     # simple_lapack_svd_zgesvd
+		     simple_lapack_svd_zgesvd
 		     # simple_lapack_svd_zhesvd
 		     # simple_lapack_eig_zheev
  )
