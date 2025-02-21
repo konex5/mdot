@@ -2,6 +2,7 @@
 
 #include "mdot/include/babel_type.hpp"
 #include "mdot/include/routine/indices.hpp"
+#include "mdot/include/routine/mul_routine.hpp"
 
 namespace mdot {
 
@@ -18,9 +19,10 @@ void mm_to_theta_no_gate(dtbloc_t dst_blocs, dmbloc_t lhs_blocs,
       split_degenerate_indices(indices_dst_theta_no_gate(
           left_indices, right_indices, conserve_left_right));
 
-  // mul_mm_blocs_new(dst_blocs, lhs_blocs, rhs_blocs,
-  // about_indices_to_contract.first) mul_mm_blocs_dup(dst_blocs, lhs_blocs,
-  // rhs_blocs, about_indices_to_contract.second)
+  mul_mm_blocs_new(dst_blocs, lhs_blocs, rhs_blocs,
+                   about_indices_to_contract.first);
+  mul_mm_blocs_dup(dst_blocs, lhs_blocs, rhs_blocs,
+                   about_indices_to_contract.second);
 }
 
 } // namespace mdot
