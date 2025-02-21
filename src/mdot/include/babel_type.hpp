@@ -52,6 +52,15 @@ using menv_shape_t = std::tuple<index_t, index_small_t, index_t, index_t,
 using dmenvbloc_t = std::map<menv_index_t, std::pair<menv_shape_t, _darr_t>>;
 using zmenvbloc_t = std::map<menv_index_t, std::pair<menv_shape_t, _zarr_t>>;
 
+using mmenv_index_t =
+    std::tuple<index_t, index_small_t, index_small_t, index_t, index_t,
+               index_small_t, index_small_t, index_t>;
+using mmenv_shape_t =
+    std::tuple<index_t, index_small_t, index_small_t, index_t, index_t,
+               index_small_t, index_small_t, index_t>;
+using dmmenvbloc_t = std::map<mmenv_index_t, std::pair<mmenv_shape_t, _darr_t>>;
+using zmmenvbloc_t = std::map<mmenv_index_t, std::pair<mmenv_shape_t, _zarr_t>>;
+
 template <typename, typename = void> struct real_type;
 
 template <typename T>

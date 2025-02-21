@@ -34,7 +34,7 @@ inline void vector_scal(const dnum_t a, dnum_t *vec, const size_t N) {
   dscal_(&N, &a, vec, &inc);
 }
 
-bool lanczos_ev(dnum_t *A, dnum_t *psi, size_t dim, size_t &max_iter,
+bool lanczos_ev(dnum_t *A, dnum_t *psi, size_t dim, const size_t max_iter,
                 const dnum_t err_tol, dnum_t &eigval, dnum_t *eigvec) {
   const size_t N = dim;
   const size_t inc = 1;
@@ -120,11 +120,11 @@ bool lanczos_ev(dnum_t *A, dnum_t *psi, size_t dim, size_t &max_iter,
     for (size_t k = 0; k < it; k++) {
       daxpy_(&N, &z[k], &Vm[k * N], &inc, eigvec, &inc);
     }
-    max_iter = it;
+    // max_iter = it;
     eigval = d[0];
     free(z), free(work);
   } else {
-    max_iter = 1;
+    // max_iter = 1;
     eigval = 0;
   }
   free(Vm), free(As), free(Bs), free(d), free(e);
