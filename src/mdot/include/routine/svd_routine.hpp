@@ -61,10 +61,10 @@ void normalize_the_array(std::vector<darr_t> &list_of_array,
                 });
 }
 
-std::vector<index_t> truncation_strategy(const std::vector<darr_t> list_of_array,
-                         const index_t chi_max,
-                         dnum_t &dw,
-                         const double eps_truncation_error = 1e-8) {
+std::vector<index_t>
+truncation_strategy(const std::vector<darr_t> list_of_array,
+                    const index_t chi_max, dnum_t &dw,
+                    const double eps_truncation_error = 1e-8) {
   // epsilon = || forall bloc s_bloc ||_2^2
   // chi_max = max chi of bloc
   // eps_truncation_error < sum_{i>chi_max} s_all,i^2
@@ -83,19 +83,23 @@ std::vector<index_t> truncation_strategy(const std::vector<darr_t> list_of_array
 
   std::vector<dnum_t> tmp_acc(tmp_square.size());
   std::partial_sum(tmp_square.begin(), tmp_square.end(), tmp_acc.begin());
-  
-  auto lower = std::lower_bound(tmp_acc.begin(), tmp_acc.end(), stop_criterion,std::less_equal<dnum_t>{});
+
+  auto lower = std::lower_bound(tmp_acc.begin(), tmp_acc.end(), stop_criterion,
+                                std::less_equal<dnum_t>{});
   size_t index_to_cut = std::distance(tmp_acc.begin(), lower);
-  dw += std::accumulate(tmp_square.begin(), tmp_square.begin()+index_to_cut, 0);
+  dw +=
+      std::accumulate(tmp_square.begin(), tmp_square.begin() + index_to_cut, 0);
   dnum_t maxcutvalue = tmp[index_to_cut];
 
   std::vector<index_t> cut_at_index;
   for (size_t i = 0; i < list_of_array.size(); i++) {
-    auto it = std::upper_bound(list_of_array[i].begin(), list_of_array[i].end(), maxcutvalue, std::greater<dnum_t>{});
-    auto value = static_cast<index_t>(std::distance(list_of_array[i].begin(),it));
-    cut_at_index.push_back(std::min(value,chi_max));
+    auto it = std::upper_bound(list_of_array[i].begin(), list_of_array[i].end(),
+                               maxcutvalue, std::greater<dnum_t>{});
+    auto value =
+        static_cast<index_t>(std::distance(list_of_array[i].begin(), it));
+    cut_at_index.push_back(std::min(value, chi_max));
   }
-  
+
   return cut_at_index;
 }
 
