@@ -166,11 +166,13 @@ void svd_deg(dtbloc_t& theta_blocs,
       auto tmp_for_findL = std::get<2>(subnewsize[i]);
       std::tuple<index_t,index_small_t> tmp_indexL = {std::get<0>(theta_key),std::get<1>(theta_key)};
       auto posL = std::find(tmp_for_findL.begin(),tmp_for_findL.end(),tmp_indexL) - tmp_for_findL.begin();
-      
+      auto offL = std::get<3>(subnewsize[i])[posL];
+      auto dimL = std::get<4>(subnewsize[i])[posL];
       auto tmp_for_findR = std::get<5>(subnewsize[i]);
       std::tuple<index_t,index_small_t> tmp_indexR = {std::get<2>(theta_key),std::get<3>(theta_key)};
       auto posR = std::find(tmp_for_findR.begin(),tmp_for_findR.end(),tmp_indexR) - tmp_for_findR.begin();
-
+      auto offR = std::get<6>(subnewsize[i])[posR];
+      auto dimR = std::get<7>(subnewsize[i])[posR];
     }
     //
 
