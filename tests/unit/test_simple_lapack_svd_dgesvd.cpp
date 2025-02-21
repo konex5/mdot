@@ -218,10 +218,10 @@ BOOST_AUTO_TEST_CASE(test_dgesvd_overwrite_left_right) {
     double work[lwork];
     dgesvd_((char *)"O", (char *)"S", &N, &M, A, &ldA, Sout, A, &ldA, VDout,
             &ldvT, work, &lwork, &info);
-    /*
+    
     for (std::size_t k = 0; k < Keff; k++)
       BOOST_CHECK_CLOSE(S[k], Sout[k], 1e-5);
-
+/*
     for (std::size_t k = 0; k < 3; k++) {
       std::cout << U[k] << " AND " << A[k];
       BOOST_CHECK(abs(U[k] - A[k]) < 1e-5);
@@ -231,6 +231,7 @@ BOOST_AUTO_TEST_CASE(test_dgesvd_overwrite_left_right) {
       std::cout << Vd[k] << " AND " << A[k];
       BOOST_CHECK(abs(Vd[k] - VDout[k]) < 1e-5);
     }
+
     for (std::size_t i = 0; i < N; i++)
       for (std::size_t j = 0; j < M; j++) {
         double sum = 0;
@@ -238,6 +239,6 @@ BOOST_AUTO_TEST_CASE(test_dgesvd_overwrite_left_right) {
           sum += A[i + k * N] * Sout[k] * VDout[k + j * Keff];
         BOOST_CHECK(abs(Adeepcopy[i + j * N] - sum) < 1e-5);
       };
-    */
+  */
   }
 }
