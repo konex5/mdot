@@ -5,7 +5,10 @@ assert hostPlatform.isx86_64;
 
 let
   mkCustomShell = mkShell.override { stdenv = if clangSupport then clangStdenv else gccStdenv; };
+  cc = if clangSupport then clangeStdenv.cc else gccStdenv.cc;
   dbg = if clangSupport then lldb else gdb;
+
+  target = symlinkJoin { name = "vscode-target"; paths = [ cc dbg ]; postBuild = "echo vscode needs the same folder"; };
 
   vscodeExt = vscode-with-extensions.override {
     vscodeExtensions = with vscode-extensions; [ bbenoist.nix eamodio.gitlens ms-vscode.cpptools ] ++
@@ -34,10 +37,8 @@ let
 in
 mkCustomShell {
   buildInputs = [
-    # stdenv.cc.cc.lib
-    # libcxxabi
     boost
-    spdlog
+    # spdlog
     tbb
     # zlib
   ] ++ lib.optionals (hostPlatform.isLinux) [ glibcLocales ];
@@ -47,18 +48,12 @@ mkCustomShell {
     bashInteractive
     cacert
     clang-tools
-    cmake-format
+    # cmake-format
     cmakeCurses
     dbg
-    # cppcheck
-    emacs-nox
-    # fmt
-    git
-    # llvm
+    target
     nixpkgs-fmt
-    pkg-config
   ] ++ lib.optionals (hostPlatform.isLinux) [
-    #typora hugo
     vscodeExt
   ];
 
