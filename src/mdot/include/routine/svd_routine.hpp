@@ -201,24 +201,24 @@ void svd_deg(
                   theta_blocs[theta_key].second, muldimL, muldimR);
     }
 
-    auto N = dim0;
-    auto M = dim1;
-    auto K = std::min(N, M);
+    size_t N = dim0;
+    size_t M = dim1;
+    size_t K = M < N ? M : N;
     ///
     std::vector<double> Uout(N * K), Sout(K), VDout(K * M);
-    size_t ldA = M, ldu = N, ldvT = M < N ? M : N;
+    size_t ldA = M, ldu = K, ldvT = M;
     double worktest;
     int info, lwork = -1;
 
-    // dgesvd_((char *)"S", (char *)"S", &M, &N, tmp_theta.data(),
-    //         &ldA, Sout.data(), VDout.data(), &ldu, Uout.data(), &ldvT,
-    //         &worktest, &lwork, &info);
-    //
-    // lwork = (int)worktest;
-    // double work[lwork];
-    // dgesvd_((char *)"S", (char *)"S", &M, &N, tmp_theta.data(),
-    //         &ldA, Sout.data(), VDout.data(), &ldu, Uout.data(), &ldvT, work,
-    //         &lwork, &info);
+    dgesvd_((char *)"S", (char *)"S", &M, &N, tmp_theta.data(),
+            &ldA, Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu,
+            &worktest, &lwork, &info);
+
+    lwork = (int)worktest;
+    double work[lwork];
+    dgesvd_((char *)"S", (char *)"S", &M, &N, tmp_theta.data(),
+            &ldA, Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, work,
+            &lwork, &info);
 
     array_of_U.push_back(Uout);
     array_of_S.push_back(Sout);
