@@ -210,15 +210,15 @@ void svd_deg(
     double worktest;
     int info, lwork = -1;
 
-    dgesvd_((char *)"S", (char *)"S", &M, &N, tmp_theta.data(),
-            &ldA, Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu,
-            &worktest, &lwork, &info);
+    dgesvd_((char *)"S", (char *)"S", &M, &N, tmp_theta.data(), &ldA,
+            Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, &worktest,
+            &lwork, &info);
 
     lwork = (int)worktest;
     double work[lwork];
-    dgesvd_((char *)"S", (char *)"S", &M, &N, tmp_theta.data(),
-            &ldA, Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, work,
-            &lwork, &info);
+    dgesvd_((char *)"S", (char *)"S", &M, &N, tmp_theta.data(), &ldA,
+            Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, work, &lwork,
+            &info);
 
     array_of_U.push_back(Uout);
     array_of_S.push_back(Sout);
