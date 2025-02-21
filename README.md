@@ -1,5 +1,7 @@
 # Welcome to the golden cpp template
 
+[![CI-linux](https://github.com/nokx5/golden-cpp/workflows/CI-linux/badge.svg)](https://github.com/nokx5/golden-cpp/actions/workflows/ci-linux.yml) [![CI-linux](https://github.com/nokx5/golden-cpp/workflows/CI-darwin/badge.svg)](https://github.com/nokx5/golden-cpp/actions/workflows/ci-darwin.yml) [![doc](https://github.com/nokx5/golden-cpp/workflows/doc-api/badge.svg)](https://nokx5.github.io/golden-cpp) [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/nokx5/golden-cpp/blob/master/LICENSE)
+
 This is a skeleton template for a C/C++ project. Please find all the documentation [here](https://nokx5.github.io/golden-cpp) and the source code [here](https://github.com/nokx5/golden-cpp).
 
 ## My development tools are
