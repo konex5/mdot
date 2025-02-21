@@ -63,7 +63,6 @@ void mul_mm_blocs_dup(
     for (size_t i = 0; i < NM; i++) {
       new_blocs[target].second[i] += mat_out[i];
     }
-    std::cout << new_blocs[target].second[0] << " ";
   }
 }
 

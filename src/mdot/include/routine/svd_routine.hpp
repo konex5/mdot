@@ -184,50 +184,34 @@ void svd_deg(dtbloc_t& theta_blocs,
       auto offR = static_cast<size_t>(std::get<6>(subnewsize[i])[posR]);
       auto dimR = std::get<7>(subnewsize[i])[posR];
       auto muldimR = static_cast<size_t>(std::get<0>(dimR))*static_cast<size_t>(std::get<1>(dimR));
-
+      //
       fill_matrix(tmp_theta,dim0,dim1,offL,offR,theta_blocs[theta_key].second,muldimL,muldimR);
-      // for (auto & v : tmp_theta)
-      // std::cout << v << " ";
     }
-    //
+    /*
+    auto N = dim0;
+    auto M = dim1;
+    auto K = std::min(N, M);
+    ///
+    std::vector<double> Uout(N * K), Sout(K), VDout(K * M);
+    std::size_t ldA = M, ldu = N, ldvT = M < N ? M : N;
+    double worktest;
+    int info, lwork = -1;
 
+    dgesvd_((char *)"S", (char *)"S", &M, &N, tmp_theta.data(),
+            &ldA, Sout.data(), VDout.data(), &ldu, Uout.data(), &ldvT,
+            &worktest, &lwork, &info);
+
+    lwork = (int)worktest;
+    double work[lwork];
+    dgesvd_((char *)"S", (char *)"S", &M, &N, tmp_theta.data(),
+            &ldA, Sout.data(), VDout.data(), &ldu, Uout.data(), &ldvT, work,
+            &lwork, &info);
+    
+    array_of_U.push_back(Uout);
+    array_of_S.push_back(Sout);
+    array_of_V.push_back(VDout);
+    */
   }
-
-/*
-    for i in range(len(deg)):
-        # construct the degenerated matrix
-        thetaDeg = _np.zeros((subnewsize[i][0], subnewsize[i][1]), dtype=datatype)
-        # fill it
-        for it in deg[i][1]:
-            posL = subnewsize[i][2].index((it[0], it[1]))
-            offL = subnewsize[i][3][posL]
-            dimL = subnewsize[i][4][posL]
-            posR = subnewsize[i][5].index((it[2], it[3]))
-            offR = subnewsize[i][6][posR]
-            dimR = subnewsize[i][7][posR]
-            sliceL = slice(offL, offL + dimL[0] * dimL[1])
-            sliceR = slice(offR, offR + dimR[0] * dimR[1])
-            thetaDeg[sliceL, sliceR] = theta_blocs[it].reshape(
-                dimL[0] * dimL[1], dimR[0] * dimR[1]
-            )
-        try:
-            U, S, V = _svd(
-                thetaDeg, full_matrices=False, compute_uv=True, overwrite_a=False
-            )
-        except:
-            print("!!!!!!!!matrix badly conditioned!!!!!!!!!")
-            U, S, V = _svd(
-                thetaDeg,
-                full_matrices=False,
-                compute_uv=True,
-                overwrite_a=True,
-                lapack_driver="gesvd",
-            )
-
-        array_of_U.append(U)
-        array_of_S.append(S)
-        array_of_V.append(V)
-*/
 }
 
 } // namespace mdot

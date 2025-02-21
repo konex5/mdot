@@ -67,17 +67,17 @@ void theta_to_mm(dtbloc_t &theta_blocs, dmbloc_t &lhs_blocs,
   //  cut_deg.push_back(cut[out_nondeg_deg.first.size()+i]);
 
   
-  ///  mul_usv_deg(
-  ///      array_of_U,
-  ///      array_of_S,
-  ///      cut_deg,
-  ///      array_of_V,
-  ///      deg,
-  ///      subnewsize_deg,
-  ///      lhs_blocs,
-  ///      rhs_blocs,
-  ///      is_um=is_um,
-  ///  )
+  // mul_usv_deg(
+  //     array_of_U,
+  //     array_of_S,
+  //     cut_deg,
+  //     array_of_V,
+  //     deg,
+  //     subnewsize_deg,
+  //     lhs_blocs,
+  //     rhs_blocs,
+  //     is_um=is_um,
+  // )
   mul_usv_nondeg(array_of_U, array_of_S, cut_nondeg, array_of_V,
                  out_nondeg_deg.first, nondeg_dims, lhs_blocs, rhs_blocs,
                  is_um);
