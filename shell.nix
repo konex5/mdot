@@ -1,4 +1,5 @@
-{ pkgs ? import <nixpkgs> { }, clangSupport ? true, cudaSupport ? false }:
+{ pkgs ? import <nixpkgs> { config.allowUnfree = true; }, clangSupport ? true
+, cudaSupport ? false }:
 
 with pkgs;
 

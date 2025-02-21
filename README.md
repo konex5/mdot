@@ -44,7 +44,7 @@ Note that you can write the nix expression directly to the `default.nix` file to
 You can enter the supercharged environment for development.
 
 ```bash
-nix-shell derivation-shell.nix
+nix-shell shell.nix
 ```
 
 ## Use the experimental flake feature
@@ -78,7 +78,7 @@ Start by cloning the [git repository](https://github.com/nokx5/golden-cpp) local
 
 ```bash
 # option a: develop with a local shell
-nix run .#cli_golden
+nix develop .#golden-cpp
 
 # option b: build the local project
 nix build .#golden-cpp
@@ -89,7 +89,7 @@ nix build .#golden-cpp
 You can enter the development supercharged environment.
 
 ```bash
-nix develop
+nix develop .#fullDev
 ```
 
 ## Code Snippets

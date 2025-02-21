@@ -18,17 +18,15 @@
             src = self;
             stdenv = pkgs-self.clangStdenv;
           };
-          shell-dev = pkgs-super.callPackage ./shell.nix { pkgs = pkgs-self; };
+          fullDev = pkgs-super.callPackage ./shell.nix { pkgs = pkgs-self; };
         };
         pkgs = import nixpkgs {
           inherit system;
-          config = { allowUnfree = true; };
+          config.allowUnfree = true;
           overlays = [ overlay ];
         };
       in {
-        packages = with pkgs; {
-          inherit golden-cpp golden-cpp-clang shell-dev;
-        };
+        packages = { inherit (pkgs) fullDev golden-cpp golden-cpp-clang; };
         defaultPackage = self.packages.${system}.golden-cpp;
 
         apps = {
@@ -44,6 +42,6 @@
 
         defaultApp = self.apps.${system}.cli_golden;
 
-        devShell = self.packages.${system}.shell-dev;
+        devShell = self.packages.${system}.golden-cpp;
       });
 }
