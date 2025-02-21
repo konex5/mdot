@@ -35,7 +35,7 @@ inline void vector_scal(const dnum_t a, dnum_t *vec, const size_t N) {
 }
 
 bool lanczos_ev(dnum_t *A, dnum_t *psi, size_t dim, size_t &max_iter,
-                dnum_t err_tol, dnum_t &eigval, dnum_t *eigvec) {
+                const dnum_t err_tol, dnum_t &eigval, dnum_t *eigvec) {
   const size_t N = dim;
   const size_t inc = 1;
 
@@ -131,4 +131,4 @@ bool lanczos_ev(dnum_t *A, dnum_t *psi, size_t dim, size_t &max_iter,
   return converged;
 }
 
-}
+} // namespace mdot

@@ -18,6 +18,6 @@ BOOST_AUTO_TEST_CASE(test_routine_mul_routine) {
   dnum_t eigenvector[3];
 
   mdot::lanczos_ev(matrix.data(), psi.data(), N, maxiter, tolerance, eigenvalue,
-             eigenvector);
+                   eigenvector);
   BOOST_CHECK(eigenvalue == -4.0866302262564709);
 }
