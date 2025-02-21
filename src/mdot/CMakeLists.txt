@@ -12,7 +12,7 @@ foreach(library ${libraries})
 
 endforeach()
 
-set(clicommands climdot)
+set(clicommands climdot cliprintoperator)
 
 foreach(clicommand ${clicommands})
 
