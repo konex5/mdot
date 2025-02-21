@@ -100,7 +100,7 @@ indices_dst_theta_with_gate(const std::vector<t_index_t> theta_indices,
              std::get<0>(theta_index) +
                      static_cast<index_t>(std::get<1>(gate_index)) +
                      static_cast<index_t>(std::get<2>(gate_index)) ==
-                 std::get<2>(theta_index))) {
+                 std::get<3>(theta_index))) {
           dst_about_indices_to_contract.push_back(
               {{std::get<0>(theta_index), std::get<1>(gate_index),
                 std::get<2>(gate_index), std::get<3>(theta_index)},
