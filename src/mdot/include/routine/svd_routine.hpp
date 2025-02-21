@@ -138,9 +138,6 @@ void svd_nondeg(dtbloc_t& theta_bloc,
         array_of_S.push_back(Sout);
         array_of_V.push_back(VDout);
         
-        for (auto& it: Sout) {
-          std::cout << " " << it;
-        }
       } 
       
 }
