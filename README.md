@@ -95,7 +95,7 @@ You can enter the supercharged development environment.
 ```bash
 nix develop
 # or
-nix-shell . -A devShell
+nix-shell . -A devShell.x86_64-linux
 ```
 
 ## Code Snippets
