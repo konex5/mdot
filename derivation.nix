@@ -1,5 +1,5 @@
 { stdenv
-, boost17x
+, boost
 , cmakeMinimal
 , fixDarwinDylibNames
 , hdf5-cpp
@@ -17,7 +17,7 @@ stdenv.mkDerivation {
   pname = "mdot";
   inherit version;
   inherit src;
-  buildInputs = [ boost17x hdf5-cpp lapack tbb ];
+  buildInputs = [ boost hdf5-cpp lapack tbb ];
   nativeBuildInputs = [ cmakeMinimal gnumake ninja ] ++ lib.optional stdenv.hostPlatform.isDarwin fixDarwinDylibNames;
   cmakeFlags = [
     "-DCMAKE_BUILD_TYPE=Release"
