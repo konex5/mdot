@@ -139,14 +139,15 @@ BOOST_AUTO_TEST_CASE(test_svd_validation) {
     double Uout[N * ldu], Sout[ldu], VDout[ldu * M];
     size_t ldA = M, ldvT = M;
     double worktest;
-    int info, lwork = -1, iwork;
+    int info, lwork = -1;
+    int iwork[8 * N < 8 * M ? N : M];
 
     dgesdd_((char *)"S", &M, &N, A, &ldA, Sout, VDout, &ldvT, Uout, &ldu,
-            &worktest, &lwork, &iwork, &info);
+            &worktest, &lwork, iwork, &info);
     lwork = (int)worktest;
     double work[lwork];
     dgesdd_((char *)"S", &M, &N, A, &ldA, Sout, VDout, &ldvT, Uout, &ldu, work,
-            &lwork, &iwork, &info);
+            &lwork, iwork, &info);
 
     BOOST_CHECK(Uout[0] == -0.38631770311861136);
     BOOST_CHECK(Sout[0] == 9.5080320006957262);
