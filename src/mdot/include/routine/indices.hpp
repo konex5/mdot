@@ -5,6 +5,30 @@
 #include "mdot/include/babel_type.hpp"
 
 namespace mdot {
+
+std::pair<std::vector<std::tuple<t_index_t, m_index_t, m_index_t>>,
+          std::vector<std::tuple<t_index_t, m_index_t, m_index_t>>>
+split_degenerate_indices(
+    std::vector<std::tuple<t_index_t, m_index_t, m_index_t>> indices) {
+
+  std::vector<std::tuple<t_index_t, m_index_t, m_index_t>> new_indices,
+      dup_indices;
+  std::vector<t_index_t> all_targets;
+  for (auto &it : indices)
+    all_targets.push_back(std::get<0>(it));
+
+  for (std::size_t i = 0; i < all_targets.size(); i++) {
+    if (std::find(all_targets.begin(), all_targets.end(), all_targets[i]) -
+            all_targets.begin() ==
+        static_cast<long>(i))
+      new_indices.push_back(indices[i]);
+    else
+      dup_indices.push_back(indices[i]);
+  }
+
+  return {new_indices, dup_indices};
+}
+
 std::vector<std::tuple<t_index_t, m_index_t, m_index_t>>
 indices_dst_theta_no_gate(const std::vector<m_index_t> left_indices,
                           const std::vector<m_index_t> right_indices,
