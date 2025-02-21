@@ -1,4 +1,4 @@
-{ stdenv, src, boost17x, catch2, cmake, gnumake, hugo, ninja, pandoc }:
+{ stdenv, src, boost17x, catch2, cmake, gnumake, hugo, ninja, pandoc, lib, fixDarwinDylibNames }:
 
 stdenv.mkDerivation rec {
   pname = "golden-cpp";
@@ -6,7 +6,7 @@ stdenv.mkDerivation rec {
   inherit src;
 
   buildInputs = [ boost17x ];
-  nativeBuildInputs = [ catch2 cmake gnumake ninja ] ++ [ hugo ];
+  nativeBuildInputs = [ catch2 cmake gnumake ninja ] ++ [ hugo ] ++ lib.optional stdenv.hostPlatform.isDarwin fixDarwinDylibNames;
   cmakeFlags = [
     "-DCMAKE_BUILD_TYPE=Release"
     "-DPROJECT_TESTS=On"

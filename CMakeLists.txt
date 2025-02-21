@@ -24,7 +24,7 @@ option(PROJECT_SANDBOX "Build Sandbox" OFF)
 option(PROJECT_STATIC "Build Static Libraries" OFF)
 
 set(PROJECT_CXX_FLAGS_DEBUG -fno-omit-frame-pointer -fno-inline)
-set(PROJECT_CXX_FLAGS_RELEASE -mfma -mavx) # SIMD? -mftree-vectorize
+set(PROJECT_CXX_FLAGS_RELEASE ) # -mfma -mavx # disable for mac # SIMD? -mftree-vectorize
 set(PROJECT_CXX_FLAGS_RELWITHDEBUG ${PROJECT_CXX_FLAGS_RELEASE} -g)
 set(PROJECT_CXX_FLAGS_MINSIZERELEASE ${PROJECT_CXX_FLAGS_RELEASE})
 

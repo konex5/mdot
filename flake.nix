@@ -102,7 +102,7 @@
               name = "${repoName}-release-${repoVersion}";
               constituents =
                 [
-                  #self.hydraJobs.build.${system}
+                  self.hydraJobs.build.${system}
                   self.hydraJobs.build-clang.${system}
                   #self.hydraJobs.docker.${system}
                 ] ++ lib.optionals (hostPlatform.isLinux) [
@@ -116,8 +116,8 @@
       };
 
       packages = forAllSystems (system:
-        with nixpkgsFor.${system}; {
-          inherit golden-cpp golden-cpp-clang;
+        {
+          inherit (nixpkgsFor.${system}) golden-cpp golden-cpp-clang;
         });
 
       defaultPackage = forAllSystems (system:
