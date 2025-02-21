@@ -38,11 +38,12 @@ indices_dst_theta_no_gate(const std::vector<m_index_t> left_indices,
   for (auto &left_index : left_indices) {
     for (auto &right_index : right_indices) {
       if (std::get<2>(left_index) == std::get<0>(right_index)) {
-        if (!conserve_left_right ||
-            (conserve_left_right && std::get<0>(left_index) +
-                                            std::get<1>(left_index) +
-                                            std::get<1>(right_index) ==
-                                        std::get<2>(right_index))) {
+        if ((!conserve_left_right) ||
+            (conserve_left_right &&
+             std::get<0>(left_index) +
+                     static_cast<index_t>(std::get<1>(left_index)) +
+                     static_cast<index_t>(std::get<1>(right_index)) ==
+                 std::get<2>(right_index))) {
           dst_about_indices_to_contract.push_back(
               {{std::get<0>(left_index), std::get<1>(left_index),
                 std::get<1>(right_index), std::get<2>(right_index)},
