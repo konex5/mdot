@@ -11,7 +11,7 @@
 
 #include "mdot/include/babel_type.hpp"
 
-namespace fhmdot {
+namespace mdot {
 
 namespace yofi {
 
