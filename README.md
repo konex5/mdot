@@ -3,12 +3,12 @@
 This is a skeleton template for a C/C++ project.
 
 ## My development tools are
-- nix :heart: (packaging from hell)
+- nix :snowflake: (packaging from hell :heart:)
 - clang-format (formatter)
 - vscode (IDE) with 
   - ms-vscode.cmake-tools
   - ms-vscode.cpptools
-- ctest or sometimes catch2 (unit testing)
+- ctest - sometimes catch2 (unit testing)
 - Markdown (documentation)
 
 ## Start developing
@@ -27,8 +27,7 @@ export NIX_PATH=nixpkgs=https://github.com/nokx5/nokxpkgs/archive/main.tar.gz
 The package can then be used.
 
 ```bash
-nix-shell -p golden_cpp
-$ exit
+nix-shell -p golden_cpp --command "cli_golden_cpp"
 ```
 
 #### Option 2: create a `default.nix` to build and develop the software
@@ -58,16 +57,28 @@ unlink result
 
 ### Use the experimental flake feature
 
-NOTE: this section requires the experimental `flake` and `nix-command` features. Please refer to the official documentation for nix flakes.
+NOTE: this section requires the experimental `flake` and `nix-command` features. Please refer to the official documentation for nix flakes. We highly recommand you to have a look to nix flakes since the issue of channel pinning is locked in the `flake.lock` file.
 
-#### Option 1: develop the local software
+#### Option 1: use the software
+
+The package can be used easily with flakes.
+
 ```bash
-nix develop
+nix shell github:nokx5/golden_cpp --command cli_golden_cpp
 ```
-#### Option 2: build the local software
+
+#### Option 2: build and develop the software
+
+You can enter the shell or build the project with flakes in a very convenient way.
 
 ```bash
+# option a: develop the local software
+nix develop
+$ exit
+
+# option b: build the local software
 nix build .#golden_cpp
+unlink result
 ```
 
 ## Code Snippets
