@@ -63,16 +63,31 @@ mark_as_advanced(
 find_package(TBB REQUIRED tbb tbbmalloc_proxy)
 
 # ##############################################################################
-# INCLUDE
+# Headers/Interface
 # ##############################################################################
 configure_file("${PROJECT_SOURCE_DIR}/src/utils/static.hpp.in"
                "${PROJECT_BINARY_DIR}/utils/static.hpp")
-include_directories("${PROJECT_SOURCE_DIR}/src" ${PROJECT_BINARY_DIR})
+include_directories("${CMAKE_SOURCE_DIR}/src" ${CMAKE_BINARY_DIR})
+
+# Installation of headers
+install(
+  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/src/mdot
+  DESTINATION "include"
+  FILES_MATCHING
+  PATTERN "*.hpp")
+
+# Installation of configured headers
+install(
+  DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mdot
+  DESTINATION "include"
+  FILES_MATCHING
+  PATTERN "*.hpp")
 
 # ##############################################################################
 # PROJECT
 # ##############################################################################
 add_subdirectory(src/mdot)
+
 
 # ##############################################################################
 # TESTS and miscelaneous
