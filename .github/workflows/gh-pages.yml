@@ -2,8 +2,8 @@ name: update github pages
 
 on:
   push:
-    # branches:
-    #   - doc-deploy  # Set a branch to deploy
+    branches:
+      - doc-deploy  # Set a branch to deploy
 
 jobs:
   deploy:
