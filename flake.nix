@@ -25,7 +25,7 @@
           config.allowUnfree = true;
           overlays = [ overlay ];
         };
-      in {
+      in rec {
         packages = { inherit (pkgs) fullDev golden-cpp golden-cpp-clang; };
         defaultPackage = self.packages.${system}.golden-cpp;
 
