@@ -67,7 +67,7 @@ void mul_mm_blocs_dup(
   }
 }
 
-inline void mul_mat_diag(std::vector<dnum_t> &destination,
+void mul_mat_diag(std::vector<dnum_t> &destination,
                          std::vector<dnum_t> &mat, const size_t &N,
                          const size_t &M, std::vector<dnum_t> &diag,
                          const size_t &cut) {
@@ -79,7 +79,7 @@ inline void mul_mat_diag(std::vector<dnum_t> &destination,
       destination[i * cut + j] = diag[j] * mat[i * M + j];
 }
 
-inline void mul_diag_mat(std::vector<dnum_t> &destination,
+void mul_diag_mat(std::vector<dnum_t> &destination,
                          std::vector<dnum_t> &mat, const size_t &N,
                          const size_t &M, std::vector<dnum_t> &diag,
                          const size_t &cut) {
@@ -123,22 +123,23 @@ void mul_usv_nondeg(std::vector<std::vector<dnum_t>> &array_U,
       std::vector<dnum_t> mat_right(cut[i], dim2 * dim3);
 
       if (is_um == 0) {
-        /*
+
         for (auto &s : array_S[i])
           s = sqrt(s);
-        mul_mat_diag(mat_left, array_U[i], dim0 * dim1, array_S[i].size(),
+/*        mul_mat_diag(mat_left, array_U[i], dim0 * dim1, array_S[i].size(),
                      array_S[i], cut[i]);
         mul_diag_mat(mat_right, array_V[i], array_S[i].size(), dim2 * dim3,
                      array_S[i], cut[i]);
+                     */
+                    
       } else if (is_um == 1) {
         //mat_left.swap(array_U[i]);
-        mul_diag_mat(mat_right, array_V[i], array_S[i].size(), dim2 * dim3,
-                     array_S[i], cut[i]);
+        //mul_diag_mat(mat_right, array_V[i], array_S[i].size(), dim2 * dim3,
+        //             array_S[i], cut[i]);
       } else {
-        mul_mat_diag(mat_left, array_U[i], dim0 * dim1, array_S[i].size(),
-                     array_S[i], cut[i]);
+        //mul_mat_diag(mat_left, array_U[i], dim0 * dim1, array_S[i].size(),
+        //             array_S[i], cut[i]);
         //mat_right.swap(array_V[i]);
-        */
       }
       
       dst_lhs_blocs[{std::get<0>(theta_index), std::get<1>(theta_index),
