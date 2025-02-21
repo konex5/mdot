@@ -8,9 +8,13 @@
 #include <tuple>
 #include <vector>
 
-#include <tbb/tbb.h>
+//#include <tbb/tbb.h>
 
 namespace mdot {
+
+// TODO: matrix triangular, hermitian
+// TODO: matrix multiplication C format real+complex
+// TODO: matrix svd C format
 
 // tbb::flow::graph g;
 

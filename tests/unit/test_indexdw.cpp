@@ -1,7 +1,7 @@
 #include <boost/test/unit_test.hpp>
 
-#include "mdot/include/indexdw.hpp"
 #include "mdot/include/babel_type.hpp"
+#include "mdot/include/indexdw.hpp"
 
 BOOST_AUTO_TEST_CASE(test_indexdw) {
   const array_of_s_type array_of_s = {{0.9, 0}, {0.8, 0.6, 0.01, 0}, {0.3, 0}};

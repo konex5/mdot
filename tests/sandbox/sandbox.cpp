@@ -1,19 +1,28 @@
 #include <algorithm>
+#include <complex>
 #include <iostream>
+#include <map>
 #include <string>
+#include <tuple>
 
-static inline void rtrim(std::string &s) {
-  s.erase(std::find_if(s.rbegin(), s.rend(),
-                       [](unsigned char ch) { return !std::isspace(ch); })
-              .base(),
-          s.end());
-}
+#include "mdot/include/babel_type.hpp"
 
 int main() {
-  for (std::string line; std::getline(std::cin, line);) {
-    rtrim(line);
-    if (line == "q")
-      break;
-    std::cout << "Input: " << line << std::endl;
-  }
+  std::complex<double> a = {1, 2};
+  std::complex<double> b = {1, 2};
+  znum_t c = a + b;
+
+  std::cout << c.real() << "+j" << c.imag() << std::endl;
+
+  std::string blabla;
+  blabla = "hello";
+
+  std::map<int, double> plus;
+  plus[1] = 2.3;
+  op_index_t test = {2, 3};
+  // dopbloc_t retest = {test,{1.,2.,3.,4.,5.}};
+  // int pls = std::get<0>(test);
+
+  std::pair<double, int> ls;
+  ls = {1.1, 2};
 }

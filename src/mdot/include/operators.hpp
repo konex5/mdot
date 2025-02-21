@@ -41,3 +41,19 @@ std::pair<dopbloc_t, dnum_t> single_operator_real(std::string name,
   //
   return {single_operators_real[name][qbasis], normalization[name][qbasis]};
 }
+
+std::pair<zopbloc_t, dnum_t> single_operator_cplx(std::string name,
+                                                  std::string qbasis) {
+  std::map<std::string, typename std::map<std::string, zopbloc_t>>
+      single_operators_cplx;
+  std::map<std::string, typename std::map<std::string, double>> normalization;
+  // C mode
+  normalization["sh-sy"]["sh-none"] = 1. / sqrt(2);
+  single_operators_cplx["sh-sx"]["sh-none"][{0, 0}] = {
+      {0, 0}, {0, 1}, {0, -1}, {0, 0}};
+  //
+  single_operators_cplx["sh-sx"]["sh-u1"][{0, 1}] = {{0, 1}};
+  single_operators_cplx["sh-sx"]["sh-u1"][{1, 0}] = {{0, -1}};
+  //
+  return {single_operators_cplx[name][qbasis], normalization[name][qbasis]};
+}

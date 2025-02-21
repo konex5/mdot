@@ -13,8 +13,8 @@ using data_t = float;
 using dnum_t = data_t;
 using znum_t = std::complex<data_t>;
 
-using darr_t = std::vector<data_t>;
-using zarr_t = std::vector<data_t>;
+using darr_t = std::vector<dnum_t>;
+using zarr_t = std::vector<znum_t>;
 
 // to remove
 typedef typename std::vector<darr_t> array_of_s_type;
@@ -25,9 +25,9 @@ typedef typename std::vector<zarr_t> array_of_ztype;
 using index_small_t = uint8_t;
 using index_t = uint16_t;
 
-using op_index_t = std::tuple<index_small_t,index_small_t>;
+using op_index_t = std::tuple<index_small_t, index_small_t>;
 using dopbloc_t = std::map<op_index_t, darr_t>;
-using zopbloc_t = std::map<op_index_t, darr_t>;
+using zopbloc_t = std::map<op_index_t, zarr_t>;
 
 using m_index_t = std::tuple<index_t, index_small_t, index_t>;
 using m_shape_t = std::tuple<index_t, index_small_t, index_t>;
@@ -39,22 +39,20 @@ using t_shape_t = std::tuple<index_t, index_small_t, index_small_t, index_t>;
 using dtbloc_t = std::map<t_shape_t, darr_t>;
 using ztbloc_t = std::map<t_shape_t, zarr_t>;
 
-using g_index_t = std::tuple<index_small_t, index_small_t, index_small_t, index_small_t>;
-using g_shape_t = std::tuple<index_small_t, index_small_t, index_small_t, index_small_t>;
+using g_index_t =
+    std::tuple<index_small_t, index_small_t, index_small_t, index_small_t>;
+using g_shape_t =
+    std::tuple<index_small_t, index_small_t, index_small_t, index_small_t>;
 using dgbloc_t = std::map<g_shape_t, darr_t>;
 using zgbloc_t = std::map<g_shape_t, zarr_t>;
 
-template <typename, typename = void>
-struct real_type;
+template <typename, typename = void> struct real_type;
 
 template <typename T>
-struct real_type<T, std::enable_if_t<std::is_arithmetic_v<T>>>
-{
+struct real_type<T, std::enable_if_t<std::is_arithmetic_v<T>>> {
   using type = T;
 };
 
-template <typename T>
-struct real_type<std::complex<T>, void>
-{
+template <typename T> struct real_type<std::complex<T>, void> {
   using type = T;
 };
