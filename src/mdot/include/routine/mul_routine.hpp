@@ -170,7 +170,6 @@ void mul_usv_deg(
 
   for (size_t i = 0; i < deg.size(); i++) {
     if (cut[i] > 0) {
-      std::cout << "hello";
       const index_t middle_index = deg[i].first;
       auto theta_indices = deg[i].second;
       auto dimtotL = static_cast<size_t>(std::get<0>(subnewsize[i]));
@@ -220,7 +219,6 @@ void mul_usv_deg(
         auto muldimR = static_cast<size_t>(std::get<0>(dimR)) *
                        static_cast<size_t>(std::get<1>(dimR));
 
-        std::cout << " all world";
         std::vector<dnum_t> out_mat_left(muldimL * cut[i]);
         m_shape_t shape_left = {std::get<0>(dimL), std::get<1>(dimL), cut[i]};
         std::vector<dnum_t> out_mat_right(cut[i] * muldimR);
