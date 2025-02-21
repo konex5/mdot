@@ -8,7 +8,7 @@
 
 namespace po = boost::program_options;
 
-//#include "mdot/include/mdot.hpp"
+// #include "mdot/include/mdot.hpp"
 
 int main(int argc, char *argv[]) {
   boost::filesystem::path hamiltonian_path;

@@ -1,6 +1,6 @@
 #include <boost/test/unit_test.hpp>
 
-//#include "mdot/include/babel_type.hpp"
+// #include "mdot/include/babel_type.hpp"
 #include "mdot/include/operators_static.hpp"
 
 BOOST_AUTO_TEST_CASE(test_operators_static_so_none_real) {

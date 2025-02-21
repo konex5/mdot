@@ -28,11 +28,11 @@ void mm_to_theta_no_gate(dtbloc_t &dst_blocs, const dmbloc_t lhs_blocs,
 }
 
 void mm_to_theta_with_gate(dtbloc_t &dst_blocs, const dmbloc_t lhs_blocs,
-                         const dmbloc_t rhs_blocs, const dgbloc_t gate_blocs,
-                         bool conserve_left_right = false) {
+                           const dmbloc_t rhs_blocs, const dgbloc_t gate_blocs,
+                           bool conserve_left_right = false) {
   dtbloc_t tmp_dst_blocs;
-  mm_to_theta_no_gate(tmp_dst_blocs,lhs_blocs,rhs_blocs,false);
-  
+  mm_to_theta_no_gate(tmp_dst_blocs, lhs_blocs, rhs_blocs, false);
+
   std::vector<t_index_t> th_indices;
   for (auto &[key, _] : tmp_dst_blocs)
     th_indices.push_back(key);
@@ -40,19 +40,20 @@ void mm_to_theta_with_gate(dtbloc_t &dst_blocs, const dmbloc_t lhs_blocs,
   for (auto &[key, _] : gate_blocs)
     gate_indices.push_back(key);
 
-  auto about_indices_to_contract = split_degenerate_indices_with_gate( 
-    indices_dst_theta_with_gate(th_indices, gate_indices, conserve_left_right));
+  auto about_indices_to_contract =
+      split_degenerate_indices_with_gate(indices_dst_theta_with_gate(
+          th_indices, gate_indices, conserve_left_right));
 
-  //printf("%i ",about_indices_to_contract.first.size());
-  //printf("%i ",about_indices_to_contract.second.size());
-  //for (auto& key : about_indices_to_contract.first)
-  //  std::cout << " " << std::get<0>(std::get<0>(key));
+  // printf("%i ",about_indices_to_contract.first.size());
+  // printf("%i ",about_indices_to_contract.second.size());
+  // for (auto& key : about_indices_to_contract.first)
+  //   std::cout << " " << std::get<0>(std::get<0>(key));
 
   mul_th_gate_new(dst_blocs, tmp_dst_blocs, gate_blocs,
-                   about_indices_to_contract.first);
-  
+                  about_indices_to_contract.first);
+
   mul_th_gate_dup(dst_blocs, tmp_dst_blocs, gate_blocs,
-                   about_indices_to_contract.second);
+                  about_indices_to_contract.second);
 }
 
 void theta_to_mm(dtbloc_t &theta_blocs, dmbloc_t &lhs_blocs,

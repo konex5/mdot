@@ -44,7 +44,8 @@ void format_csv(void) {
   //                 std::vector<std::string> codec;
   //                 codec.reserve(7);
   //                 while (ss >> val) {
-  //                     val = val.back() == ',' ? val.substr(0, val.size() - 1) :
+  //                     val = val.back() == ',' ? val.substr(0, val.size() - 1)
+  //                     :
   //    val; codec.push_back(val);
   //                 }
   //                 return codec;
@@ -68,10 +69,11 @@ void format_csv(void) {
   //    encoder.at(6) << ", " << decoder.at(6) << ", "
   //                << std::endl;
   //         }
-  //         if (boost::filesystem::remove(boost::filesystem::path("results.csv")))
+  //         if
+  //         (boost::filesystem::remove(boost::filesystem::path("results.csv")))
   //    { boost::filesystem::rename(boost::filesystem::path("beautify.csv"),
-  //    boost::filesystem::path("results.csv")); } else { std::cout << "Could not
-  //    beautify. Could not rename" << std::endl;
+  //    boost::filesystem::path("results.csv")); } else { std::cout << "Could
+  //    not beautify. Could not rename" << std::endl;
   //         }
   //     } catch (const std::exception &e) {
   //         std::cout << "Could not beautify" << std::endl;

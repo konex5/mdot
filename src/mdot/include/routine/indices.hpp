@@ -62,7 +62,6 @@ indices_dst_theta_no_gate(const std::vector<m_index_t> left_indices,
   return dst_about_indices_to_contract;
 }
 
-
 std::pair<std::vector<std::tuple<t_index_t, t_index_t, g_index_t>>,
           std::vector<std::tuple<t_index_t, t_index_t, g_index_t>>>
 split_degenerate_indices_with_gate(
@@ -88,13 +87,14 @@ split_degenerate_indices_with_gate(
 
 std::vector<std::tuple<t_index_t, t_index_t, g_index_t>>
 indices_dst_theta_with_gate(const std::vector<t_index_t> theta_indices,
-                          const std::vector<g_index_t> gate_indices,
-                          const bool conserve_left_right = false) {
+                            const std::vector<g_index_t> gate_indices,
+                            const bool conserve_left_right = false) {
   std::vector<std::tuple<t_index_t, t_index_t, g_index_t>>
       dst_about_indices_to_contract;
   for (auto &theta_index : theta_indices) {
     for (auto &gate_index : gate_indices) {
-      if (std::get<1>(theta_index) == std::get<0>(gate_index) && std::get<2>(theta_index) == std::get<3>(gate_index)) {
+      if (std::get<1>(theta_index) == std::get<0>(gate_index) &&
+          std::get<2>(theta_index) == std::get<3>(gate_index)) {
         if ((!conserve_left_right) ||
             (conserve_left_right &&
              std::get<0>(theta_index) +
@@ -118,8 +118,6 @@ indices_dst_theta_with_gate(const std::vector<t_index_t> theta_indices,
       dst_about_indices_to_contract.end());
   return dst_about_indices_to_contract;
 }
-
-
 
 static inline constexpr index_t internal_qn_sum(const index_t lhs,
                                                 const index_t rhs) {

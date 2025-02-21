@@ -8,7 +8,6 @@
 #include <tuple>
 #include <vector>
 
-
 #ifndef FLOAT_PRECISION
 using data_t = double;
 #else
