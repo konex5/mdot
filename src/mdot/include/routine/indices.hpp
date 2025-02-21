@@ -30,10 +30,10 @@ indices_dst_theta_no_gate(const std::vector<m_index_t> left_indices,
   }
   std::sort(dst_about_indices_to_contract.begin(),
             dst_about_indices_to_contract.end());
-  auto last = std::unique(dst_about_indices_to_contract.begin(),
-                          dst_about_indices_to_contract.end());
-  dst_about_indices_to_contract.erase(last,
-                                      dst_about_indices_to_contract.end());
+  dst_about_indices_to_contract.erase(
+      std::unique(dst_about_indices_to_contract.begin(),
+                  dst_about_indices_to_contract.end()),
+      dst_about_indices_to_contract.end());
   return dst_about_indices_to_contract;
 }
 } // namespace mdot
