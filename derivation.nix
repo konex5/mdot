@@ -2,7 +2,7 @@
 , pandoc }:
 
 stdenv.mkDerivation rec {
-  pname = "golden_cpp";
+  pname = "golden-cpp";
   version = "0.0.1";
   inherit src;
 

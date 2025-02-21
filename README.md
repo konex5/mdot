@@ -1,6 +1,6 @@
 # Welcome to the golden cpp template
 
-This is a skeleton template for a C/C++ project. Please find all the documentation [here](https://nokx5.github.io/golden_cpp) and the source code [here](https://github.com/nokx5/golden_cpp).
+This is a skeleton template for a C/C++ project. Please find all the documentation [here](https://nokx5.github.io/golden-cpp) and the source code [here](https://github.com/nokx5/golden-cpp).
 
 ## My development tools are
 - nix :snowflake: (packaging from hell :heart:)
@@ -18,12 +18,12 @@ This is a skeleton template for a C/C++ project. Please find all the documentati
 The [nokxpkgs](https://github.com/nokx5/nokxpkgs#add-nokxpkgs-to-your-nix-channel) channel and associate overlay can be imported with the `-I` command or by setting the `NIX_PATH` environment variable.
 
 ```bash
-nix-shell -I nixpkgs=https://github.com/nokx5/nokxpkgs/archive/main.tar.gz -p golden_cpp --command cli_golden
+nix-shell -I nixpkgs=https://github.com/nokx5/nokxpkgs/archive/main.tar.gz -p golden-cpp --command cli_golden
 ```
 
 ### Develop the software
 
-Start by cloning the [git repository](https://github.com/nokx5/golden_cpp) locally and enter it.
+Start by cloning the [git repository](https://github.com/nokx5/golden-cpp) locally and enter it.
 
 #### Option 1: Develop the software (minimal requirements)
 
@@ -67,12 +67,12 @@ echo 'experimental-features = nix-command flakes' >> ~/.config/nix/nix.conf
 ### Use the software (without git clone)
 
 ```
-nix shell github:nokx5/golden_cpp --command cli_golden
+nix shell github:nokx5/golden-cpp --command cli_golden
 ```
 
 ### Develop the software
 
-Start by cloning the [git repository](https://github.com/nokx5/golden_cpp) locally and enter it.
+Start by cloning the [git repository](https://github.com/nokx5/golden-cpp) locally and enter it.
 
 #### Option 1: Develop the software
 
@@ -81,7 +81,7 @@ Start by cloning the [git repository](https://github.com/nokx5/golden_cpp) local
 nix run .#cli_golden
 
 # option b: build the local project
-nix build .#golden_cpp
+nix build .#golden-cpp
 ```
 
 #### Option 2: Develop the software (supercharged :artificial_satellite:)

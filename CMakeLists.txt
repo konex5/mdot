@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 set(PROJECT_VERSION "0.0.1")
 
 project(
-  "golden_cpp"
+  "golden-cpp"
   LANGUAGES CXX C
   VERSION "${PROJECT_VERSION}"
   DESCRIPTION "CPP Golden Project")

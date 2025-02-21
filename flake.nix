@@ -26,8 +26,8 @@
           overlays = [ overlay ];
         };
       in {
-        packages = { golden_cpp = pkgs.project_gcc; };
-        defaultPackage = self.packages.${system}.golden_cpp;
+        packages = { golden-cpp = pkgs.project_gcc; };
+        defaultPackage = self.packages.${system}.golden-cpp;
 
         apps = {
           cli_golden = {
