@@ -7,18 +7,17 @@ foreach(library ${libraries})
   else()
     add_library(${library} SHARED core/${library}.cpp)
   endif()
-  target_link_libraries(${library}) # ${BOOST_LIBRARIES} Boost::system
-                                    # Boost::filesystem
+  target_link_libraries(${library} ${TBB_TBB_LIBRARY_RELEASE} Boost::system
+  				   Boost::filesystem)
 
 endforeach()
 
-set(clicommands climdot cliprintoperator)
+set(clicommands climdot cliprintoperator create_maximal_entangled_state)
 
 foreach(clicommand ${clicommands})
 
   add_executable(cli_${clicommand} cli/${clicommand}.cpp)
-  target_link_libraries(cli_${clicommand} ${BOOST_LIBRARIES}
-                        Boost::program_options)
+  target_link_libraries(cli_${clicommand} ${BOOST_LIBRARIES} Boost::filesystem Boost::program_options)
 
   install(
     TARGETS cli_${clicommand}
