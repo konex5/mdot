@@ -78,8 +78,28 @@ void mul_usv_nondeg(std::vector<std::vector<dnum_t>> &array_U,
     std::cout << cut[i] << " and " << cut.size() << std::endl;
 
     if (cut[i] > 0) {
-      auto middle_index = nondeg[i].first;
+      const index_t middle_index = nondeg[i].first;
       auto theta_index = nondeg[i].second;
+      m_shape_t shape_left = {std::get<0>(nondeg_dims[i]),
+                              std::get<1>(nondeg_dims[i]), cut[i]};
+      m_shape_t shape_right = {cut[i], std::get<2>(nondeg_dims[i]),
+                               std::get<3>(nondeg_dims[i])};
+      std::vector<dnum_t> mat_left, mat_right;
+      //
+      const std::size_t dim0 =
+          static_cast<std::size_t>(std::get<0>(shape_left));
+      const std::size_t dim1 =
+          static_cast<std::size_t>(std::get<1>(shape_left));
+      const std::size_t dim2 =
+          static_cast<std::size_t>(std::get<1>(shape_right));
+      const std::size_t dim3 =
+          static_cast<std::size_t>(std::get<2>(shape_right));
+      if (is_um == 0) {
+
+      } else if (is_um == 1) {
+
+      } else {
+      }
 
       /*
         for _ in range(len(nondeg)):  # reversed, and passed by pop.
@@ -125,6 +145,10 @@ void mul_usv_nondeg(std::vector<std::vector<dnum_t>> &array_U,
                 nondeg_dims.pop()
                 nondeg.pop()
                 */
+      dst_lhs_blocs[{std::get<0>(theta_index), std::get<1>(theta_index),
+                     middle_index}] = {shape_left, mat_left};
+      dst_rhs_blocs[{middle_index, std::get<2>(theta_index),
+                     std::get<3>(theta_index)}] = {shape_right, mat_right};
     }
   }
 }
