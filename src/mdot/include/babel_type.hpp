@@ -1,8 +1,8 @@
 #pragma once
 
 #include <array>
-#include <map>
 #include <complex>
+#include <map>
 #include <vector>
 
 #ifndef FLOAT_PRECISION

@@ -1,11 +1,9 @@
 #pragma once
 
-#include<complex>
+#include <complex>
 using namespace std::complex_literals;
 
 #include "mdot/include/babel_type.hpp"
-
-
 
 namespace mdot {
 
@@ -88,7 +86,7 @@ struct sh_sx_no : real_sh_operators_crtp<sh_sx_no> {
 struct sh_sy_no : cplx_sh_operators_crtp<sh_sy_no> {
   static constexpr index_t n_size = 4;
   static constexpr std::array<index_t, 2> n_shape = {2, 2};
-  static constexpr std::array<znum_t, 4> n_array = {0., {0,-1}, 1.i, 0.};
+  static constexpr std::array<znum_t, 4> n_array = {0., {0, -1}, 1.i, 0.};
 };
 
 struct sh_sz_no : real_sh_operators_crtp<sh_sz_no> {
