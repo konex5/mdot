@@ -11,7 +11,7 @@ int main() {
   std::complex<double> a = {1, 2};
   std::complex<double> b = {1, 2};
   znum_t c = a + b;
-
+  double aj = nan(0);
   std::cout << c.real() << "+j" << c.imag() << std::endl;
 
   std::string blabla;

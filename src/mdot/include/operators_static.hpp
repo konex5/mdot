@@ -57,7 +57,7 @@ namespace mdot
     static constexpr std::array<index_t, 2> n_shape = {2, 2};
     static constexpr std::array<dnum_t, 4> n_array = {1, 0, 0, 1};
   };
-  struct sh_id_no : cplx_operators_crtp<sh_id_no>
+  struct sh_id_cplx_no : cplx_operators_crtp<sh_id_cplx_no>
   {
     static constexpr index_t n_size = 4;
     static constexpr std::array<index_t, 2> n_shape = {2, 2};

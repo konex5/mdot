@@ -1,4 +1,4 @@
-set(UNIT_TESTS_NAMES dummy indexdw operators operators_static utils_random_matrix simple_dgemm simple_dgesvd ) # simple_zgemm simple_zgesvd
+set(UNIT_TESTS_NAMES blocs_static dummy indexdw operators operators_static utils_random_matrix simple_dgemm simple_dgesvd ) # simple_zgemm simple_zgesvd
 
 foreach(UNIT_TEST_NAME ${UNIT_TESTS_NAMES})
   add_executable(test_${UNIT_TEST_NAME} test_${UNIT_TEST_NAME}.cpp)
