@@ -16,7 +16,7 @@ namespace mdot {
 
 void mul_mm_blocs_new(
     dtbloc_t &new_blocs, dmbloc_t lhs_blocs, dmbloc_t rhs_blocs,
-    std::vector<std::tuple<t_index_t, m_index_t, m_index_t>> buildtarget) {
+    const std::vector<std::tuple<t_index_t, m_index_t, m_index_t>> buildtarget) {
   const double alpha = 1., beta = 0.;
   for (auto &[target, lhs_it, rhs_it] : buildtarget) {
     auto N = static_cast<std::size_t>(std::get<0>(lhs_blocs[lhs_it].first) *
@@ -40,7 +40,7 @@ void mul_mm_blocs_new(
 
 void mul_mm_blocs_dup(
     dtbloc_t &new_blocs, dmbloc_t lhs_blocs, dmbloc_t rhs_blocs,
-    std::vector<std::tuple<t_index_t, m_index_t, m_index_t>> buildtarget) {
+    const std::vector<std::tuple<t_index_t, m_index_t, m_index_t>> buildtarget) {
   const double alpha = 1., beta = 0.;
   for (auto &[target, lhs_it, rhs_it] : buildtarget) {
     auto N = static_cast<std::size_t>(std::get<0>(lhs_blocs[lhs_it].first) *

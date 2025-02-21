@@ -9,7 +9,7 @@ namespace mdot {
 std::pair<std::vector<std::tuple<t_index_t, m_index_t, m_index_t>>,
           std::vector<std::tuple<t_index_t, m_index_t, m_index_t>>>
 split_degenerate_indices(
-    std::vector<std::tuple<t_index_t, m_index_t, m_index_t>> indices) {
+    const std::vector<std::tuple<t_index_t, m_index_t, m_index_t>> indices) {
 
   std::vector<std::tuple<t_index_t, m_index_t, m_index_t>> new_indices,
       dup_indices;
@@ -72,7 +72,7 @@ static inline constexpr index_t internal_qn_sub(const index_t lhs,
 }
 
 std::vector<index_t> potential_middle_indices(
-    std::vector<t_index_t> theta_indices, const int direction_right = -1
+    const std::vector<t_index_t> theta_indices, const int direction_right = -1
 ) {
   std::vector<index_t> middle_indices;
   if (direction_right == -2) {
