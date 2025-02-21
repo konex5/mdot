@@ -48,7 +48,6 @@ You can then enter the shell or build the project.
 ```bash
 # option a: develop the local software
 nix-shell -A golden_cpp
-$ exit
 
 # option b: build the local software
 nix-build -A golden_cpp
@@ -74,7 +73,6 @@ You can enter the shell or build the project with flakes in a very convenient wa
 ```bash
 # option a: develop the local software
 nix develop
-$ exit
 
 # option b: build the local software
 nix build .#golden_cpp
