@@ -1,4 +1,5 @@
 set(UNIT_TESTS_NAMES blocs_static dummy indexdw operators operators_static utils_random_matrix
+			 simple_blas_add
 			 simple_blas_dnrm
 			 simple_blas_mul_dgemm
 		     simple_blas_mul_dsymm
