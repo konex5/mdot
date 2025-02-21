@@ -244,45 +244,43 @@ slices_degenerate_blocs(
     left__loc_dim.resize(left__loc_basis.size());
     right_loc_dim.resize(right_loc_basis.size());
     for (auto &key_index : degenerate_indices.second) {
-        auto dims = theta_blocs[key_index].first;
-        std::tuple<index_t,index_small_t> left_val = {std::get<0>(key_index),std::get<1>(key_index)};
-        auto i = std::find(left__loc_basis.begin(), left__loc_basis.end(), left_val) - left__loc_basis.begin();
-        left__loc_dim[i] = {std::get<0>(dims),std::get<1>(dims)};
-        std::tuple<index_small_t,index_t> right_val = {std::get<2>(key_index),std::get<3>(key_index)};
-        auto j = std::find(right_loc_basis.begin(), right_loc_basis.end(), right_val) - right_loc_basis.begin();
-        right_loc_dim[j] = {std::get<2>(dims),std::get<3>(dims)};
-        // totdim
-        total_left__dim += std::get<0>(dims) * static_cast<index_t>(std::get<1>(dims));
-        total_right_dim += static_cast<index_t>(std::get<2>(dims)) * std::get<3>(dims);
+      auto dims = theta_blocs[key_index].first;
+      std::tuple<index_t, index_small_t> left_val = {std::get<0>(key_index),
+                                                     std::get<1>(key_index)};
+      auto i =
+          std::find(left__loc_basis.begin(), left__loc_basis.end(), left_val) -
+          left__loc_basis.begin();
+      left__loc_dim[i] = {std::get<0>(dims), std::get<1>(dims)};
+      std::tuple<index_small_t, index_t> right_val = {std::get<2>(key_index),
+                                                      std::get<3>(key_index)};
+      auto j =
+          std::find(right_loc_basis.begin(), right_loc_basis.end(), right_val) -
+          right_loc_basis.begin();
+      right_loc_dim[j] = {std::get<2>(dims), std::get<3>(dims)};
     }
+    // totdim
+    for (auto &v : left__loc_dim)
+      total_left__dim += std::get<0>(v) * static_cast<index_t>(std::get<1>(v));
+    for (auto &v : right_loc_dim)
+      total_right_dim += static_cast<index_t>(std::get<0>(v)) * std::get<1>(v);
     // offsets
     left__loc_off.push_back(0);
-    for (size_t i=1; i<left__loc_dim.size();i++) {
+    for (size_t i = 1; i < left__loc_dim.size(); i++) {
       index_t acc = 0;
-      for (size_t j=0;j<i;j++)
-        acc += std::get<0>(left__loc_dim[j])*static_cast<index_t>(std::get<1>(left__loc_dim[j]));
+      for (size_t j = 0; j < i; j++)
+        acc += std::get<0>(left__loc_dim[j]) *
+               static_cast<index_t>(std::get<1>(left__loc_dim[j]));
       left__loc_off.push_back(acc);
-    } 
-
+    }
     right_loc_off.push_back(0);
-    for (size_t i=1; i<right_loc_dim.size();i++) {
+    for (size_t i = 1; i < right_loc_dim.size(); i++) {
       index_t acc = 0;
-      for (size_t j=0;j<i;j++)
-        acc += static_cast<index_t>(std::get<0>(right_loc_dim[j]))*std::get<1>(right_loc_dim[j]);
+      for (size_t j = 0; j < i; j++)
+        acc += static_cast<index_t>(std::get<0>(right_loc_dim[j])) *
+               std::get<1>(right_loc_dim[j]);
       right_loc_off.push_back(acc);
-    } 
-
-    /*
-        # offsets
-        left__loc_off = [0] + [
-            sum([d[0] * d[1] for d in left__loc_dim[:i]])
-            for i in range(1, len(left__loc_dim))
-        ]
-        right_loc_off = [0] + [
-            sum([d[0] * d[1] for d in right_loc_dim[:i]])
-            for i in range(1, len(right_loc_dim))
-        ]
-    */
+    }
+    //
     subnewsize.push_back({total_left__dim, total_right_dim, left__loc_basis,
                           left__loc_off, left__loc_dim, right_loc_basis,
                           right_loc_off, right_loc_dim});

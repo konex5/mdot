@@ -55,7 +55,8 @@ BOOST_AUTO_TEST_CASE(test_routine_indices_slices_degenerate_blocs) {
       {1, 0, 1, 0}, {1, 1, 0, 0}, {1, 1, 1, 3}};
 
   auto middle = mdot::potential_middle_indices(theta_indices_large, 1);
-  BOOST_CHECK(middle.size() == 6);
+  BOOST_CHECK(middle.size() == 3);
+
   auto out_nondeg_deg =
       mdot::degeneracy_in_theta(theta_indices_large, middle, 1);
   BOOST_CHECK(out_nondeg_deg.first.size() == 0);
@@ -73,4 +74,15 @@ BOOST_AUTO_TEST_CASE(test_routine_indices_slices_degenerate_blocs) {
 
   auto new_subsize =
       mdot::slices_degenerate_blocs(empty_theta, out_nondeg_deg.second);
+  BOOST_CHECK(new_subsize.size() == 3);
+  BOOST_CHECK(std::get<0>(new_subsize[0]) == 1);
+  BOOST_CHECK(std::get<1>(new_subsize[0]) == 34);
+  BOOST_CHECK(std::get<3>(new_subsize[0])[0] == 0);
+  BOOST_CHECK(std::get<0>(new_subsize[1]) == 4);
+  BOOST_CHECK(std::get<1>(new_subsize[1]) == 28);
+  BOOST_CHECK(std::get<6>(new_subsize[1])[0] == 0);
+  BOOST_CHECK(std::get<6>(new_subsize[1])[1] == 2);
+  BOOST_CHECK(std::get<6>(new_subsize[1])[2] == 5);
+  BOOST_CHECK(std::get<6>(new_subsize[1])[3] == 11);
+  BOOST_CHECK(std::get<6>(new_subsize[1])[4] == 13);
 }
