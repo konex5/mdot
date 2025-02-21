@@ -32,3 +32,32 @@ BOOST_AUTO_TEST_CASE(test_routine_mul_routine) {
     BOOST_CHECK(destination.size() == 6);
   }
 }
+
+
+BOOST_AUTO_TEST_CASE(test_routine_mul_routine_two) {
+  const size_t N = 3;
+  const size_t M = 2;
+  std::vector<dnum_t> matrix = {1, 2, 3, 4, 5, 6};
+  const size_t cut = 2;
+  std::vector<dnum_t> diagonal = {2, -1, 3};
+  {
+    std::vector<dnum_t> destination(N * cut);
+    mdot::mul_mat_diag(destination, matrix, N, M, diagonal, cut);
+    BOOST_CHECK(destination[0] == 2);
+    BOOST_CHECK(destination[1] == -2);
+    BOOST_CHECK(destination[2] == 6);
+    BOOST_CHECK(destination[3] == -4);
+    BOOST_CHECK(destination[4] == 10);
+    BOOST_CHECK(destination[5] == -6);
+    BOOST_CHECK(destination.size() == 6);
+  }
+  {
+    std::vector<dnum_t> destination(cut * M);
+    mdot::mul_diag_mat(destination, matrix, N, M, diagonal, cut);
+    BOOST_CHECK(destination[0] == 2);
+    BOOST_CHECK(destination[1] == 4);
+    BOOST_CHECK(destination[2] == -3);
+    BOOST_CHECK(destination[3] == -4);
+    BOOST_CHECK(destination.size() == 4);
+  }
+}
