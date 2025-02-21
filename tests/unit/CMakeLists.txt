@@ -1,4 +1,4 @@
-set(UNIT_TESTS_NAMES dummy utils_random_matrix simple_dgesvd simple_dgemm)
+set(UNIT_TESTS_NAMES dummy utils_random_matrix simple_dgesvd simple_dgemm simple_zgemm)
 
 foreach(UNIT_TEST_NAME ${UNIT_TESTS_NAMES})
   add_executable(test_${UNIT_TEST_NAME} test_${UNIT_TEST_NAME}.cpp)
