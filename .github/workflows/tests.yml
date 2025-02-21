@@ -22,3 +22,5 @@ jobs:
           nix_path: nixpkgs=channel:nixpkgs-unstable
       - name: Check flake
         run: nix flake check -v --show-trace --no-update-lock-file
+      - name: Build Project
+        run: nix build . --no-link --show-trace --no-update-lock-file
