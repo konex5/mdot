@@ -48,6 +48,13 @@ std::pair<zopbloc_t, dnum_t> single_operator_cplx(std::string name,
       single_operators_cplx;
   std::map<std::string, typename std::map<std::string, double>> normalization;
   // C mode
+  normalization["sh-id-cplx"]["sh-none"] = 1. / sqrt(2);
+  single_operators_cplx["sh-id-cplx"]["sh-none"][{0, 0}] = {
+      {1, 0}, {0, 0}, {0, 0}, {1, 0}};
+  //
+  single_operators_cplx["sh-id-cplx"]["sh-u1"][{0, 0}] = {{1, 0}};
+  single_operators_cplx["sh-id-cplx"]["sh-u1"][{1, 1}] = {{1, 0}};
+  //
   normalization["sh-sy"]["sh-none"] = 1. / sqrt(2);
   single_operators_cplx["sh-sy"]["sh-none"][{0, 0}] = {
       {0, 0}, {0, 1}, {0, -1}, {0, 0}};
