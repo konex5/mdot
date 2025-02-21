@@ -60,6 +60,31 @@ std::pair<dopbloc_t, dnum_t> single_operator_real(std::string name,
   //
   single_operators_real["so-sm"]["so-u1"][{0, 1}] = {1};
   single_operators_real["so-sm"]["so-u1"][{1, 2}] = {1};
+  ///
+  normalization["so-sz"]["so-none"] = 1. / sqrt(2);
+  single_operators_real["so-sz"]["so-none"][{0, 0}] = {1, 0, 0, 0, 0,
+                                                       0, 0, 0, -1};
+  //
+  single_operators_real["so-sz"]["so-u1"][{0, 0}] = {1};
+  single_operators_real["so-sz"]["so-u1"][{2, 2}] = {-1};
+  ///
+  normalization["so-sx"]["so-none"] = 1. / sqrt(2);
+  single_operators_real["so-sx"]["so-none"][{0, 0}] = {0, 1, 0, 1, 0,
+                                                       1, 0, 1, 0};
+  //
+  single_operators_real["so-sx"]["so-u1"][{1, 0}] = {1};
+  single_operators_real["so-sx"]["so-u1"][{0, 1}] = {1};
+  single_operators_real["so-sx"]["so-u1"][{2, 1}] = {1};
+  single_operators_real["so-sx"]["so-u1"][{1, 2}] = {1};
+  ///
+  ///
+  normalization["so-sz^2"]["so-none"] = 1. / sqrt(2);
+  single_operators_real["so-sz^2"]["so-none"][{0, 0}] = {1, 0, 0, 0, 0,
+                                                         0, 0, 0, 1};
+  //
+  single_operators_real["so-sz^2"]["so-u1"][{0, 0}] = {1};
+  single_operators_real["so-sz^2"]["so-u1"][{2, 2}] = {1};
+
   return {single_operators_real[name][qbasis], normalization[name][qbasis]};
 }
 
