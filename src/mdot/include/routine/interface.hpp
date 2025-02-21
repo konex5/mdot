@@ -44,14 +44,8 @@ void mm_to_theta_with_gate(dtbloc_t &dst_blocs, const dmbloc_t lhs_blocs,
       split_degenerate_indices_with_gate(indices_dst_theta_with_gate(
           th_indices, gate_indices, conserve_left_right));
 
-  // printf("%i ",about_indices_to_contract.first.size());
-  // printf("%i ",about_indices_to_contract.second.size());
-  // for (auto& key : about_indices_to_contract.first)
-  //   std::cout << " " << std::get<0>(std::get<0>(key));
-
   mul_th_gate_new(dst_blocs, tmp_dst_blocs, gate_blocs,
                   about_indices_to_contract.first);
-
   mul_th_gate_dup(dst_blocs, tmp_dst_blocs, gate_blocs,
                   about_indices_to_contract.second);
 }
