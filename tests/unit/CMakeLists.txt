@@ -9,6 +9,7 @@ set(UNIT_TESTS_NAMES blocs_static dummy indexdw operators operators_static utils
 		     simple_lapack_svd_zgesvd
 		     # simple_lapack_svd_zhesvd
 		     # simple_lapack_eig_zheev
+			 routine_svd_routine
  )
 
 foreach(UNIT_TEST_NAME ${UNIT_TESTS_NAMES})
