@@ -69,6 +69,8 @@ void truncation_strategy(const std::vector<darr_t> list_of_array,
   // chi_max = max chi of bloc
   // eps_truncation_error < sum_{i>chi_max} s_all,i^2
 
+
+
   dnum_t norm;
   bloc_norm(list_of_array, {}, norm);
   //
@@ -80,30 +82,33 @@ void truncation_strategy(const std::vector<darr_t> list_of_array,
   //
   size_t index_to_cut;
   const dnum_t stop_criterion = eps_truncation_error * pow(norm, 2);
-// square
+  // square
 #pragma omp parallel
   for (dnum_t &i : tmp)
     i = i * i;
 
-  darr_t tmp_acc;
-  tmp_acc.reserve(tmp.size());
+  darr_t tmp_acc(tmp.size());
   std::partial_sum(tmp.begin(), tmp.end(), tmp_acc.begin());
 
-  for (size_t i = 0; i < tmp.size(); i++) {
+  for (size_t i = 0; i < tmp_acc.size(); i++) {
     std::cout << " " << tmp_acc[i] << " ";
   }
 
-  std::cout << "stop_criterion" << stop_criterion;
-  auto lower = std::lower_bound(tmp_acc.begin(), tmp_acc.end(), stop_criterion,
-                                std::less{});
+  std::cout << "stop_criterion=" << stop_criterion << std::endl;
+  std::cout << "tmp_acc.size=" << tmp_acc.size() << std::endl;
+  auto lower = std::lower_bound(tmp_acc.begin(), tmp_acc.end(), stop_criterion);
+  
   index_to_cut = std::distance(tmp_acc.begin(), lower);
   dw += std::accumulate(tmp_acc.begin(), lower, 0);
   dnum_t maxcutvalue = *lower;
 
-  std::cout << "AAA AAA " << index_to_cut;
-  for (size_t i = 0; i < tmp.size(); i++) {
+  std::cout << "AAA AAA=" << index_to_cut;
+  for (size_t i = 0; i < index_to_cut; i++)
     std::cout << " " << tmp_acc[i] << " ";
-  }
+
+  //cut_at_index.reserve(list_of_array.size());
+  //        return cut_at_index;
+
   /*
 std::for_each(tbb::counting_iterator<size_t>(0),
    tbb::counting_iterator<size_t>(cut.size()),
@@ -124,7 +129,7 @@ std::for_each(tbb::counting_iterator<size_t>(0),
 
             del A
 
-//cut_at_index.reserve(list_of_array.size());
+          
 
             cut_at_index = [
                 min(arr.size - _np.searchsorted(arr[::-1],
