@@ -47,6 +47,9 @@ add_compile_options(
 # if(${PROJECT_MSAN}) set(CMAKE_CXX_FLAGS "-fsanitize=memory -fPIE -pie
 # -fno-omit-frame-pointer -g -O2") endif()
 
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND APPLE)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wa,-q")
+endif()
 # ##############################################################################
 # FIND PACKAGES
 # ##############################################################################
