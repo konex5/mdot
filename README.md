@@ -89,7 +89,7 @@ nix build .#golden-cpp
 You can enter the development supercharged environment.
 
 ```bash
-nix develop .#fullDev
+nix develop
 ```
 
 ## Code Snippets

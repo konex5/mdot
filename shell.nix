@@ -35,7 +35,6 @@ let
 in
 (mkShell.override { inherit stdenv; }) rec {
   nativeBuildInputs = [ catch2 cmake gnumake ninja ] ++ [
-    # stdenv.cc.cc
     # libcxxabi
     bashCompletion
     cacert
@@ -53,7 +52,7 @@ in
   buildInputs = [
     boost17x
     spdlog
-    zlib # stdenv.cc.cc.lib
+    zlib
   ];
 
   shellHook = ''
