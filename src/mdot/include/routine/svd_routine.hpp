@@ -1,5 +1,8 @@
 #pragma once
 
+#include <tbb/tbb.h>
+#include <algorithm>
+
 #include "mdot/include/babel_type.hpp"
 
 
@@ -32,19 +35,26 @@ void bloc_norm(const array_of_s_type &array_of_s, dnum_t& norm_out) {
 
 
 void normalize_the_array(
-    std::vector<darr_t> list_of_array,
+    std::vector<darr_t>& list_of_array,
     std::vector<index_t> cut) { 
         double norm;
         if (cut.size()==0) {
             bloc_norm(list_of_array,norm);
-            for (auto &itout : list_of_array) {
-                std::for_each(itout.begin(),itout.end(), [&norm](dnum_t& x) {x /= norm;});
-            }
+            std::for_each(list_of_array.begin(),list_of_array.end(), [&norm](darr_t& itout) {
+                //std::for_each(itout.begin(),itout.end(),[&norm](dnum_t& x) { x /=norm;});
+                std::for_each(tbb::counting_iterator<std::size_t>(0),tbb::counting_iterator<std::size_t>(itout.size()),
+                [&itout, &norm](std::size_t i) { itout[i]/=norm;}
+                );
+                
+            });
         } else {
             bloc_norm(list_of_array,norm);
-            for (auto &itout : list_of_array) {
-                std::for_each(itout.begin(),itout.end(), [&norm](dnum_t& x) {x /= norm;});
-            }
+            std::for_each(tbb::counting_iterator<std::size_t>(0),tbb::counting_iterator<std::size_t>(cut.size()), [&list_of_array, &cut, &norm](std::size_t loti) {
+                auto itout = list_of_array[loti];
+                //auto amin = min(itout.size(),cut[loti]);
+                
+            });
+            
         }
         /*
                 if isinstance(cut, list):
