@@ -17,7 +17,7 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake)
 # OPTIONS
 # ##############################################################################
 
-option(PROJECT_BENCHMARK "Compile the performance in ctest" OFF)
+option(PROJECT_BENCHMARK "Compile the performance in ctest" ON)
 option(PROJECT_INTEGRATION "Compile the integration tests in ctest" OFF)
 option(PROJECT_UNIT_TESTS "Compile the unit tests in ctest" ON)
 option(PROJECT_SANDBOX "Compile the sandbox folder" OFF)
