@@ -1,22 +1,14 @@
-{ pkgs ? import <nixpkgs> { config.allowUnfree = true; }
-, clangSupport ? false
-, cudaSupport ? false
-}:
+{ pkgs ? import <nixpkgs> { config.allowUnfree = true; }, clangSupport ? false, cudaSupport ? false }:
 
 with pkgs;
 assert hostPlatform.isx86_64;
 
 let
+  mkCustomShell = mkShell.override { stdenv = if clangSupport then clangStdenv else gccStdenv; };
+
   vscodeExt = vscode-with-extensions.override {
-    vscodeExtensions = with vscode-extensions;
-      [ bbenoist.nix eamodio.gitlens ms-vscode.cpptools ]
-      ++ vscode-utils.extensionsFromVscodeMarketplace [
-        {
-          name = "vscode-clangd";
-          publisher = "llvm-vs-code-extensions";
-          version = "0.1.12";
-          sha256 = "WAWDW7Te3oRqRk4f1kjlcmpF91boU7wEnPVOgcLEISE=";
-        }
+    vscodeExtensions = with vscode-extensions; [ bbenoist.nix eamodio.gitlens ms-vscode.cpptools ] ++
+      vscode-utils.extensionsFromVscodeMarketplace [
         {
           name = "cmake";
           publisher = "twxs";
@@ -35,43 +27,48 @@ let
           version = "0.31.0";
           sha256 = "McSWrOSYM3sMtZt48iStiUvfAXURGk16CHKfBHKj5Zk=";
         }
+        {
+          name = "vscode-clangd";
+          publisher = "llvm-vs-code-extensions";
+          version = "0.1.12";
+          sha256 = "WAWDW7Te3oRqRk4f1kjlcmpF91boU7wEnPVOgcLEISE=";
+        }
       ];
   };
-  mkCustomShell = mkShell.override {
-    stdenv = if clangSupport then clangStdenv else gccStdenv;
-  };
+
 in
 mkCustomShell {
-  nativeBuildInputs = [ cmake gnumake ninja ] ++ [
-    bashCompletion
-    bashInteractive
-    cacert
-    cppcheck
-    clang-tools
-    cmake-format
-    cmakeCurses
-    cmake-language-server
-    fmt
-    gdb
-    git
-    gnumake
-    llvm
-    less
-    more
-    nixpkgs-fmt
-    pkg-config
-    emacs-nox
-  ] ++ lib.optionals (hostPlatform.isLinux) [ typora vscodeExt ] ++ [ hugo ];
   buildInputs = [
-    # libcxxabi
+    # stdenv.cc.cc.lib
     boost17x
     spdlog
     tbb
     zlib
   ] ++ lib.optionals (hostPlatform.isLinux) [ glibcLocales ];
 
+  nativeBuildInputs = [ cmake gnumake ninja ] ++ [
+    # stdenv.cc.cc
+    # libcxxabi
+    bashCompletion
+    bashInteractive
+    cacert
+    clang-tools
+    cmake-format
+    cmakeCurses
+    cmake-language-server
+    cppcheck
+    emacs-nox
+    fmt
+    gdb
+    git
+    less
+    llvm
+    more
+    nixpkgs-fmt
+    pkg-config
+  ] ++ lib.optionals (hostPlatform.isLinux) [ typora vscodeExt ] ++ [ hugo ];
+
   shellHook = ''
     export SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
   '';
-
 }

@@ -4,7 +4,7 @@ set(PROJECT_VERSION "0.0.1")
 
 project(
   "golden-cpp"
-  LANGUAGES CXX C
+  LANGUAGES C CXX
   VERSION "${PROJECT_VERSION}"
   DESCRIPTION "CPP Golden Project")
 
@@ -37,7 +37,7 @@ add_compile_options(-Wall -Wextra)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND APPLE)
   add_compile_options("-Wa" "-q")
 else()
-  add_compile_options(
+  add_compile_options( # -fno-omit-frame-pointer -fno-inline
     $<$<CONFIG:DEBUG>:-Werror> $<$<CONFIG:DEBUG>:-pedantic>
     $<$<CONFIG:DEBUG>:-Wunused-macros> $<$<CONFIG:DEBUG>:-Wshadow>)
   add_compile_options($<$<CONFIG:RELEASE>:-mfma> $<$<CONFIG:RELEASE>:-mavx>
