@@ -18,9 +18,9 @@ set(CMAKE_CXX_COMPILER $ENV{CXX})
 # OPTIONS
 # ##############################################################################
 
+option(PROJECT_BENCHMARK "Build Benchmark" OFF)
 option(PROJECT_TESTS "Build Project's Tests" ON)
 option(PROJECT_SANDBOX "Build Sandbox" OFF)
-option(PROJECT_BENCHMARK "Build Benchmark" OFF)
 option(PROJECT_STATIC "Build Static Libraries" OFF)
 
 set(PROJECT_CXX_FLAGS_DEBUG -fno-omit-frame-pointer -fno-inline)

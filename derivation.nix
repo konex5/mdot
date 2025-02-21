@@ -12,6 +12,7 @@ stdenv.mkDerivation rec {
     "-DCMAKE_BUILD_TYPE=Release"
     "-DPROJECT_TESTS=On"
     "-DPROJECT_SANDBOX=OFF"
+    "--no-warn-unused-cli"
   ];
   hardeningEnable = [ "format" "fortify" "pic" ];
   ninjaFlags = [ "-v" ];
