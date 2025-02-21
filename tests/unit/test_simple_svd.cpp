@@ -42,13 +42,12 @@ BOOST_AUTO_TEST_CASE(test_svd) {
         double sum = 0;
         for (std::size_t k = 0; k < K; k++)
           sum += U[i * K + k] * S[k] * Vd[k * M + j];
-        // std::cout << "A[i*5+j]=" << A[i*M+j] << " and the sum gives:" << sum
-        // << std::endl;
-        BOOST_CHECK_CLOSE(A[i * M + j], sum, 1e-5);
+        //std::cout << "A[i*5+j]=" << A[i*M+j] << " and the sum gives:" << sum << std::endl;
+        BOOST_CHECK(abs(A[i * M + j]-sum)<1e-5);
       };
 
     double Uout[N * K], Sout[K], VDout[K * M];
-    std::size_t ldA = M, ldu = M, ldvT = M < N ? M : N;
+    std::size_t ldA = M, ldu = N, ldvT = M < N ? M : N;
     double worktest;
     int info, lwork = -1;
 
@@ -94,9 +93,8 @@ BOOST_AUTO_TEST_CASE(test_svd) {
         double sum = 0;
         for (std::size_t k = 0; k < K; k++)
           sum += U[i + k * N] * S[k] * Vd[k + j * K];
-        // std::cout << "A[i+j*4]=" << A[i+j*N] << " and the sum gives:" << sum
-        // << std::endl;
-        BOOST_CHECK_CLOSE(A[i + j * N], sum, 1e-5);
+        // std::cout << "A[i+j*4]=" << A[i+j*N] << " and the sum gives:" << sum << std::endl;
+        BOOST_CHECK(abs(A[i + j * N]-sum)<1e-5);
       };
 
     double Uout[N * K], Sout[K], VDout[K * M];

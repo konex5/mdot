@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
           sum += A[i * K + k] * B[k * M + j];
         // std::cout << "A[i*5+j]=" << A[i*M+j] << " and the sum gives:" << sum
         // << std::endl;
-        BOOST_CHECK_CLOSE(C[i * M + j], sum, 1e-5);
+        BOOST_CHECK_EQUAL(C[i * M + j], sum);
       };
 
     double Cout[N * M];
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
 
     for (std::size_t k = 0; k < N * M; k++)
       // std::cout << C[k] << "compared with" << Cout[k] << std::endl;
-      BOOST_CHECK_CLOSE(C[k], Cout[k], 1e-7);
+      BOOST_CHECK_EQUAL(C[k], Cout[k]);
 
     std::cout << std::endl << std::endl;
   }
@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
           sum += A[i + k * M] * B[k + j * K];
         // std::cout << "A[i+j*4]=" << C[i+j*N] << " and the sum gives:" << sum
         // << std::endl;
-        BOOST_CHECK_CLOSE(C[i + j * M], sum, 1e-5);
+        BOOST_CHECK_EQUAL(C[i + j * M], sum);
       };
 
     double Cout[N * M];
@@ -78,6 +78,6 @@ BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
 
     for (std::size_t k = 0; k < N * M; k++)
       // std::cout << C[k] << "compared with" << Cout[k] << std::endl;
-      BOOST_CHECK_CLOSE(C[k], Cout[k], 1e-7);
+      BOOST_CHECK_EQUAL(C[k], Cout[k]);
   }
 }
