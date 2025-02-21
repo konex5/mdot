@@ -21,11 +21,18 @@ int main(int argc, char *argv[]) {
     po::store(po::parse_command_line(argc, argv, desc), vm);
     po::notify(vm);
 
-    if (vm.count("help") || vm.count("hamiltonian") == 0 ||
-        vm.count("output") == 0) {
-      std::cout << desc << "\n";
+    if (vm.count("help")) {
+      std::cout << desc << std::endl;
       return 0;
     }
+    if (vm.count("hamiltonian") == 0 || vm.count("output") == 0) {
+      std::cout << desc << std::endl;
+      std::cout << "cli_create_maximal_entangled_state: error: the following "
+                   "arguments are required: -H/--hamiltonian, -o/--output"
+                << std::endl;
+      return 1;
+    }
+    
     boost::filesystem::path hamiltonian_path(
         vm["hamiltonian"].as<std::string>());
     boost::filesystem::path output_path(vm["output"].as<std::string>());
