@@ -14,15 +14,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_COMPILER $ENV{CC})
 set(CMAKE_CXX_COMPILER $ENV{CXX})
 
-list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/.CMake)
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake)
 
 # ##############################################################################
 # OPTIONS
 # ##############################################################################
 
-option(PROJECT_BENCHMARK "Build Benchmark" OFF)
-option(PROJECT_TESTS "Build Project's Tests" ON)
-option(PROJECT_SANDBOX "Build Sandbox" OFF)
+option(PROJECT_BENCHMARK "Compile the performance in ctest" OFF)
+option(PROJECT_INTEGRATION "Compile the integration tests in ctest" ON)
+option(PROJECT_UNIT_TESTS "Compile the unit tests in ctest" ON)
+option(PROJECT_SANDBOX "Compile the sandbox folder" OFF)
 option(PROJECT_STATIC "Build Static Libraries" OFF)
 
 set(PROJECT_CXX_FLAGS_DEBUG -fno-omit-frame-pointer -fno-inline)
@@ -49,7 +50,7 @@ add_compile_options(
 # if(${PROJECT_MSAN}) set(CMAKE_CXX_FLAGS "-fsanitize=memory -fPIE -pie
 # -fno-omit-frame-pointer -g -O2") endif()
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND APPLE)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND APPLE)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wa,-q")
 endif()
 # ##############################################################################
