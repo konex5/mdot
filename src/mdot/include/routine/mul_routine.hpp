@@ -67,30 +67,31 @@ void mul_th_gate_new(
     dtbloc_t &new_blocs, dtbloc_t th_blocs, dgbloc_t gate_blocs,
     const std::vector<std::tuple<t_index_t, t_index_t, g_index_t>>
         buildtarget) {
-  const double alpha = 1., beta = 0.;
   for (auto &[target, th_key, gate_key] : buildtarget) {
     auto dim0 = static_cast<size_t>(std::get<0>(th_blocs[th_key].first));
     auto dim1 = static_cast<size_t>(std::get<3>(th_blocs[th_key].first));
     auto N = static_cast<size_t>(std::get<1>(gate_blocs[gate_key].first));
     auto M = static_cast<size_t>(std::get<2>(gate_blocs[gate_key].first));
 
-    auto K = static_cast<size_t>(std::get<1>(th_blocs[th_key].first));
-    auto L = static_cast<size_t>(std::get<2>(th_blocs[th_key].first));
+    auto K = static_cast<size_t>(std::get<0>(gate_blocs[gate_key].first));
+    auto L = static_cast<size_t>(std::get<3>(gate_blocs[gate_key].first));
     
-    std::vector<dnum_t> mat_out(dim0*N*M*dim1);
+    std::vector<dnum_t> mat_out(dim0*N*M*dim1,0);
 
     auto theta = th_blocs[th_key].second;
     auto gate = gate_blocs[gate_key].second;
 
     for (size_t n=0; n<N;n++)
       for (size_t m=0; m<M;m++)
-        for (size_t k=0; k<M;k++)
+        for (size_t k=0; k<K;k++)
           for (size_t l=0; l<L;l++)
-            for (size_t i=0; i<dim0;i++)
-#pragma omp parallel
-              for (size_t j=0; j<dim1;j++) {
-              // mat_out[i*(N+M+dim1)+n*(M+dim1)+m*(dim1)+j] = 
-              // theta[i*(K+L+dim1)+k*(L+dim1)+l*(dim1)+j] *gate[k*(N+L+M)+n*(L+M)+m*(L)+l];
+            for (size_t i=0; i<dim0;i++) {
+              size_t out_off = i*(N*M*dim1)+n*(M*dim1)+m*(dim1);
+              size_t in_off = i*(K*L*dim1)+k*(L*dim1)+l*(dim1);
+              size_t gate_off = k*(N*L*M)+n*(L*M)+m*(L)+l;
+              #pragma omp parallel
+              for (size_t j=0; j<dim1;j++)
+                mat_out[out_off+j] += theta[in_off+j] * gate[gate_off];
             }
 
     new_blocs[target] = {{std::get<0>(th_blocs[th_key].first),
@@ -98,6 +99,46 @@ void mul_th_gate_new(
                           std::get<2>(gate_blocs[gate_key].first),
                           std::get<3>(th_blocs[th_key].first)},
                          mat_out};
+  }
+}
+
+
+
+void mul_th_gate_dup(
+    dtbloc_t &new_blocs, dtbloc_t th_blocs, dgbloc_t gate_blocs,
+    const std::vector<std::tuple<t_index_t, t_index_t, g_index_t>>
+        buildtarget) {
+  for (auto &[target, th_key, gate_key] : buildtarget) {
+    auto dim0 = static_cast<size_t>(std::get<0>(th_blocs[th_key].first));
+    auto dim1 = static_cast<size_t>(std::get<3>(th_blocs[th_key].first));
+    auto N = static_cast<size_t>(std::get<1>(gate_blocs[gate_key].first));
+    auto M = static_cast<size_t>(std::get<2>(gate_blocs[gate_key].first));
+
+    auto K = static_cast<size_t>(std::get<0>(gate_blocs[gate_key].first));
+    auto L = static_cast<size_t>(std::get<3>(gate_blocs[gate_key].first));
+    
+    std::vector<dnum_t> mat_out(dim0*N*M*dim1,0);
+
+    auto theta = th_blocs[th_key].second;
+    auto gate = gate_blocs[gate_key].second;
+
+    for (size_t n=0; n<N;n++)
+      for (size_t m=0; m<M;m++)
+        for (size_t k=0; k<K;k++)
+          for (size_t l=0; l<L;l++)
+            for (size_t i=0; i<dim0;i++) {
+              size_t out_off = i*(N*M*dim1)+n*(M*dim1)+m*(dim1);
+              size_t in_off = i*(K*L*dim1)+k*(L*dim1)+l*(dim1);
+              size_t gate_off = k*(N*L*M)+n*(L*M)+m*(L)+l;
+              #pragma omp parallel
+              for (size_t j=0; j<dim1;j++)
+                mat_out[out_off+j] += theta[in_off+j] * gate[gate_off];
+            }
+
+#pragma omp parallel
+    for (size_t i = 0; i < dim0*N*M*dim1; i++) {
+      new_blocs[target].second[i] += mat_out[i];
+    }
   }
 }
 
