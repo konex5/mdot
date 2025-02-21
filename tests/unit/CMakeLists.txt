@@ -1,4 +1,14 @@
-set(UNIT_TESTS_NAMES blocs_static dummy indexdw operators operators_static utils_random_matrix simple_dgemm simple_dgesvd simple_dsymm simple_zheev ) # simple_zgemm simple_zgesvd
+set(UNIT_TESTS_NAMES blocs_static dummy indexdw operators operators_static utils_random_matrix
+		     simple_blas_mul_dgemm
+		     simple_blas_mul_dsymm
+		     simple_blas_mul_zgemm
+		     simple_blas_mul_zhemm
+		     simple_lapack_svd_dgesvd
+		     # simple_lapack_svd_dsysvd
+		     # simple_lapack_svd_zgesvd
+		     # simple_lapack_svd_zhesvd
+		     # simple_lapack_eig_zheev
+ )
 
 foreach(UNIT_TEST_NAME ${UNIT_TESTS_NAMES})
   add_executable(test_${UNIT_TEST_NAME} test_${UNIT_TEST_NAME}.cpp)
