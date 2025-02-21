@@ -178,3 +178,4 @@ b*
 tests/sandbox
 docs/target-doc
 result*
+.trash*
