@@ -144,52 +144,67 @@ void svd_nondeg(dtbloc_t &theta_bloc,
     array_of_V.push_back(VDout);
   }
 }
-/*
-void svd_deg(
-        theta_blocs
-        : _Dict[tuple, _np.ndarray], deg
-        : _List[_Tuple[int, _List[_Tuple[int, int, int, int]]]], subnewsize
-        : _List[_List], array_of_U
-        : _List[_np.ndarray], array_of_S
-        : _List[_np.array], array_of_V
-        : _List[_np.ndarray], )
-                                  if len(theta_blocs.keys()) == 0:
-                                      datatype = None
-                                  else:
-                                      datatype =
-                                  list(theta_blocs.values())[0].dtype for i in
-                                  range(len(deg)): # construct the degenerated
-                                  matrix thetaDeg = _np.zeros((subnewsize[i][0],
-                                  subnewsize[i][1]), dtype=datatype) # fill it
-                                      for it in deg[i][1]:
-                                          posL = subnewsize[i][2].index((it[0],
-                                  it[1])) offL = subnewsize[i][3][posL] dimL =
-                                  subnewsize[i][4][posL] posR =
-                                  subnewsize[i][5].index((it[2], it[3])) offR =
-                                  subnewsize[i][6][posR] dimR =
-                                  subnewsize[i][7][posR] sliceL = slice(offL,
-                                  offL + dimL[0] * dimL[1]) sliceR = slice(offR,
-                                  offR + dimR[0] * dimR[1]) thetaDeg[sliceL,
-                                  sliceR] = theta_blocs[it].reshape( dimL[0] *
-                                  dimL[1], dimR[0] * dimR[1]
-                                          )
-                                      try:
-                                          U, S, V = _svd(
-                                              thetaDeg, full_matrices=False,
-                                  compute_uv=True, overwrite_a=False
-                                          )
-                                      except:
-                                          print("!!!!!!!!matrix badly
-                                  conditioned!!!!!!!!!") U, S, V = _svd(
-                                              thetaDeg,
-                                              full_matrices=False,
-                                              compute_uv=True,
-                                              overwrite_a=True,
-                                              lapack_driver="gesvd",
-                                          )
 
-                                      array_of_U.append(U)
-                                      array_of_S.append(S)
-                                      array_of_V.append(V)
-                              */
+void svd_deg(dtbloc_t& theta_blocs,
+    std::vector<std::pair<index_t, std::vector<t_index_t>>>& deg,
+    std::vector<std::tuple<index_t, index_t,
+                       typename std::vector<std::tuple<index_t, index_small_t>>,
+                       typename std::vector<index_t>,
+                       typename std::vector<std::pair<index_t, index_small_t>>,
+                       typename std::vector<std::tuple<index_small_t, index_t>>,
+                       typename std::vector<index_t>,
+                       typename std::vector<std::pair<index_small_t, index_t>>>>& subnewsize,
+    std::vector<std::vector<dnum_t>> & array_of_U,
+    std::vector<std::vector<dnum_t>> & array_of_S,
+    std::vector<std::vector<dnum_t>> & array_of_V
+) {
+  for (size_t i = 0; i< deg.size(); i++) {
+    auto dim0 = static_cast<size_t>(std::get<0>(subnewsize[i]));
+    auto dim1 = static_cast<size_t>(std::get<1>(subnewsize[i]));
+
+    std::vector<dnum_t> tmp_theta(dim0*dim1,0);
+    for (auto& theta_key : deg[i].second) {
+
+
+    }
+
+  }
+
+/*
+    for i in range(len(deg)):
+        # construct the degenerated matrix
+        thetaDeg = _np.zeros((subnewsize[i][0], subnewsize[i][1]), dtype=datatype)
+        # fill it
+        for it in deg[i][1]:
+            posL = subnewsize[i][2].index((it[0], it[1]))
+            offL = subnewsize[i][3][posL]
+            dimL = subnewsize[i][4][posL]
+            posR = subnewsize[i][5].index((it[2], it[3]))
+            offR = subnewsize[i][6][posR]
+            dimR = subnewsize[i][7][posR]
+            sliceL = slice(offL, offL + dimL[0] * dimL[1])
+            sliceR = slice(offR, offR + dimR[0] * dimR[1])
+            thetaDeg[sliceL, sliceR] = theta_blocs[it].reshape(
+                dimL[0] * dimL[1], dimR[0] * dimR[1]
+            )
+        try:
+            U, S, V = _svd(
+                thetaDeg, full_matrices=False, compute_uv=True, overwrite_a=False
+            )
+        except:
+            print("!!!!!!!!matrix badly conditioned!!!!!!!!!")
+            U, S, V = _svd(
+                thetaDeg,
+                full_matrices=False,
+                compute_uv=True,
+                overwrite_a=True,
+                lapack_driver="gesvd",
+            )
+
+        array_of_U.append(U)
+        array_of_S.append(S)
+        array_of_V.append(V)
+*/
+}
+
 } // namespace mdot
