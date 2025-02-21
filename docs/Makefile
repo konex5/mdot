@@ -14,7 +14,7 @@ doc-assets:
 
 .PHONY: doc-build
 doc-build:
-	cd $(DESTINATION); hugo --minify --config=$(CURRENTDIR)/config.toml  --contentDir=$(CURRENTDIR)/content/ --baseURL docs/target-doc/public
+	cd $(DESTINATION); hugo --minify --config=$(CURRENTDIR)/config.toml  --contentDir=$(CURRENTDIR)/content/ --baseURL https://nokx5.github.io/golden_cpp/
 
 .PHONY: clean
 clean:
