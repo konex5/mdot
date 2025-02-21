@@ -3,7 +3,7 @@ THEME_VERSION := v0.13.2
 THEME_NAME := hugo-geekdoc
 CURRENTDIR := $(shell pwd)
 DESTINATION := $(CURRENTDIR)/target-doc
-THEMEDIR := $(CURRENTDIR)/themes
+THEMEDIR := $(DESTINATION)/themes
 
 .PHONY: doc
 serve: clean doc-assets
@@ -27,4 +27,3 @@ clean:
 .PHONY: clean-all
 clean-all:
 	rm -rf $(DESTINATION)
-	rm -rf $(THEMEDIR)

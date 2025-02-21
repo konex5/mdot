@@ -21,14 +21,10 @@ stdenv.mkDerivation rec {
   enableParallelChecking = true;
   doCheck = true;
 
-  # outputs = [ "doc" "out" ]; # "bin" "dev"  "lib"
-  # preInstall = ''
-  #   export DESTINATION=$doc/tmp/target-doc
-  #   export THEMEDIR=$doc/tmp/theme    
-  #   # build doc
-  #   make doc-build -C $src/docs DESTINATION=$DESTINATION THEMEDIR=$THEMEDIR HUGO_OPTS="--baseURL $doc/share/doc/html/"
-  #   # install doc and clean
-  #   mv $DESTINATION/public $doc/html
-  #   rm -rf $doc/tmp
-  # '';
+  outputs = [ "doc" "out" ]; # "bin" "dev"  "lib"
+  preInstall = ''
+    mkdir -p $doc/html
+    make doc-build -C $src/docs DESTINATION=$TMP/tmp-doc HUGO_OPTS="--baseURL $doc/html/"
+    mv $TMP/tmp-doc/public/* $doc/html/
+  '';
 }
