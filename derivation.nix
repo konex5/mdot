@@ -1,6 +1,17 @@
-{ stdenv, boost17x, cmakeMinimal, fixDarwinDylibNames, hdf5-cpp, gnumake, lapack, lib, nix-gitignore, ninja, tbb, src, version ? "0.0.2" }:
-
-# lapack spdlog
+{ stdenv
+, boost17x
+, cmakeMinimal
+, fixDarwinDylibNames
+, hdf5-cpp
+, gnumake
+, lapack
+, lib
+, nix-gitignore
+, ninja
+, tbb
+, src ? ./.
+, version ? "0.0.2"
+}:
 
 stdenv.mkDerivation {
   pname = "mdot";
@@ -20,11 +31,4 @@ stdenv.mkDerivation {
   enableParallelBuilding = true;
   enableParallelChecking = true;
   doCheck = true;
-
-  # outputs = [ "doc" "out" ]; # "bin" "dev"  "lib"
-  # preInstall = ''
-  #   mkdir -p $doc/html
-  #   make doc-build -C $src/docs DESTINATION=$TMP/tmp-doc HUGO_OPTS="--baseURL $doc/html/"
-  #   mv $TMP/tmp-doc/public/* $doc/html/
-  # '';
 }
