@@ -1,78 +1,61 @@
 #pragma once
 
-#include <tbb/tbb.h>
 #include <algorithm>
+#include <tbb/tbb.h>
 
 #include "mdot/include/babel_type.hpp"
 
-
 extern "C" {
-  dnum_t dnrm2_(const size_t *n,  const dnum_t *x, const size_t *incX);
-  dnum_t ddot_(const size_t *n, const dnum_t *x, const size_t *incX,
+dnum_t dnrm2_(const size_t *n, const dnum_t *x, const size_t *incX);
+dnum_t ddot_(const size_t *n, const dnum_t *x, const size_t *incX,
              const dnum_t *y, const size_t *incY);
-  void dgesvd_(const char *jobu, const char *jobvt, const size_t *m,
+void dgesvd_(const char *jobu, const char *jobvt, const size_t *m,
              const size_t *n, const dnum_t *a, const size_t *lda, dnum_t *s,
              dnum_t *u, const size_t *ldu, dnum_t *vt, const size_t *ldvt,
              dnum_t *work, int *lwork, int *info);
-  void zgesvd_(const char *jobu, const char *jobvt, const size_t *m,
+void zgesvd_(const char *jobu, const char *jobvt, const size_t *m,
              const size_t *n, const znum_t *a, const size_t *lda, double *s,
              znum_t *u, const size_t *ldu, znum_t *vt, const size_t *ldvt,
              znum_t *work, const int *lwork, double *rwork, int *info);
 }
 
-
-void bloc_norm(const array_of_s_type &array_of_s, dnum_t& norm_out) {
+void bloc_norm(const array_of_s_type &array_of_s,
+               const std::vector<index_t> &cut, dnum_t &norm_out) {
   norm_out = 0;
   const size_t inc = 1;
-  for (auto &itout : array_of_s) {
-    const size_t n = itout.size();
-    norm_out+=ddot_(&n,itout.data(),&inc,itout.data(),&inc);
+
+  if (cut.size() == 0) {
+    for (auto &itout : array_of_s) {
+      const size_t n = itout.size();
+      norm_out += ddot_(&n, itout.data(), &inc, itout.data(), &inc);
+    }
+    norm_out = sqrt(norm_out);
+  } else {
+    std::for_each(tbb::counting_iterator<std::size_t>(0),
+                  tbb::counting_iterator<std::size_t>(cut.size()),
+                  [&array_of_s, &cut, &norm_out, &inc](std::size_t i) {
+                    auto itout = array_of_s[i];
+                    const size_t n =
+                        cut[i] < itout.size() ? cut[i] : itout.size();
+                    norm_out +=
+                        ddot_(&n, itout.data(), &inc, itout.data(), &inc);
+                  });
+    norm_out = sqrt(norm_out);
   }
-  norm_out = sqrt(norm_out);
 }
 
-
-
-
-void normalize_the_array(
-    std::vector<darr_t>& list_of_array,
-    std::vector<index_t> cut) { 
-        double norm;
-        if (cut.size()==0) {
-            bloc_norm(list_of_array,norm);
-            std::for_each(list_of_array.begin(),list_of_array.end(), [&norm](darr_t& itout) {
-                //std::for_each(itout.begin(),itout.end(),[&norm](dnum_t& x) { x /=norm;});
-                std::for_each(tbb::counting_iterator<std::size_t>(0),tbb::counting_iterator<std::size_t>(itout.size()),
-                [&itout, &norm](std::size_t i) { itout[i]/=norm;}
-                );
-                
-            });
-        } else {
-            bloc_norm(list_of_array,norm);
-            std::for_each(tbb::counting_iterator<std::size_t>(0),tbb::counting_iterator<std::size_t>(cut.size()), [&list_of_array, &cut, &norm](std::size_t loti) {
-                auto itout = list_of_array[loti];
-                //auto amin = min(itout.size(),cut[loti]);
-                
-            });
-            
-        }
-        /*
-                if isinstance(cut, list):
-                    norm = _np.sqrt(
-                        _np.sum(
-                            [
-                                _np.linalg.norm(arr[: cut[i]]) ** 2
-                                for i, arr in enumerate(list_of_array)
-                            ]
-                        )
-                    )
-                    for i in range(len(list_of_array)):
-                        list_of_array[i] /= norm
-                else:
-                    norm = _np.sqrt(_np.sum([_np.linalg.norm(arr) ** 2 for arr
-                in list_of_array])) for i in range(len(list_of_array)):
-                        list_of_array[i] /= norm
-              */
+void normalize_the_array(std::vector<darr_t> &list_of_array,
+                         std::vector<index_t> cut) {
+  double norm;
+  bloc_norm(list_of_array, cut, norm);
+  std::for_each(
+      list_of_array.begin(), list_of_array.end(), [&norm](darr_t &itout) {
+        // std::for_each(itout.begin(),itout.end(),[&norm](dnum_t& x) { x
+        // /=norm;});
+        std::for_each(tbb::counting_iterator<std::size_t>(0),
+                      tbb::counting_iterator<std::size_t>(itout.size()),
+                      [&itout, &norm](std::size_t i) { itout[i] /= norm; });
+      });
 }
 
 void truncation_strategy(
@@ -106,37 +89,37 @@ void truncation_strategy(
 }
 
 template <typename T>
-void svd_nondeg(std::map<t_index_t, std::vector<T>> block_dict,
-                std::vector<std::tuple<int, t_index_t, t_shape_t>>
-                    nondeg, //: _List[_Tuple[int, _Tuple[int, int, int, int]]],
-                // std::vector<bloc_index_t> nondeg_dims,//: _List[_Tuple[int,
-                // int, int, int]],
-                std::vector<std::vector<T>> array_of_U,
-                std::vector<darr_t> array_of_S,
-                std::vector<std::vector<T>>
-                    array_of_V) { /*-> None:
-                                       for i in range(len(nondeg)):
-                                           dims = nondeg_dims[i]
-                                           try:
-                                               U, S, V = _svd(
-                                                   block_dict[nondeg[i][1]].reshape(dims[0]
-                                     * dims[1], dims[2] * dims[3]),
-                                     full_matrices=False, compute_uv=True,
-                                                   overwrite_a=True,
-                                               )
-                                           except:
-                                               print("!!!!!!!!matrix badly
-                                       conditioned!!!!!!!!!") U, S, V = _svd(
-                                                   block_dict[nondeg[i][1]].reshape(dims[0]
-                                     * dims[1], dims[2] * dims[3]),
-                                     full_matrices=False, compute_uv=True,
-                                                   overwrite_a=False,
-                                                   lapack_driver="gesvd",
-                                               )
-                                           array_of_U.append(U)
-                                           array_of_S.append(S)
-                                           array_of_V.append(V)
-                                   */
+void svd_nondeg(
+    std::map<t_index_t, std::vector<T>> block_dict,
+    std::vector<std::tuple<int, t_index_t, t_shape_t>>
+        nondeg, //: _List[_Tuple[int, _Tuple[int, int, int, int]]],
+    // std::vector<bloc_index_t> nondeg_dims,//: _List[_Tuple[int,
+    // int, int, int]],
+    std::vector<std::vector<T>> array_of_U, std::vector<darr_t> array_of_S,
+    std::vector<std::vector<T>>
+        array_of_V) { /*-> None:
+                           for i in range(len(nondeg)):
+                               dims = nondeg_dims[i]
+                               try:
+                                   U, S, V = _svd(
+                                       block_dict[nondeg[i][1]].reshape(dims[0]
+                         * dims[1], dims[2] * dims[3]),
+                         full_matrices=False, compute_uv=True,
+                                       overwrite_a=True,
+                                   )
+                               except:
+                                   print("!!!!!!!!matrix badly
+                           conditioned!!!!!!!!!") U, S, V = _svd(
+                                       block_dict[nondeg[i][1]].reshape(dims[0]
+                         * dims[1], dims[2] * dims[3]),
+                         full_matrices=False, compute_uv=True,
+                                       overwrite_a=False,
+                                       lapack_driver="gesvd",
+                                   )
+                               array_of_U.append(U)
+                               array_of_S.append(S)
+                               array_of_V.append(V)
+                       */
 }
 /*
 void svd_deg(
