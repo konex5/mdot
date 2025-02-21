@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 
-set(PROJECT_VERSION "0.0.1")
+# set(PROJECT_VERSION "0.0.1")
 
 project(
   "mdot"
