@@ -12,6 +12,7 @@ set(UNIT_TESTS_NAMES blocs_static dummy indexdw operators operators_static utils
 			 routine_svd_routine
 			 routine_indices
 			 routine_interface
+			 qnum
  )
 
 foreach(UNIT_TEST_NAME ${UNIT_TESTS_NAMES})
