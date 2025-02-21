@@ -4,7 +4,7 @@
 
 BOOST_AUTO_TEST_CASE(test_blocs_static_sh_real) {
   {
-    // sh_id_no
+    // sh_id_u1
     BOOST_CHECK(mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::nb_blocs == 2);
     BOOST_CHECK(mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::get_size(0) == 1);
     BOOST_CHECK(mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::get_size(1) == 1);
@@ -26,6 +26,30 @@ BOOST_AUTO_TEST_CASE(test_blocs_static_sh_real) {
     BOOST_CHECK(arrays[0][1] == 2.);
     auto array1 = mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::get_array(1, -2.);
     BOOST_CHECK(array1[0] == -2.);
+  }
+  {
+    // sh_id_u1
+    BOOST_CHECK(mdot::cplx_sh_blocs_crtp<mdot::sh_id_cplx_u1>::nb_blocs == 2);
+    BOOST_CHECK(mdot::cplx_sh_blocs_crtp<mdot::sh_id_cplx_u1>::get_size(0) == 1);
+    BOOST_CHECK(mdot::cplx_sh_blocs_crtp<mdot::sh_id_cplx_u1>::get_size(1) == 1);
+    BOOST_CHECK(std::get<0>(mdot::cplx_sh_blocs_crtp<mdot::sh_id_cplx_u1>::get_shape(
+                    0)) == 1);
+    BOOST_CHECK(std::get<1>(mdot::cplx_sh_blocs_crtp<mdot::sh_id_cplx_u1>::get_shape(
+                    0)) == 1);
+    BOOST_CHECK(std::get<0>(mdot::cplx_sh_blocs_crtp<mdot::sh_id_cplx_u1>::get_shape(
+                    1)) == 1);
+    BOOST_CHECK(std::get<1>(mdot::cplx_sh_blocs_crtp<mdot::sh_id_cplx_u1>::get_shape(
+                    1)) == 1);
+    auto a = mdot::cplx_sh_blocs_crtp<mdot::sh_id_cplx_u1>::get_shapes();
+    BOOST_CHECK(std::get<0>(a[0]) == 1);
+    BOOST_CHECK(std::get<1>(a[0]) == 1);
+    BOOST_CHECK(std::get<0>(a[1]) == 1);
+    BOOST_CHECK(std::get<1>(a[1]) == 1);
+    auto arrays = mdot::cplx_sh_blocs_crtp<mdot::sh_id_cplx_u1>::get_arrays(2.);
+    BOOST_CHECK(arrays[0][0].real() == 2.);
+    BOOST_CHECK(arrays[0][1].real() == 2.);
+    auto array1 = mdot::cplx_sh_blocs_crtp<mdot::sh_id_cplx_u1>::get_array(1, -2.);
+    BOOST_CHECK(array1[0].real() == -2.);
   }
   {
     // sh_sp_u1
