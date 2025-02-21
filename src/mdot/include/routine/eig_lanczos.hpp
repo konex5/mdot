@@ -18,13 +18,12 @@ void dgemv_(const char *trans, const size_t *m, const size_t *n,
             const dnum_t *y, const size_t *incy);
 void dstev_(const char *jobz, const size_t *n, const dnum_t *d, const dnum_t *e,
             const dnum_t *z, const size_t *ldaz, const dnum_t *work,
-            size_t *info);
+            int *info);
 }
 
 namespace mdot {
 
 inline dnum_t vector_norm(dnum_t *psi, const size_t N) {
-  dnum_t norm;
   const size_t inc = 1;
   return dnrm2_(&N, psi, &inc);
 }
@@ -87,7 +86,7 @@ bool lanczos_ev(dnum_t *A, dnum_t *psi, size_t dim, const size_t max_iter,
     if (it > 1) {
       dnum_t *z = (dnum_t *)malloc(it * it * sizeof(double));
       dnum_t *work = (dnum_t *)malloc(4 * it * sizeof(double));
-      size_t info;
+      int info;
       memcpy(d, As, it * sizeof(double));
       memcpy(e, Bs, it * sizeof(double));
       dstev_((char *)"N", &it, d, e, z, &it, work, &info);
@@ -108,7 +107,7 @@ bool lanczos_ev(dnum_t *A, dnum_t *psi, size_t dim, const size_t max_iter,
     memcpy(e, Bs, it * sizeof(double));
     dnum_t *z = (dnum_t *)malloc(it * it * sizeof(double));
     dnum_t *work = (dnum_t *)malloc(4 * it * sizeof(double));
-    size_t info;
+    int info;
     dstev_((char *)"V", &it, d, e, z, &it, work, &info);
     if (info != 0) {
       std::ostringstream err;
