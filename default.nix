@@ -12,5 +12,6 @@
 with pkgs;
 
 callPackage ./derivation.nix {
+  src = nix-gitignore.gitignoreSourcePure [ ".gitignore" "buil*" ] ./.;
   stdenv = if clangSupport then clangStdenv else gccStdenv;
 }

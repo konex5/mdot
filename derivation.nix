@@ -1,4 +1,4 @@
-{ stdenv, boost17x, cmakeMinimal, fixDarwinDylibNames, gnumake, lapack, lib, nix-gitignore, ninja, tbb, src ? nix-gitignore.gitignoreSourcePure [ ".gitignore" "buil*" ] ./., version ? "0.0.2" }:
+{ stdenv, boost17x, cmakeMinimal, fixDarwinDylibNames, gnumake, lapack, lib, nix-gitignore, ninja, tbb, src, version ? "0.0.2" }:
 
 # lapack spdlog
 
