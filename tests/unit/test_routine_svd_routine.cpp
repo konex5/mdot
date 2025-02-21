@@ -1,7 +1,7 @@
-#include <boost/test/unit_test.hpp>
-#include <tbb/tbb.h>
 #include "mdot/include/babel_type.hpp"
 #include "mdot/include/routine/svd_routine.hpp"
+#include <boost/test/unit_test.hpp>
+#include <tbb/tbb.h>
 
 BOOST_AUTO_TEST_CASE(test_routine_svd_routine_bloc_norm) {
   {
@@ -21,9 +21,7 @@ BOOST_AUTO_TEST_CASE(test_routine_svd_routine_bloc_norm) {
     //
     std::vector<index_t> cut_at_index;
     dnum_t dw = 0;
-    
-    truncation_strategy(a,10,cut_at_index,dw,0.2);
-  
-  }
 
+    truncation_strategy(a, 10, cut_at_index, dw, 0.2);
+  }
 }

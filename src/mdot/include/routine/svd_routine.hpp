@@ -6,6 +6,8 @@
 #include <tbb/tbb.h>
 
 #include "mdot/include/babel_type.hpp"
+#include <iostream>
+
 
 extern "C" {
 dnum_t dnrm2_(const size_t *n, const dnum_t *x, const size_t *incX);
@@ -50,121 +52,123 @@ void normalize_the_array(std::vector<darr_t> &list_of_array,
                          std::vector<index_t> cut) {
   double norm;
   bloc_norm(list_of_array, cut, norm);
-  std::for_each(
-      list_of_array.begin(), list_of_array.end(), [&norm](darr_t &itout) {
-        // std::for_each(itout.begin(),itout.end(),[&norm](dnum_t& x) { 
-        // x /=norm;});
-        std::for_each(tbb::counting_iterator<size_t>(0),
-                      tbb::counting_iterator<size_t>(itout.size()),
-                      [&itout, norm](size_t i) { itout[i] /= norm; });
-      });
+  std::for_each(list_of_array.begin(), list_of_array.end(),
+                [&norm](darr_t &itout) {
+                  // std::for_each(itout.begin(),itout.end(),[&norm](dnum_t& x)
+                  // { x /=norm;});
+                  std::for_each(tbb::counting_iterator<size_t>(0),
+                                tbb::counting_iterator<size_t>(itout.size()),
+                                [&itout, norm](size_t i) { itout[i] /= norm; });
+                });
 }
 
-void truncation_strategy(
-    const std::vector<darr_t> list_of_array, const size_t chi_max, std::vector<index_t>& cut_at_index, dnum_t& dw,
-    const double eps_truncation_error = 1e-8) {
-        // epsilon = || forall bloc s_bloc ||_2^2
-        // chi_max = max chi of bloc
-        // eps_truncation_error < sum_{i>chi_max} s_all,i^2
-         
-        dnum_t norm;
-        bloc_norm(list_of_array,{},norm);
-        //
-        darr_t tmp;
-        for (auto &arr : list_of_array)
-            tmp.insert(tmp.end(),arr.begin(),arr.end());
-        
-        std::sort(tmp.begin(),tmp.end());
-        //
-        size_t index_to_cut;
-        dnum_t stop_criterion = eps_truncation_error * pow(norm,2);
-        // square
-        #pragma omp parallel
-        for (dnum_t& i : tmp)
-            i = i*i;
-        
-        darr_t tmp_acc;
-        tmp_acc.reserve(tmp.size());
-        std::partial_sum(tmp.begin(),tmp.end(),tmp_acc.begin());
-        
-        for (size_t i=0; i< tmp.size(); i++) {
-            std::cout << " " << tmp_acc[i] << " ";
-        }
-        
-        std::cout << "stop_criterion" << stop_criterion;
-        auto lower = std::lower_bound(tmp_acc.begin(),tmp_acc.end(),stop_criterion);
-        index_to_cut = std::distance(tmp_acc.begin(),lower);
-        dw += std::accumulate(tmp_acc.begin(),lower,0);
-        dnum_t maxcutvalue = *lower;
-        
-        std::cout << "AAA AAA " << index_to_cut;
-        for (size_t i=0; i< tmp.size(); i++) {
-            std::cout << " " << tmp_acc[i] << " ";
-        }
-           /*
-        std::for_each(tbb::counting_iterator<size_t>(0),
-            tbb::counting_iterator<size_t>(cut.size()),
-            [list_of_array, cut, &dw, inc](size_t i) {
-                    auto itout = list_of_array[i];
-                    const size_t n = itout.size()-cut[i];
-                    dw += ddot_(&n, itout.data()+cut[i], &inc, itout.data()+cut[i], &inc);
-                  });
+void truncation_strategy(const std::vector<darr_t> list_of_array,
+                         const size_t chi_max,
+                         std::vector<index_t> &cut_at_index, dnum_t &dw,
+                         const double eps_truncation_error = 1e-8) {
+  // epsilon = || forall bloc s_bloc ||_2^2
+  // chi_max = max chi of bloc
+  // eps_truncation_error < sum_{i>chi_max} s_all,i^2
+
+  dnum_t norm;
+  bloc_norm(list_of_array, {}, norm);
+  //
+  darr_t tmp;
+  for (auto &arr : list_of_array)
+    tmp.insert(tmp.end(), arr.begin(), arr.end());
+
+  std::sort(tmp.begin(), tmp.end());
+  //
+  size_t index_to_cut;
+  const dnum_t stop_criterion = eps_truncation_error * pow(norm, 2);
+// square
+#pragma omp parallel
+  for (dnum_t &i : tmp)
+    i = i * i;
+
+  darr_t tmp_acc;
+  tmp_acc.reserve(tmp.size());
+  std::partial_sum(tmp.begin(), tmp.end(), tmp_acc.begin());
+
+  for (size_t i = 0; i < tmp.size(); i++) {
+    std::cout << " " << tmp_acc[i] << " ";
+  }
+
+  std::cout << "stop_criterion" << stop_criterion;
+  auto lower = std::lower_bound(tmp_acc.begin(), tmp_acc.end(), stop_criterion,
+                                std::less{});
+  index_to_cut = std::distance(tmp_acc.begin(), lower);
+  dw += std::accumulate(tmp_acc.begin(), lower, 0);
+  dnum_t maxcutvalue = *lower;
+
+  std::cout << "AAA AAA " << index_to_cut;
+  for (size_t i = 0; i < tmp.size(); i++) {
+    std::cout << " " << tmp_acc[i] << " ";
+  }
+  /*
+std::for_each(tbb::counting_iterator<size_t>(0),
+   tbb::counting_iterator<size_t>(cut.size()),
+   [list_of_array, cut, &dw, inc](size_t i) {
+           auto itout = list_of_array[i];
+           const size_t n = itout.size()-cut[i];
+           dw += ddot_(&n, itout.data()+cut[i], &inc, itout.data()+cut[i],
+&inc);
+         });
 
 
 
 
-                     dw = _np.sum(A[:index2cutA] ** 2)
-                     
-                     
-                     maxcutvalue = A[index2cutA]
+            dw = _np.sum(A[:index2cutA] ** 2)
 
-                     del A
+
+            maxcutvalue = A[index2cutA]
+
+            del A
 
 //cut_at_index.reserve(list_of_array.size());
-        
-                     cut_at_index = [
-                         min(arr.size - _np.searchsorted(arr[::-1],
-                     maxcutvalue, "left"), chi_max) for arr in list_of_array
-                     ]
 
-                     return cut_at_index, dw
-                 */
+            cut_at_index = [
+                min(arr.size - _np.searchsorted(arr[::-1],
+            maxcutvalue, "left"), chi_max) for arr in list_of_array
+            ]
+
+            return cut_at_index, dw
+        */
 }
 
 template <typename T>
-void svd_nondeg(
-    std::map<t_index_t, std::vector<T>> block_dict,
-    std::vector<std::tuple<int, t_index_t, t_shape_t>>
-        nondeg, //: _List[_Tuple[int, _Tuple[int, int, int, int]]],
-    // std::vector<bloc_index_t> nondeg_dims,//: _List[_Tuple[int,
-    // int, int, int]],
-    std::vector<std::vector<T>>& array_of_U, std::vector<darr_t>& array_of_S,
-    std::vector<std::vector<T>>&
-        array_of_V) { 
-            
-            /*-> None:
-                           for i in range(len(nondeg)):
-                               dims = nondeg_dims[i]
-                               try:
-                                   U, S, V = _svd(
-                                       block_dict[nondeg[i][1]].reshape(dims[0]
-                         * dims[1], dims[2] * dims[3]),
-                         full_matrices=False, compute_uv=True,
-                                       overwrite_a=True,
-                                   )
-                               except:
-                                   print("!!!!!!!!matrix badly
-                           conditioned!!!!!!!!!") U, S, V = _svd(
-                                       block_dict[nondeg[i][1]].reshape(dims[0]
-                         * dims[1], dims[2] * dims[3]),
-                         full_matrices=False, compute_uv=True,
-                                       overwrite_a=False,
-                                       lapack_driver="gesvd",
-                                   )
-                               array_of_U.append(U)
-                               array_of_S.append(S)
-                               array_of_V.append(V)
-                       */
+void svd_nondeg(std::map<t_index_t, std::vector<T>> block_dict,
+                std::vector<std::tuple<int, t_index_t, t_shape_t>>
+                    nondeg, //: _List[_Tuple[int, _Tuple[int, int, int, int]]],
+                // std::vector<bloc_index_t> nondeg_dims,//: _List[_Tuple[int,
+                // int, int, int]],
+                std::vector<std::vector<T>> &array_of_U,
+                std::vector<darr_t> &array_of_S,
+                std::vector<std::vector<T>> &array_of_V) {
+
+  /*-> None:
+                 for i in range(len(nondeg)):
+                     dims = nondeg_dims[i]
+                     try:
+                         U, S, V = _svd(
+                             block_dict[nondeg[i][1]].reshape(dims[0]
+               * dims[1], dims[2] * dims[3]),
+               full_matrices=False, compute_uv=True,
+                             overwrite_a=True,
+                         )
+                     except:
+                         print("!!!!!!!!matrix badly
+                 conditioned!!!!!!!!!") U, S, V = _svd(
+                             block_dict[nondeg[i][1]].reshape(dims[0]
+               * dims[1], dims[2] * dims[3]),
+               full_matrices=False, compute_uv=True,
+                             overwrite_a=False,
+                             lapack_driver="gesvd",
+                         )
+                     array_of_U.append(U)
+                     array_of_S.append(S)
+                     array_of_V.append(V)
+             */
 }
 /*
 void svd_deg(
