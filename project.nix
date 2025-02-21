@@ -25,8 +25,8 @@ stdenv.mkDerivation rec {
     mkdir -p $bin $dev $doc $lib $out
     mkdir -p $out/share/doc/
     # install your doc here
-    for docinputs in $src/docs/*.md; do 
-        pandoc $docinputs -f markdown -t html5 -H $src/docs/simple.css -s -o $out/share/doc/$(basename $docinputs .md).html --template $src/docs/template.html --toc --toc-depth=2 --lua-filter=$src/docs/links-to-html.lua
+    for docinputs in $src/docs/*.md; do  # -H $src/docs/simple.css
+        pandoc $docinputs --from markdown --to html5 -c $src/docs/mvp.css -s -o $out/share/doc/$(basename $docinputs .md).html --template $src/docs/template.html --toc --toc-depth=2 --lua-filter=$src/docs/links-to-html.lua
     done
 '';
 }

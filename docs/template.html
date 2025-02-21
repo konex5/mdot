@@ -1,3 +1,5 @@
+<!-- pandoc -D html > template.html + modifications -->
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="$lang$" xml:lang="$lang$"$if(dir)$ dir="$dir$"$endif$>
 <head>
@@ -13,22 +15,44 @@ $endif$
 $if(keywords)$
   <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
 $endif$
-$if(description-meta)$
-  <meta name="description" content="$description-meta$" />
-$endif$
   <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
-  <style>
-    $styles.html()$
+$if(highlighting-css)$
+  <style type="text/css">
+$highlighting-css$
   </style>
+$endif$
 $for(css)$
   <link rel="stylesheet" href="$css$" />
 $endfor$
+<style type="text/css">
+  :root {
+  --color: #2096ba;
+  --color-secondary: #2096ba;
+  --color-accent: #f7f8fa;
+  --color-text: #222426;
+  --color-shadow: #c5d2db;
+  --width-content: 720px;
+  }
+  
+  code, samp {
+    font-size: 1.2em;
+  }
+
+  nav {
+    justify-content: space-evenly;
+  }
+  
+  a:hover {
+    filter: none;
+    color: #df6e21;
+  }
+$if(quotes)$
+    q { quotes: "“" "”" "‘" "’"; }
+$endif$
+</style>
 $if(math)$
   $math$
 $endif$
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
 $for(header-includes)$
   $header-includes$
 $endfor$
@@ -39,6 +63,16 @@ $include-before$
 $endfor$
 $if(title)$
 <header id="title-block-header">
+  <nav id="$idprefix$TOC">
+      <a href="/"><img alt="Logo" src="$logo$" height="70"></a>
+      $if(toc)$
+      <ul>
+          <li><a href="#">Navigation</a>
+            $table-of-contents$
+          </li>
+      </ul>
+      $endif$
+  </nav>
 <h1 class="title">$title$</h1>
 $if(subtitle)$
 <p class="subtitle">$subtitle$</p>
@@ -49,19 +83,20 @@ $endfor$
 $if(date)$
 <p class="date">$date$</p>
 $endif$
+$if(website)$
+<p><a href="$website$"><i>Website &nearr;</i></a></p>
+$endif$
 </header>
 $endif$
-$if(toc)$
-<nav id="$idprefix$TOC" role="doc-toc">
-$if(toc-title)$
-<h2 id="$idprefix$toc-title">$toc-title$</h2>
-$endif$
-$table-of-contents$
-</nav>
-$endif$
+<main>
+<hr>
+<article>
 $body$
 $for(include-after)$
 $include-after$
 $endfor$
+<hr>
+</article>
+</main>
 </body>
 </html>
