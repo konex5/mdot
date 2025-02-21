@@ -19,6 +19,6 @@ foreach(UNIT_TEST_NAME ${UNIT_TESTS_NAMES})
                                   BOOST_TEST_DYN_LINK=TRUE)
   target_link_libraries(
     test_${UNIT_TEST_NAME} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY}
-    ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} lapack)
+    ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ${TBB_TBB_LIBRARY_RELEASE} lapack)
   add_test(unit_${UNIT_TEST_NAME} test_${UNIT_TEST_NAME})
 endforeach()

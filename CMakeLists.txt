@@ -32,7 +32,7 @@ option(PROJECT_MEMCHECK "Enable memcheck test with valgrind" OFF)
 # ##############################################################################
 
 set(PROJECT_CXX_FLAGS -Wall -Wextra)
-set(PROJECT_CXX_FLAGS_DEBUG -g -O -fno-inline -fno-omit-frame-pointer) # -pedantic
+set(PROJECT_CXX_FLAGS_DEBUG -g -O0 -fno-inline -fno-omit-frame-pointer) # -pedantic
 set(PROJECT_CXX_FLAGS_RELEASE -O3 -mfma -mavx) # -q openmp-simd -mftree-vectorize
 set(PROJECT_CXX_FLAGS_RELWITHDEBUG -g -O2)
 set(PROJECT_CXX_FLAGS_MINSIZERELEASE -O2)
