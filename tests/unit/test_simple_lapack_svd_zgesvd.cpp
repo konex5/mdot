@@ -23,26 +23,24 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd) {
 
   { // real, row major
     const znum_t A[N * N] = {{1., +1.}, {-1., -1.}, {1., -1.}, {1., 0.}};
-    const znum_t Adeepcopy[N * N] = {A[0],A[1],A[2],A[3]};
+    const znum_t Adeepcopy[N * N] = {A[0], A[1], A[2], A[3]};
 
-    znum_t U[N * N] = {{-0.36514837, -7.30296743e-01},
-                       {-0.40824829, +4.08248290e-01},
-                       {-0.18257419, +5.47722558e-01},
-                       {-0.81649658, +2.77555756e-16}};
+    znum_t Vd[N * N] = {{-3.65148372e-01, -0.73029674},
+                        {5.47722558e-01, +0.18257419},
+                        {-4.08248290e-01, +0.40824829},
+                        {3.33066907e-16, 0.81649658}};
     double S[N] = {2.23606798, 1.41421356};
-    znum_t Vd[N * N] = {{-0.81649658, 0.},
-                        {0.40824829, -0.40824829},
-                        {-0.57735027, 0.},
-                        {-0.57735027, +0.57735027}};
+    znum_t U[N * N] = {{-0.81649658, 0.},
+                       {-0.57735027, 0.},
+                       {0.40824829, +0.40824829},
+                       {-0.57735027, -0.57735027}};
 
     for (std::size_t i = 0; i < N; i++)
       for (std::size_t j = 0; j < N; j++) {
         znum_t sum = 0;
         for (std::size_t k = 0; k < N; k++)
           sum += U[i * N + k] * S[k] * Vd[k * N + j];
-        // std::cout << "A[i*5+j]=" << A[i*N+j] << " and the sum gives:" << sum
-        // << std::endl;
-        BOOST_CHECK(abs(A[i * N + j] - sum) < 1e-5);
+        BOOST_CHECK(abs(Adeepcopy[i * N + j] - sum) < 1e-5);
       };
 
     znum_t Uout[N * N], VDout[N * N];
@@ -51,7 +49,7 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd) {
     znum_t worktest;
     double rwork[5 * min(N, N)];
     int info, lwork = -1;
-    
+
     zgesvd_((char *)"S", (char *)"S", &N, &N, A, &ldA, Sout, VDout, &ldvT, Uout,
             &ldu, &worktest, &lwork, rwork, &info);
 
@@ -65,14 +63,11 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd) {
 
     for (std::size_t k = 0; k < N; k++)
       BOOST_CHECK(abs(S[k] - Sout[k]) < 1e-5);
-    // for (std::size_t k = 0; k < N*N; k++) {
-    //   std::cout << U[k] << " and " << Uout[k] << std::endl;
-    //   // BOOST_CHECK(!(abs(U[k] -Uout[k]) < 1e-5));
-    // }
-    // for (std::size_t k = 0; k < N*N; k++) {
-    //   std::cout << Vd[k] << " and " << VDout[k] << std::endl;
-    //   // BOOST_CHECK(!(abs(Vd[k] - conj(VDout[k])) < 1e-5));
-    // }
+    for (std::size_t k = 0; k < N * N; k++)
+      BOOST_CHECK(abs(U[k] - Uout[k]) < 1e-5);
+
+    for (std::size_t k = 0; k < N * N; k++)
+      BOOST_CHECK(abs(Vd[k] - VDout[k]) < 1e-5);
 
     for (std::size_t i = 0; i < N; i++)
       for (std::size_t j = 0; j < N; j++) {
@@ -81,11 +76,10 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd) {
           sum += Uout[i * N + k] * Sout[k] * VDout[k * N + j];
         BOOST_CHECK(abs(Adeepcopy[i * N + j] - sum) < 1e-5);
       };
-  
   }
   { // real, column major
     const znum_t A[N * N] = {{1., +1.}, {1., -1.}, {-1., -1.}, {1., 0.}};
-    const znum_t Adeepcopy[N * N] = {A[0],A[1],A[2],A[3]};
+    const znum_t Adeepcopy[N * N] = {A[0], A[1], A[2], A[3]};
 
     znum_t U[N * N] = {{-0.36514837, -7.30296743e-01},
                        {-0.18257419, +5.47722558e-01},
@@ -104,7 +98,6 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd) {
           sum += U[i + k * N] * S[k] * Vd[k + j * N];
         BOOST_CHECK(abs(A[i + j * N] - sum) < 1e-5);
       };
-
 
     znum_t Uout[N * N], VDout[N * N];
     double Sout[N];
@@ -127,24 +120,21 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd) {
     for (std::size_t k = 0; k < N; k++)
       BOOST_CHECK(S[k] - Sout[k] < 1e-5);
 
-    for (std::size_t k = 0; k < N*N; k++)
+    for (std::size_t k = 0; k < N * N; k++)
       BOOST_CHECK(abs(U[k] - Uout[k]) < 1e-5);
-    
-    for (std::size_t k = 0; k < N*N; k++)
-      BOOST_CHECK(abs(Vd[k] - VDout[k]) < 1e-5);
-    
 
-  for (std::size_t i = 0; i < N; i++)
+    for (std::size_t k = 0; k < N * N; k++)
+      BOOST_CHECK(abs(Vd[k] - VDout[k]) < 1e-5);
+
+    for (std::size_t i = 0; i < N; i++)
       for (std::size_t j = 0; j < N; j++) {
         znum_t sum = 0;
         for (std::size_t k = 0; k < N; k++)
           sum += Uout[i + k * N] * Sout[k] * VDout[k + j * N];
         BOOST_CHECK(abs(Adeepcopy[i + j * N] - sum) < 1e-5);
       };
-
   }
 }
-
 
 BOOST_AUTO_TEST_CASE(test_simple_zgesvd_overwrite_left) {
 
@@ -169,7 +159,8 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd_overwrite_left) {
   //       znum_t sum = 0;
   //       for (std::size_t k = 0; k < K; k++)
   //         sum += U[i * K + k] * S[k] * Vd[k * M + j];
-  //       // std::cout << "A[i*5+j]=" << A[i*M+j] << " and the sum gives:" << sum
+  //       // std::cout << "A[i*5+j]=" << A[i*M+j] << " and the sum gives:" <<
+  //       sum
   //       // << std::endl;
   //       BOOST_CHECK(abs(A[i * M + j] - sum) < 1e-5);
   //     };
@@ -182,13 +173,15 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd_overwrite_left) {
   //   double rwork[5 * min(M, N)];
   //   int info, lwork = -1;
 
-  //   zgesvd_((char *)"S", (char *)"S", &M, &N, A, &ldA, Sout, VDout, &ldu, Uout,
+  //   zgesvd_((char *)"S", (char *)"S", &M, &N, A, &ldA, Sout, VDout, &ldu,
+  //   Uout,
   //           &ldvT, &worktest, &lwork, rwork, &info);
 
   //   lwork = (int)worktest.real();
   //   znum_t work[lwork];
 
-  //   zgesvd_((char *)"S", (char *)"S", &M, &N, A, &ldA, Sout, VDout, &ldu, Uout,
+  //   zgesvd_((char *)"S", (char *)"S", &M, &N, A, &ldA, Sout, VDout, &ldu,
+  //   Uout,
   //           &ldvT, work, &lwork, rwork, &info);
 
   //   // std::cout << "info=" << info << " zero is ok!" << std::endl;
@@ -199,11 +192,11 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd_overwrite_left) {
 
   //   for (std::size_t i = 0; i < N; i++)
   //     for (std::size_t k = 0; k < K; k++)
-  //       // std::cout << U[i*K+k] << "compared with" << Uout[i*K+k] << std::endl;
-  //       if (!((k != 3 && i != N) || (i == 0 && k == 1))) // some freedom in SVD
+  //       // std::cout << U[i*K+k] << "compared with" << Uout[i*K+k] <<
+  //       std::endl; if (!((k != 3 && i != N) || (i == 0 && k == 1))) // some
+  //       freedom in SVD
   //         BOOST_CHECK(abs(U[i * K + k] - Uout[i * K + k]) < 1e-5);
 
-    
   //   for (std::size_t i = 0; i < N; i++)
   //     for (std::size_t j = 0; j < M; j++) {
   //       znum_t sum = 0;
@@ -215,7 +208,6 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd_overwrite_left) {
   //     };
   //   */
 
-    
   //   // for (std::size_t j = 0; j < M; j++)
   //   //   for (std::size_t k = 0; k < K; k++) {
   //   //     std::cout << Vd[k * M + j] << "compared with" << VDout[k * M + j]
@@ -227,7 +219,8 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd_overwrite_left) {
   //   //     znum_t sum = 0;
   //   //     for (std::size_t k = 0; k < K; k++)
   //   //       sum += Uout[i * K + k] * Sout[k] * Vd[k * M + j];
-  //   //     // std::cout << "A[i*5+j]=" << A[i*M+j] << " and the sum gives:" << sum
+  //   //     // std::cout << "A[i*5+j]=" << A[i*M+j] << " and the sum gives:"
+  //   << sum
   //   //     // << std::endl;
   //   //     BOOST_CHECK(abs(A[i * M + j] - sum) < 1e-5);
   //     // };
@@ -268,7 +261,8 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd_overwrite_left) {
   //   znum_t work[lwork];
   //   std::cout << "info=" << info << " zero is ok!" << std::endl;
 
-  //   zgesvd_((char *)"S", (char *)"S", &M, &N, A, &ldA, Sout, Uout, &ldu, VDout, &ldvT,
+  //   zgesvd_((char *)"S", (char *)"S", &M, &N, A, &ldA, Sout, Uout, &ldu,
+  //   VDout, &ldvT,
   //            work, &lwork, rwork, &info);
   //   std::cout << "info=" << info << " zero is ok!" << std::endl;
 
@@ -285,10 +279,8 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd_overwrite_left) {
   //       BOOST_CHECK(abs(A[i + j * N] - sum) < 1e-5);
   //     };
 
-
   // }
 }
-
 
 BOOST_AUTO_TEST_CASE(test_simple_zgesvd_overwrite_right) {
 
@@ -313,7 +305,8 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd_overwrite_right) {
   //       znum_t sum = 0;
   //       for (std::size_t k = 0; k < K; k++)
   //         sum += U[i * K + k] * S[k] * Vd[k * M + j];
-  //       // std::cout << "A[i*5+j]=" << A[i*M+j] << " and the sum gives:" << sum
+  //       // std::cout << "A[i*5+j]=" << A[i*M+j] << " and the sum gives:" <<
+  //       sum
   //       // << std::endl;
   //       BOOST_CHECK(abs(A[i * M + j] - sum) < 1e-5);
   //     };
@@ -326,13 +319,15 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd_overwrite_right) {
   //   double rwork[5 * min(M, N)];
   //   int info, lwork = -1;
 
-  //   zgesvd_((char *)"S", (char *)"S", &M, &N, A, &ldA, Sout, VDout, &ldu, Uout,
+  //   zgesvd_((char *)"S", (char *)"S", &M, &N, A, &ldA, Sout, VDout, &ldu,
+  //   Uout,
   //           &ldvT, &worktest, &lwork, rwork, &info);
 
   //   lwork = (int)worktest.real();
   //   znum_t work[lwork];
 
-  //   zgesvd_((char *)"S", (char *)"S", &M, &N, A, &ldA, Sout, VDout, &ldu, Uout,
+  //   zgesvd_((char *)"S", (char *)"S", &M, &N, A, &ldA, Sout, VDout, &ldu,
+  //   Uout,
   //           &ldvT, work, &lwork, rwork, &info);
 
   //   // std::cout << "info=" << info << " zero is ok!" << std::endl;
@@ -343,11 +338,11 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd_overwrite_right) {
 
   //   for (std::size_t i = 0; i < N; i++)
   //     for (std::size_t k = 0; k < K; k++)
-  //       // std::cout << U[i*K+k] << "compared with" << Uout[i*K+k] << std::endl;
-  //       if (!((k != 3 && i != N) || (i == 0 && k == 1))) // some freedom in SVD
+  //       // std::cout << U[i*K+k] << "compared with" << Uout[i*K+k] <<
+  //       std::endl; if (!((k != 3 && i != N) || (i == 0 && k == 1))) // some
+  //       freedom in SVD
   //         BOOST_CHECK(abs(U[i * K + k] - Uout[i * K + k]) < 1e-5);
 
-    
   //   for (std::size_t i = 0; i < N; i++)
   //     for (std::size_t j = 0; j < M; j++) {
   //       znum_t sum = 0;
@@ -359,7 +354,6 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd_overwrite_right) {
   //     };
   //   */
 
-    
   //   // for (std::size_t j = 0; j < M; j++)
   //   //   for (std::size_t k = 0; k < K; k++) {
   //   //     std::cout << Vd[k * M + j] << "compared with" << VDout[k * M + j]
@@ -371,7 +365,8 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd_overwrite_right) {
   //   //     znum_t sum = 0;
   //   //     for (std::size_t k = 0; k < K; k++)
   //   //       sum += Uout[i * K + k] * Sout[k] * Vd[k * M + j];
-  //   //     // std::cout << "A[i*5+j]=" << A[i*M+j] << " and the sum gives:" << sum
+  //   //     // std::cout << "A[i*5+j]=" << A[i*M+j] << " and the sum gives:"
+  //   << sum
   //   //     // << std::endl;
   //   //     BOOST_CHECK(abs(A[i * M + j] - sum) < 1e-5);
   //     // };
@@ -412,7 +407,8 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd_overwrite_right) {
   //   znum_t work[lwork];
   //   std::cout << "info=" << info << " zero is ok!" << std::endl;
 
-  //   zgesvd_((char *)"S", (char *)"S", &M, &N, A, &ldA, Sout, Uout, &ldu, VDout, &ldvT,
+  //   zgesvd_((char *)"S", (char *)"S", &M, &N, A, &ldA, Sout, Uout, &ldu,
+  //   VDout, &ldvT,
   //            work, &lwork, rwork, &info);
   //   std::cout << "info=" << info << " zero is ok!" << std::endl;
 
@@ -428,7 +424,6 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd_overwrite_right) {
   //       << std::endl;
   //       BOOST_CHECK(abs(A[i + j * N] - sum) < 1e-5);
   //     };
-
 
   // }
 }
