@@ -197,24 +197,75 @@ degeneracy_in_theta(const std::vector<t_index_t> theta_indices,
 }
 
 std::vector<std::tuple<index_t, index_t,
-                       typename std::vector<std::tuple<index_t, index_t>>,
+                       typename std::vector<std::tuple<index_t, index_small_t>>,
                        typename std::vector<index_t>,
-                       typename std::vector<std::pair<index_t, index_t>>,
-                       typename std::vector<std::tuple<index_t, index_t>>,
+                       typename std::vector<std::pair<index_t, index_small_t>>,
+                       typename std::vector<std::tuple<index_small_t, index_t>>,
                        typename std::vector<index_t>,
-                       typename std::vector<std::pair<index_t, index_t>>>>
+                       typename std::vector<std::pair<index_small_t, index_t>>>>
 slices_degenerate_blocs(
     dtbloc_t theta_blocs,
-    std::vector<std::pair<index_t, std::vector<t_index_t>>> degenerate_list) {
+    const std::vector<std::pair<index_t, std::vector<t_index_t>>>
+        degenerate_list) {
   //
-  std::vector<std::tuple<index_t, index_t,
-                         typename std::vector<std::tuple<index_t, index_t>>,
-                         typename std::vector<index_t>,
-                         typename std::vector<std::pair<index_t, index_t>>,
-                         typename std::vector<std::tuple<index_t, index_t>>,
-                         typename std::vector<index_t>,
-                         typename std::vector<std::pair<index_t, index_t>>>>
+  std::vector<
+      std::tuple<index_t, index_t,
+                 typename std::vector<std::tuple<index_t, index_small_t>>,
+                 typename std::vector<index_t>,
+                 typename std::vector<std::pair<index_t, index_small_t>>,
+                 typename std::vector<std::tuple<index_small_t, index_t>>,
+                 typename std::vector<index_t>,
+                 typename std::vector<std::pair<index_small_t, index_t>>>>
       subnewsize;
+  for (auto &degenerate_indices : degenerate_list) {
+    std::vector<std::tuple<index_t, index_small_t>> left__loc_basis;
+    std::vector<std::tuple<index_small_t, index_t>> right_loc_basis;
+    std::vector<std::pair<index_t, index_small_t>> left__loc_dim;
+    std::vector<std::pair<index_small_t, index_t>> right_loc_dim;
+    index_t total_left__dim, total_right_dim;
+    std::vector<index_t> left__loc_off, right_loc_off;
+    // define a local basis
+    for (auto &key_index : degenerate_indices.second) {
+      left__loc_basis.push_back(
+          {std::get<0>(key_index), std::get<1>(key_index)});
+      right_loc_basis.push_back(
+          {std::get<2>(key_index), std::get<3>(key_index)});
+    }
+    std::sort(left__loc_basis.begin(), left__loc_basis.end());
+    left__loc_basis.erase(
+        std::unique(left__loc_basis.begin(), left__loc_basis.end()),
+        left__loc_basis.end());
+    std::sort(right_loc_basis.begin(), right_loc_basis.end());
+    right_loc_basis.erase(
+        std::unique(right_loc_basis.begin(), right_loc_basis.end()),
+        right_loc_basis.end());
+    // find the local dim corresponding to left_loc_basis and right_loc_basis
+    /*
+        # find the local dim corresponding to left_loc_basis and right_loc_basis
+        left__loc_dim = len(left__loc_basis) * [(0, 0)]
+        right_loc_dim = len(right_loc_basis) * [(0, 0)]
+        # for each local_index
+        for it in degenerate_list[i][1]:
+            dims = theta_blocs[it].shape
+            left__loc_dim[left__loc_basis.index((it[0], it[1]))] = (dims[0], dims[1])
+            right_loc_dim[right_loc_basis.index((it[2], it[3]))] = (dims[2], dims[3])
+        # find the totdim
+        total_left__dim = sum([d[0] * d[1] for d in left__loc_dim])
+        total_right_dim = sum([d[0] * d[1] for d in right_loc_dim])
+        # offsets
+        left__loc_off = [0] + [
+            sum([d[0] * d[1] for d in left__loc_dim[:i]])
+            for i in range(1, len(left__loc_dim))
+        ]
+        right_loc_off = [0] + [
+            sum([d[0] * d[1] for d in right_loc_dim[:i]])
+            for i in range(1, len(right_loc_dim))
+        ]
+    */
+    subnewsize.push_back({total_left__dim, total_right_dim, left__loc_basis,
+                          left__loc_off, left__loc_dim, right_loc_basis,
+                          right_loc_off, right_loc_dim});
+  }
   return subnewsize;
 }
 

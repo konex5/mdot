@@ -60,4 +60,17 @@ BOOST_AUTO_TEST_CASE(test_routine_indices_slices_degenerate_blocs) {
       mdot::degeneracy_in_theta(theta_indices_large, middle, 1);
   BOOST_CHECK(out_nondeg_deg.first.size() == 0);
   BOOST_CHECK(out_nondeg_deg.second.size() == 3);
+  // start of test
+  std::vector<t_shape_t> theta_shape_large = {
+      {1, 1, 1, 2}, {1, 1, 1, 3}, {1, 1, 1, 4}, {1, 1, 1, 8}, {1, 1, 1, 2},
+      {1, 1, 1, 3}, {1, 1, 1, 4}, {1, 1, 1, 8}, {1, 1, 1, 2}, {1, 1, 1, 3},
+      {1, 1, 1, 2}, {1, 1, 1, 3}, {1, 1, 1, 4}, {1, 1, 1, 8}, {3, 1, 1, 6},
+      {3, 1, 1, 2}, {3, 1, 1, 2}, {3, 1, 1, 6}};
+  dtbloc_t empty_theta;
+  for (size_t i = 0; i < theta_indices_large.size(); i++)
+    empty_theta[theta_indices_large[i]] = {theta_shape_large[i],
+                                           std::vector<dnum_t>(0)};
+
+  auto new_subsize =
+      mdot::slices_degenerate_blocs(empty_theta, out_nondeg_deg.second);
 }
