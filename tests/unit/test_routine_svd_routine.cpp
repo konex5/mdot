@@ -20,10 +20,16 @@ BOOST_AUTO_TEST_CASE(test_routine_svd_routine_bloc_norm) {
     BOOST_CHECK(norm_out == sqrt(10.));
     //
     std::vector<index_t> cut_at_index;
+    std::vector<index_t> cut_at_index_result = {2,2,3};
     dnum_t dw = 0;
 
+
     truncation_strategy(a, 10, cut_at_index, dw, 0.8);
+    for (std::size_t i =0;i<cut_at_index.size(); i++)
+      BOOST_CHECK(cut_at_index[i]==cut_at_index_result[i]);
     
     //truncation_strategy(a, 10, cut_at_index, dw, 0.2);
+    // for (std::size_t i =0;i<cut_at_index.size(); i++)
+    //   BOOST_CHECK(cut_at_index[i]==cut_at_index_result[i]);
   }
 }

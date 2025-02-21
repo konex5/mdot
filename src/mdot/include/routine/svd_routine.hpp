@@ -93,6 +93,7 @@ void truncation_strategy(const std::vector<darr_t> list_of_array,
   for (size_t i = 0; i < list_of_array.size(); i++) {
     auto it = std::lower_bound(list_of_array[i].begin(), list_of_array[i].end(), maxcutvalue,std::less<dnum_t>{});
     auto value =  static_cast<index_t>(std::distance(list_of_array[i].begin(), it));
+    std::cout << " value" << value;
     cut_at_index.push_back(std::min(value,chi_max));
   }
   
