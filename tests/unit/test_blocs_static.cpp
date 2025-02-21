@@ -121,8 +121,8 @@ BOOST_AUTO_TEST_CASE(test_blocs_static_sh_real) {
     BOOST_CHECK(std::get<0>(indices[1]) == 1);
     BOOST_CHECK(std::get<1>(indices[1]) == 0);
     auto arrays = mdot::cplx_sh_blocs_crtp<mdot::sh_sy_u1>::get_arrays();
-    BOOST_CHECK(arrays[0][0].imag() == 1.);
-    BOOST_CHECK(arrays[1][0].imag() == -1.);
+    BOOST_CHECK(arrays[0][0].imag() == -1.);
+    BOOST_CHECK(arrays[1][0].imag() == 1.);
   }
   {
     // sh_sz_u1

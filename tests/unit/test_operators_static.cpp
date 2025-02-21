@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(test_operators_static_so_none_real) {
   BOOST_CHECK(mdot::cplx_sh_operators_crtp<mdot::sh_sy_no>::shape[0] == 2);
   BOOST_CHECK(mdot::cplx_sh_operators_crtp<mdot::sh_sy_no>::shape[1] == 2);
   BOOST_CHECK(mdot::cplx_sh_operators_crtp<mdot::sh_sy_no>::array[1].imag() ==
-              1);
+              -1);
   BOOST_CHECK(mdot::cplx_sh_operators_crtp<mdot::sh_sy_no>::array[3].real() ==
               0);
   BOOST_CHECK(mdot::cplx_sh_operators_crtp<mdot::sh_sy_no>::trace().real() ==
