@@ -65,10 +65,10 @@
             in [
               # stdenv.cc.cc
               # libcxxabi	      
-	      bashCompletion
+              bashCompletion
               cacert
               clang-tools
-	      cmake-format
+              cmake-format
               cmakeCurses
               gdb
               pkg-config
@@ -76,7 +76,7 @@
               emacs-nox
               nixfmt
               vscodeExt
-	      typora
+              typora
             ] ++ oldAttrs.nativeBuildInputs;
             shellHook = ''
               export SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
