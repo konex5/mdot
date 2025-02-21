@@ -18,3 +18,6 @@ enableEmoji = true
   [markup.tableOfContents]
     startLevel = 1
     endLevel = 9
+
+[minify] # white space issue
+  disableHTML = true
