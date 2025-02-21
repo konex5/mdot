@@ -11,6 +11,7 @@ extern "C" {
 dnum_t dnrm2_(const size_t *n, const dnum_t *x, const size_t *incX);
 dnum_t ddot_(const size_t *n, const dnum_t *x, const size_t *incX,
              const dnum_t *y, const size_t *incY);
+#ifdef SVD_AVOID_DIVIDE_AND_CONQUER
 void dgesvd_(const char *jobu, const char *jobvt, const size_t *m,
              const size_t *n, const dnum_t *a, const size_t *lda, dnum_t *s,
              dnum_t *u, const size_t *ldu, dnum_t *vt, const size_t *ldvt,
@@ -19,6 +20,13 @@ void zgesvd_(const char *jobu, const char *jobvt, const size_t *m,
              const size_t *n, const znum_t *a, const size_t *lda, double *s,
              znum_t *u, const size_t *ldu, znum_t *vt, const size_t *ldvt,
              znum_t *work, const int *lwork, double *rwork, int *info);
+#else
+void dgesdd_(const char *jobz, const size_t *m, const size_t *n,
+             const dnum_t *a, const size_t *lda, dnum_t *s, dnum_t *u,
+             const size_t *ldu, dnum_t *vt, const size_t *ldvt, dnum_t *work,
+             int *lwork, int *iwork, int *info);
+#endif
+
 }
 
 namespace mdot {
@@ -128,6 +136,7 @@ void svd_nondeg(dtbloc_t &theta_bloc,
     double worktest;
     int info, lwork = -1;
 
+#ifdef SVD_AVOID_DIVIDE_AND_CONQUER
     dgesvd_((char *)"S", (char *)"S", &M, &N, theta_bloc[key].second.data(),
             &ldA, Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu,
             &worktest, &lwork, &info);
@@ -137,7 +146,18 @@ void svd_nondeg(dtbloc_t &theta_bloc,
     dgesvd_((char *)"S", (char *)"S", &M, &N, theta_bloc[key].second.data(),
             &ldA, Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, work,
             &lwork, &info);
+#else
+    int iwork;
+    dgesdd_((char *)"S", &M, &N, theta_bloc[key].second.data(), &ldA,
+            Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, &worktest,
+            &lwork, &iwork, &info);
 
+    lwork = (int)worktest;
+    double work[lwork];
+    dgesdd_((char *)"S", &M, &N, theta_bloc[key].second.data(), &ldA,
+            Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, work, &lwork, &iwork,
+            &info);
+#endif
     array_of_U.push_back(Uout);
     array_of_S.push_back(Sout);
     array_of_V.push_back(VDout);
@@ -208,7 +228,7 @@ void svd_deg(
     size_t ldA = M, ldu = K, ldvT = M;
     double worktest;
     int info, lwork = -1;
-
+#ifdef SVD_AVOID_DIVIDE_AND_CONQUER
     dgesvd_((char *)"S", (char *)"S", &M, &N, tmp_theta.data(), &ldA,
             Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, &worktest,
             &lwork, &info);
@@ -218,6 +238,18 @@ void svd_deg(
     dgesvd_((char *)"S", (char *)"S", &M, &N, tmp_theta.data(), &ldA,
             Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, work, &lwork,
             &info);
+#else
+    int iwork;
+    dgesdd_((char *)"S", &M, &N, tmp_theta.data(), &ldA,
+            Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, &worktest,
+            &lwork, &iwork, &info);
+
+    lwork = (int)worktest;
+    double work[lwork];
+    dgesdd_((char *)"S", &M, &N, tmp_theta.data(), &ldA,
+            Sout.data(), VDout.data(), &ldvT, Uout.data(), &ldu, work, &lwork, &iwork,
+            &info);
+#endif
 
     array_of_U.push_back(Uout);
     array_of_S.push_back(Sout);
