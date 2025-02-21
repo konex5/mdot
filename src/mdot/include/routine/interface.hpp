@@ -27,6 +27,30 @@ void mm_to_theta_no_gate(dtbloc_t &dst_blocs, const dmbloc_t lhs_blocs,
                    about_indices_to_contract.second);
 }
 
+void mm_to_theta_with_gate(dtbloc_t &dst_blocs, const dmbloc_t lhs_blocs,
+                         const dmbloc_t rhs_blocs, const dgbloc_t gate_blocs,
+                         bool conserve_left_right = false) {
+  dtbloc_t tmp_dst_blocs;
+  mm_to_theta_no_gate(tmp_dst_blocs,lhs_blocs,rhs_blocs,false);
+  
+  std::vector<t_index_t> th_indices;
+  for (auto &[key, _] : tmp_dst_blocs)
+    th_indices.push_back(key);
+  std::vector<g_index_t> gate_indices;
+  for (auto &[key, _] : gate_blocs)
+    gate_indices.push_back(key);
+
+  /* 
+  auto about_indices_to_contract =
+      split_degenerate_indices(indices_dst_theta_with_gate(
+          th_indices, gate_indices, conserve_left_right));
+
+  mul_mm_blocs_new(dst_blocs, tmp_dst_blocs, gate_blocs,
+                   about_indices_to_contract.first);
+  mul_mm_blocs_dup(dst_blocs, tmp_dst_blocs, gate_blocs,
+                   about_indices_to_contract.second); */
+}
+
 void theta_to_mm(dtbloc_t &theta_blocs, dmbloc_t &lhs_blocs,
                  dmbloc_t &rhs_blocs, dnum_t &dw, const index_t chi_max,
                  const bool normalize, const int is_um,

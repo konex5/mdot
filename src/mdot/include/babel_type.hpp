@@ -43,8 +43,8 @@ using g_index_t =
     std::tuple<index_small_t, index_small_t, index_small_t, index_small_t>;
 using g_shape_t =
     std::tuple<index_small_t, index_small_t, index_small_t, index_small_t>;
-using dgbloc_t = std::map<g_shape_t, _darr_t>;
-using zgbloc_t = std::map<g_shape_t, _zarr_t>;
+using dgbloc_t = std::map<g_index_t, std::pair<g_shape_t, _darr_t>>;
+using zgbloc_t = std::map<g_index_t, std::pair<g_shape_t, _zarr_t>>;
 
 template <typename, typename = void> struct real_type;
 

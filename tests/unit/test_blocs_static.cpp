@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(test_blocs_static_sh_real) {
     BOOST_CHECK(std::get<0>(index) == 0);
     BOOST_CHECK(std::get<1>(index) == 1);
     auto array = mdot::real_sh_blocs_crtp<mdot::sh_sp_u1>::get_array(0, 1.);
-    BOOST_CHECK(array[0] == 1.);
+    BOOST_CHECK(array[0] == 2.);
   }
   {
     // sh_sm_u1
@@ -90,7 +90,7 @@ BOOST_AUTO_TEST_CASE(test_blocs_static_sh_real) {
     BOOST_CHECK(std::get<0>(index) == 1);
     BOOST_CHECK(std::get<1>(index) == 0);
     auto array = mdot::real_sh_blocs_crtp<mdot::sh_sm_u1>::get_array(0);
-    BOOST_CHECK(array[0] == 1.);
+    BOOST_CHECK(array[0] == 2.);
   }
   {
     // sh_sx_u1

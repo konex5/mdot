@@ -68,13 +68,13 @@ struct sh_id_cplx_no : cplx_sh_operators_crtp<sh_id_cplx_no> {
 struct sh_sp_no : real_sh_operators_crtp<sh_sp_no> {
   static constexpr index_t n_size = 4;
   static constexpr std::array<index_t, 2> n_shape = {2, 2};
-  static constexpr std::array<dnum_t, 4> n_array = {0., 1., 0., 0.};
+  static constexpr std::array<dnum_t, 4> n_array = {0., 2., 0., 0.};
 };
 
 struct sh_sm_no : real_sh_operators_crtp<sh_sm_no> {
   static constexpr index_t n_size = 4;
   static constexpr std::array<index_t, 2> n_shape = {2, 2};
-  static constexpr std::array<dnum_t, 4> n_array = {0., 0., 1., 0.};
+  static constexpr std::array<dnum_t, 4> n_array = {0., 0., 2., 0.};
 };
 
 struct sh_sx_no : real_sh_operators_crtp<sh_sx_no> {
