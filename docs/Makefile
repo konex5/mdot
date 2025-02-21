@@ -18,7 +18,7 @@ doc-assets:
 
 .PHONY: doc-build
 doc-build: doc-assets
-	mkdir -p $(DESTINATION) && cd $(DESTINATION) && hugo --minify --config=$(CURRENTDIR)/config.toml  --contentDir=$(CURRENTDIR)/content/ $(HUGO_OPTS) --themesDir=$(THEMEDIR)
+	mkdir -p $(DESTINATION) && cd $(DESTINATION) && HUGO_ENV=production hugo --minify --config=$(CURRENTDIR)/config.toml  --contentDir=$(CURRENTDIR)/content/ $(HUGO_OPTS) --themesDir=$(THEMEDIR)
 
 .PHONY: clean
 clean:
