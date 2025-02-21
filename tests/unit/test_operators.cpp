@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(test_operators_sh_none_cplx) {
   auto shid = std::get<0>(single_operator_real("sh-id", "sh-none"));
 
   auto shsy = std::get<0>(single_operator_cplx("sh-sy", "sh-none"));
-  auto shsy_norm = std::get<1>(single_operator_real("sh-sy", "sh-none"));
+  auto shsy_norm = std::get<1>(single_operator_cplx("sh-sy", "sh-none"));
 
   BOOST_CHECK((shsy[{0, 0}])[0 + 0 * 2].real() == 0);
   BOOST_CHECK((shsy[{0, 0}])[1 + 0 * 2].imag() == 1);
@@ -100,8 +100,24 @@ BOOST_AUTO_TEST_CASE(test_operators_sh_none_cplx) {
   BOOST_CHECK(shsy_square[0 + 1 * 2].real() == 0);
   BOOST_CHECK(shsy_square[1 + 1 * 2].real() == 1);
 
-  // BOOST_CHECK(std::abs((shsy_square[0 + 0 * 2].real() + shsy_square[1 + 1 *
-  // 2].real()) *
-  //                          pow(shsy_norm, 2) -
-  //                      1) < 1e-7);
+  BOOST_CHECK(
+      std::abs((shsy_square[0 + 0 * 2].real() + shsy_square[1 + 1 * 2].real()) *
+                   pow(shsy_norm, 2) -
+               1) < 1e-7);
+}
+
+BOOST_AUTO_TEST_CASE(test_operators_so_none_real) {
+
+  auto soid = std::get<0>(single_operator_real("so-id", "so-none"));
+  auto soid_norm = std::get<1>(single_operator_real("so-id", "so-none"));
+
+  BOOST_CHECK((soid[{0, 0}])[0 + 0 * 3] == 1);
+  BOOST_CHECK((soid[{0, 0}])[1 + 1 * 3] == 1);
+  BOOST_CHECK((soid[{0, 0}])[2 + 2 * 3] == 1);
+  BOOST_CHECK((soid[{0, 0}])[0 + 1 * 3] == 0);
+
+  BOOST_CHECK(
+      std::abs((soid_square[0 + 0 * 3] + soid_square[1 + 1 * 3] + soid_square[2 + 2 * 3]) *
+                   pow(soid_norm, 2) -
+               1) < 1e-7);
 }
