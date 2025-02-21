@@ -13,7 +13,7 @@ void dgemm_(const char *transa, const char *transb, const size_t *m,
 namespace mdot {
 
 void mul_mm_blocs_new(
-    dtbloc_t new_blocs, dmbloc_t lhs_blocs, dmbloc_t rhs_blocs,
+    dtbloc_t &new_blocs, dmbloc_t lhs_blocs, dmbloc_t rhs_blocs,
     std::vector<std::tuple<t_index_t, m_index_t, m_index_t>> buildtarget) {
   const double alpha = 1., beta = 0.;
   for (auto &[target, lhs_it, rhs_it] : buildtarget) {
@@ -37,7 +37,7 @@ void mul_mm_blocs_new(
 }
 
 void mul_mm_blocs_dup(
-    dtbloc_t new_blocks, dmbloc_t old_blocks1, dmbloc_t old_blocks2,
+    dtbloc_t &new_blocks, dmbloc_t old_blocks1, dmbloc_t old_blocks2,
     std::vector<std::tuple<t_index_t, m_index_t, m_index_t>> buildtarget) {
   /*
   for target, it1, it2 in buildtarget:

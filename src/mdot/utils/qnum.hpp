@@ -39,4 +39,4 @@ struct sh_su2 : quantum_number_crtp<sh_su2> {
 };
 
 } // namespace qnum
-} // namespace fhmdot
+} // namespace mdot

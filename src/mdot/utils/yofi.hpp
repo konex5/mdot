@@ -106,4 +106,4 @@ template <typename M> void read_mp(std::ifstream &ifs, M &smp) {
 
 } // namespace yofi
 
-} // namespace fhmdot
+} // namespace mdot

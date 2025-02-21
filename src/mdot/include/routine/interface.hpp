@@ -6,7 +6,7 @@
 
 namespace mdot {
 
-void mm_to_theta_no_gate(dtbloc_t dst_blocs, dmbloc_t lhs_blocs,
+void mm_to_theta_no_gate(dtbloc_t &dst_blocs, dmbloc_t lhs_blocs,
                          dmbloc_t rhs_blocs, bool conserve_left_right = false) {
   std::vector<m_index_t> left_indices;
   for (auto &[key, _] : lhs_blocs)
