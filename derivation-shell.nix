@@ -1,10 +1,16 @@
-{ pkgs, project_clang, project_gcc }:
+{ pkgs ? import <nixpkgs> { }
+, # the two lines are for usual and flakes nix compatibility
+project_clang ? pkgs.callPackage ./derivation.nix {
+  stdenv = pkgs.clangStdenv;
+  src = ./.;
+}, project_gcc ? pkgs.callPackage ./derivation.nix {
+  stdenv = pkgs.gccStdenv;
+  src = ./.;
+}, clangSupport ? true, cudaSupport ? false }:
 
 with pkgs;
 
 let
-  clangSupport = true;
-  cudaSupport = false;
   stdenv = if clangSupport then clangStdenv else gccStdenv;
   project = if clangSupport then project_clang else project_gcc;
 

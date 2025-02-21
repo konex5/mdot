@@ -10,15 +10,15 @@
     utils.lib.eachSystem [ "x86_64-linux" ] (system:
       let
         overlay = pkgs-self: pkgs-super: {
-          project_gcc = pkgs-super.callPackage ./project.nix {
+          project_gcc = pkgs-super.callPackage ./derivation.nix {
             src = self;
             stdenv = pkgs-self.gccStdenv;
           };
-          project_clang = pkgs-super.callPackage ./project.nix {
+          project_clang = pkgs-super.callPackage ./derivation.nix {
             src = self;
             stdenv = pkgs-self.clangStdenv;
           };
-          project_dev = pkgs-super.callPackage ./project_dev_shell.nix { };
+          project_dev = pkgs-super.callPackage ./derivation-shell.nix { };
         };
         pkgs = import nixpkgs {
           inherit system;
@@ -30,18 +30,18 @@
         defaultPackage = self.packages.${system}.golden_cpp;
 
         apps = {
-	  cli_golden = {
+          cli_golden = {
             type = "app";
             program = "${self.defaultPackage.${system}}/bin/cli_golden";
           };
-	  cli_silver = {
+          cli_silver = {
             type = "app";
             program = "${self.defaultPackage.${system}}/bin/cli_silver";
           };
-	};
+        };
 
-	defaultApp = self.apps.${system}.cli_golden;
-	
+        defaultApp = self.apps.${system}.cli_golden;
+
         devShell = pkgs.project_dev;
       });
 }
