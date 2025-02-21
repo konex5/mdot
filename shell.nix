@@ -44,6 +44,7 @@ in
 mkCustomShell {
   nativeBuildInputs = [ cmake gnumake ninja ] ++ [
     bashCompletion
+    bashInteractive
     cacert
     cppcheck
     clang-tools
