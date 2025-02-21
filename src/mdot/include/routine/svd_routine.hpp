@@ -8,7 +8,6 @@
 #include "mdot/include/babel_type.hpp"
 #include <iostream>
 
-
 extern "C" {
 dnum_t dnrm2_(const size_t *n, const dnum_t *x, const size_t *incX);
 dnum_t ddot_(const size_t *n, const dnum_t *x, const size_t *incX,
