@@ -1,6 +1,7 @@
-set(libraries)
+set(libraries mat)
 
 foreach(library ${libraries})
+
   if(${PROJECT_STATIC})
     add_library(${library} STATIC core/${library}.cpp)
   else()
@@ -8,17 +9,20 @@ foreach(library ${libraries})
   endif()
   target_link_libraries(${library}) # ${BOOST_LIBRARIES} Boost::system
                                     # Boost::filesystem
+
 endforeach()
 
-set(clicommands silver)
+set(clicommands climdot)
 
 foreach(clicommand ${clicommands})
 
   add_executable(cli_${clicommand} cli/${clicommand}.cpp)
-  # target_link_libraries(cli_${clicommand} ${BOOST_LIBRARIES})
+  target_link_libraries(cli_${clicommand} ${BOOST_LIBRARIES}
+                        Boost::program_options)
 
   install(
     TARGETS cli_${clicommand}
     CONFIGURATIONS Release
     DESTINATION bin)
+
 endforeach()

@@ -5,7 +5,7 @@
 
 namespace po = boost::program_options;
 
-//#include "golden/include/gold.hpp"
+//#include "mdot/include/mdot.hpp"
 
 int main(int ac, char *av[]) {
 

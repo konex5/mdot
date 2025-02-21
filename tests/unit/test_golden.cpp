@@ -1,7 +1,7 @@
 #include <boost/test/unit_test.hpp>
 
-#include "golden/include/gold.hpp"
-using namespace golden;
+#include "mdot/include/mat.hpp"
+using namespace mdot;
 
 BOOST_AUTO_TEST_CASE(my_test) {
   // seven ways to detect and report the same error:

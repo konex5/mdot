@@ -3,10 +3,10 @@ cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 set(PROJECT_VERSION "0.0.1")
 
 project(
-  "golden-cpp"
+  "mdot"
   LANGUAGES C CXX
   VERSION "${PROJECT_VERSION}"
-  DESCRIPTION "CPP Golden Project")
+  DESCRIPTION "MDOT - Matrix Dot")
 
 set(CMAKE_C_COMPILER $ENV{CC})
 set(CMAKE_CXX_COMPILER $ENV{CXX})
@@ -97,8 +97,7 @@ include_directories("${PROJECT_SOURCE_DIR}/src" ${PROJECT_BINARY_DIR})
 # ##############################################################################
 # PROJECT
 # ##############################################################################
-add_subdirectory(src/golden)
-add_subdirectory(src/silver)
+add_subdirectory(src/mdot)
 
 # ##############################################################################
 # TESTS and miscelaneous

@@ -1,5 +1,5 @@
-#ifndef INCLUDE_GOLD_HPP
-#define INCLUDE_GOLD_HPP
+#ifndef INCLUDE_MDOT_HPP
+#define INCLUDE_MDOT_HPP
 
 #pragma once
 
@@ -8,7 +8,7 @@
 #include <map>
 #include <vector>
 
-namespace golden {
+namespace mdot {
 
 inline constexpr std::array<double,4> shId(double mult = 1.) {
     return {mult*1.,0.,0.,mult*1.};
@@ -44,6 +44,6 @@ constexpr std::array<double,4> test(double mult = 1.) {
 
 inline int add(int a, int b) { return a + b; }
     std::map<int,char> c;
-} // namespace golden
+} // namespace mdot
 
-#endif /* INCLUDE_GOLD_HPP */
+#endif /* INCLUDE_MDOT_HPP */
