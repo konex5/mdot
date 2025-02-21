@@ -1,7 +1,6 @@
-set(libraries gold)
+set(libraries)
 
 foreach(library ${libraries})
-
   if(${PROJECT_STATIC})
     add_library(${library} STATIC core/${library}.cpp)
   else()
@@ -9,10 +8,9 @@ foreach(library ${libraries})
   endif()
   target_link_libraries(${library}) # ${BOOST_LIBRARIES} Boost::system
                                     # Boost::filesystem
-
 endforeach()
 
-set(clicommands golden)
+set(clicommands silver)
 
 foreach(clicommand ${clicommands})
 
@@ -23,5 +21,4 @@ foreach(clicommand ${clicommands})
     TARGETS cli_${clicommand}
     CONFIGURATIONS Release
     DESTINATION bin)
-
 endforeach()

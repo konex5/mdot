@@ -60,14 +60,15 @@ include_directories(SYSTEM ${Boost_INCLUDE_DIR})
 # ##############################################################################
 # INCLUDE
 # ##############################################################################
-configure_file("${PROJECT_SOURCE_DIR}/src/golden/utils/static.hpp.in"
-               "${PROJECT_BINARY_DIR}/golden/utils/static.hpp")
+configure_file("${PROJECT_SOURCE_DIR}/src/utils/static.hpp.in"
+               "${PROJECT_BINARY_DIR}/utils/static.hpp")
 include_directories("${PROJECT_SOURCE_DIR}/src" ${PROJECT_BINARY_DIR})
 
 # ##############################################################################
 # PROJECT
 # ##############################################################################
 add_subdirectory(src/golden)
+add_subdirectory(src/silver)
 
 # ##############################################################################
 # TESTS and miscelaneous
