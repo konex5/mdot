@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
                 << std::endl;
       return 1;
     }
-    
+
     boost::filesystem::path hamiltonian_path(
         vm["hamiltonian"].as<std::string>());
     boost::filesystem::path output_path(vm["output"].as<std::string>());
