@@ -171,8 +171,8 @@ BOOST_AUTO_TEST_CASE(test_dgesvd_overwrite_left_right) {
 
     for (std::size_t k = 0; k < 2; k++) { // see the offset in matrix A.
       BOOST_CHECK(abs(U[k] - A[k]) < 1e-7);
-      BOOST_CHECK(abs(U[k+2] - A[k+3]) < 1e-7);
-      BOOST_CHECK(abs(U[k+4] - A[k+6]) < 1e-7);
+      BOOST_CHECK(abs(U[k + 2] - A[k + 3]) < 1e-7);
+      BOOST_CHECK(abs(U[k + 4] - A[k + 6]) < 1e-7);
     }
 
     for (std::size_t k = 0; k < 6; k++) {
@@ -186,23 +186,20 @@ BOOST_AUTO_TEST_CASE(test_dgesvd_overwrite_left_right) {
           sum += A[i * K + k] * Sout[k] * VDout[k * M + j]; // note the K
         BOOST_CHECK(abs(Adeepcopy[i * M + j] - sum) < 1e-5);
       };
-
   }
   { // real, column major
     double A[N * M] = {1, -1, -1, 0, 0, 1, 0, 0, 0};
     const double Adeepcopy[N * M] = {A[0], A[1], A[2], A[3], A[4],
                                      A[5], A[6], A[7], A[8]};
 
-    double U[N * Keff] = {5.00000000e-01, -5.00000000e-01, -7.07106781e-01, 5.00000000e-01,  
-     -5.00000000e-01, 
-     7.07106781e-01};
+    double U[N * Keff] = {5.00000000e-01, -5.00000000e-01, -7.07106781e-01,
+                          5.00000000e-01, -5.00000000e-01, 7.07106781e-01};
     double S[Keff] = {1.84775907, 0.76536686};
-    double Vd[Keff * M] = {0.92387953, 0.38268343, -0.38268343, 0.92387953, 0.,
-                              0.};
-    
+    double Vd[Keff * M] = {0.92387953, 0.38268343, -0.38268343,
+                           0.92387953, 0.,         0.};
+
     for (std::size_t i = 0; i < N; i++)
-      for (std::size_t j = 0; j < M; j++)
-      {
+      for (std::size_t j = 0; j < M; j++) {
         double sum = 0;
         for (std::size_t k = 0; k < Keff; k++)
           sum += U[i + k * N] * S[k] * Vd[k + j * Keff];
@@ -220,23 +217,21 @@ BOOST_AUTO_TEST_CASE(test_dgesvd_overwrite_left_right) {
     double work[lwork];
     dgesvd_((char *)"O", (char *)"S", &N, &M, A, &ldA, Sout, A, &ldA, VDout,
             &ldvT, work, &lwork, &info);
-    
+
     for (std::size_t k = 0; k < Keff; k++)
       BOOST_CHECK_CLOSE(S[k], Sout[k], 1e-5);
-    
+
     for (std::size_t k = 0; k < 3; k++) {
       std::cout << U[k] << " AND " << A[k];
       BOOST_CHECK(abs(U[k] - A[k]) < 1e-5);
     }
-      
 
     for (std::size_t k = 0; k < N * N; k++) {
-       std::cout << Vd[k] << " AND " << A[k];
+      std::cout << Vd[k] << " AND " << A[k];
       BOOST_CHECK(abs(Vd[k] - VDout[k]) < 1e-5);
     }
     for (std::size_t i = 0; i < N; i++)
-      for (std::size_t j = 0; j < M; j++)
-      {
+      for (std::size_t j = 0; j < M; j++) {
         double sum = 0;
         for (std::size_t k = 0; k < Keff; k++)
           sum += A[i + k * N] * Sout[k] * VDout[k + j * Keff];

@@ -141,3 +141,11 @@ BOOST_AUTO_TEST_CASE(test_blocs_static_sh_real) {
     BOOST_CHECK(arrays[1][0] == -1.);
   }
 }
+
+BOOST_AUTO_TEST_CASE(test_blocs_static_sh_real_blocs) {
+  auto blocs = mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::get_blocs(1.);
+  BOOST_CHECK(std::get<0>(blocs[{1, 1}]) == 1);
+  BOOST_CHECK(std::get<0>(std::get<1>(blocs[{1, 1}])) == 1);
+  BOOST_CHECK(std::get<1>(std::get<1>(blocs[{1, 1}])) == 1);
+  BOOST_CHECK(std::get<2>(blocs[{1, 1}])[0] == 1);
+}

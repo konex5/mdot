@@ -33,13 +33,13 @@ using zopbloc_t = std::map<op_index_t, zarr_t>;
 
 using m_index_t = std::tuple<index_t, index_small_t, index_t>;
 using m_shape_t = std::tuple<index_t, index_small_t, index_t>;
-using dmbloc_t = std::map<m_shape_t, darr_t>;
-using zmbloc_t = std::map<m_shape_t, zarr_t>;
+using dmbloc_t = std::map<m_index_t, darr_t>;
+using zmbloc_t = std::map<m_index_t, zarr_t>;
 
 using t_index_t = std::tuple<index_t, index_small_t, index_small_t, index_t>;
 using t_shape_t = std::tuple<index_t, index_small_t, index_small_t, index_t>;
-using dtbloc_t = std::map<t_shape_t, darr_t>;
-using ztbloc_t = std::map<t_shape_t, zarr_t>;
+using dtbloc_t = std::map<t_index_t, darr_t>;
+using ztbloc_t = std::map<t_index_t, zarr_t>;
 
 using g_index_t =
     std::tuple<index_small_t, index_small_t, index_small_t, index_small_t>;
