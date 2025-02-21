@@ -173,6 +173,7 @@ dkms.conf
 
 ## CUSTOM ######################################################################
 .b*
+b*
 **/build
 tests/sandbox
 docs/target-doc
