@@ -74,7 +74,7 @@ void mul_mat_diag(std::vector<dnum_t> &destination,
   // const size_t inc = 1;
   // daxpy_(&cut, &(diag[i]), &(mat[i*N]), &inc, destination.data(), &inc);
   for (size_t i = 0; i < N; i++)
-    #pragma omp parallel
+#pragma omp parallel
     for (size_t j = 0; j < cut; j++)
       destination[i * cut + j] = diag[j] * mat[i * M + j];
 }
@@ -86,7 +86,7 @@ void mul_diag_mat(std::vector<dnum_t> &destination,
   // const size_t inc = 1;
   // daxpy_(&cut, &(diag[i]), &(mat[i*N]), &inc, destination.data(), &inc);
   for (size_t i = 0; i < cut; i++)
-    #pragma omp parallel
+#pragma omp parallel
     for (size_t j = 0; j < M; j++)
       destination[i * M + j] = diag[i] * mat[i * M + j];
 }
