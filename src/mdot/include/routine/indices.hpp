@@ -222,7 +222,8 @@ slices_degenerate_blocs(
     std::vector<std::tuple<index_small_t, index_t>> right_loc_basis;
     std::vector<std::pair<index_t, index_small_t>> left__loc_dim;
     std::vector<std::pair<index_small_t, index_t>> right_loc_dim;
-    index_t total_left__dim, total_right_dim;
+    index_t total_left__dim = 0;
+    index_t total_right_dim = 0;
     std::vector<index_t> left__loc_off, right_loc_off;
     // define a local basis
     for (auto &key_index : degenerate_indices.second) {
@@ -240,18 +241,38 @@ slices_degenerate_blocs(
         std::unique(right_loc_basis.begin(), right_loc_basis.end()),
         right_loc_basis.end());
     // find the local dim corresponding to left_loc_basis and right_loc_basis
+    left__loc_dim.resize(left__loc_basis.size());
+    right_loc_dim.resize(right_loc_basis.size());
+    for (auto &key_index : degenerate_indices.second) {
+        auto dims = theta_blocs[key_index].first;
+        std::tuple<index_t,index_small_t> left_val = {std::get<0>(key_index),std::get<1>(key_index)};
+        auto i = std::find(left__loc_basis.begin(), left__loc_basis.end(), left_val) - left__loc_basis.begin();
+        left__loc_dim[i] = {std::get<0>(dims),std::get<1>(dims)};
+        std::tuple<index_small_t,index_t> right_val = {std::get<2>(key_index),std::get<3>(key_index)};
+        auto j = std::find(right_loc_basis.begin(), right_loc_basis.end(), right_val) - right_loc_basis.begin();
+        right_loc_dim[j] = {std::get<2>(dims),std::get<3>(dims)};
+        // totdim
+        total_left__dim += std::get<0>(dims) * static_cast<index_t>(std::get<1>(dims));
+        total_right_dim += static_cast<index_t>(std::get<2>(dims)) * std::get<3>(dims);
+    }
+    // offsets
+    left__loc_off.push_back(0);
+    for (size_t i=1; i<left__loc_dim.size();i++) {
+      index_t acc = 0;
+      for (size_t j=0;j<i;j++)
+        acc += std::get<0>(left__loc_dim[j])*static_cast<index_t>(std::get<1>(left__loc_dim[j]));
+      left__loc_off.push_back(acc);
+    } 
+
+    right_loc_off.push_back(0);
+    for (size_t i=1; i<right_loc_dim.size();i++) {
+      index_t acc = 0;
+      for (size_t j=0;j<i;j++)
+        acc += static_cast<index_t>(std::get<0>(right_loc_dim[j]))*std::get<1>(right_loc_dim[j]);
+      right_loc_off.push_back(acc);
+    } 
+
     /*
-        # find the local dim corresponding to left_loc_basis and right_loc_basis
-        left__loc_dim = len(left__loc_basis) * [(0, 0)]
-        right_loc_dim = len(right_loc_basis) * [(0, 0)]
-        # for each local_index
-        for it in degenerate_list[i][1]:
-            dims = theta_blocs[it].shape
-            left__loc_dim[left__loc_basis.index((it[0], it[1]))] = (dims[0], dims[1])
-            right_loc_dim[right_loc_basis.index((it[2], it[3]))] = (dims[2], dims[3])
-        # find the totdim
-        total_left__dim = sum([d[0] * d[1] for d in left__loc_dim])
-        total_right_dim = sum([d[0] * d[1] for d in right_loc_dim])
         # offsets
         left__loc_off = [0] + [
             sum([d[0] * d[1] for d in left__loc_dim[:i]])
