@@ -37,8 +37,8 @@ void lanczos_on_m(dmbloc_t &dst, dmenvbloc_t env_bloc, dmbloc_t &psi,
         printf("succeeded %f ", eigenvalue);
       else
         printf("failed %f ", eigenvalue);
-    
-        dst[key] = {shape,eigenvector};
+
+      dst[key] = {shape, eigenvector};
     }
   }
 }
