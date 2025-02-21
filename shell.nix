@@ -5,6 +5,7 @@ assert hostPlatform.isx86_64;
 
 let
   mkCustomShell = mkShell.override { stdenv = if clangSupport then clangStdenv else gccStdenv; };
+  dbg = if clangSupport then lldb else gdb;
 
   vscodeExt = vscode-with-extensions.override {
     vscodeExtensions = with vscode-extensions; [ bbenoist.nix eamodio.gitlens ms-vscode.cpptools ] ++
@@ -18,20 +19,14 @@ let
         {
           name = "cmake-tools";
           publisher = "ms-vscode";
-          version = "1.7.3";
-          sha256 = "6UJSJETKHTx1YOvDugQO194m60Rv3UWDS8UXW6aXOko=";
+          version = "1.11.26";
+          sha256 = "wnR+C8h78JoCAR99i+pOX3v9wQxBjC9UJr+tou1RzMk=";
         }
         {
           name = "emacs-mcx";
           publisher = "tuttieee";
           version = "0.31.0";
           sha256 = "McSWrOSYM3sMtZt48iStiUvfAXURGk16CHKfBHKj5Zk=";
-        }
-        {
-          name = "vscode-clangd";
-          publisher = "llvm-vs-code-extensions";
-          version = "0.1.12";
-          sha256 = "WAWDW7Te3oRqRk4f1kjlcmpF91boU7wEnPVOgcLEISE=";
         }
       ];
   };
@@ -41,10 +36,10 @@ mkCustomShell {
   buildInputs = [
     # stdenv.cc.cc.lib
     # libcxxabi
-    boost17x
+    boost
     spdlog
     tbb
-    zlib
+    # zlib
   ] ++ lib.optionals (hostPlatform.isLinux) [ glibcLocales ];
 
   nativeBuildInputs = [ cmake gnumake ninja ] ++ [
@@ -54,23 +49,24 @@ mkCustomShell {
     clang-tools
     cmake-format
     cmakeCurses
-    cmake-language-server
-    cppcheck
+    dbg
+    # cppcheck
     emacs-nox
-    fmt
-    gdb
+    # fmt
     git
-    less
-    llvm
-    more
+    # llvm
     nixpkgs-fmt
     pkg-config
-  ] ++ lib.optionals (hostPlatform.isLinux) [ typora vscodeExt ] ++ [ hugo ];
+  ] ++ lib.optionals (hostPlatform.isLinux) [
+    #typora hugo
+    vscodeExt
+  ];
 
   LANG = "en_US.UTF-8";
-  
+
   shellHook = ''
-    export HOME=$(pwd);
+    mkdir -p $(pwd)/.trash_config
+    export HOME=$(pwd)/.trash_config
     export SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
   '';
 }
