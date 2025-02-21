@@ -25,3 +25,10 @@ BOOST_AUTO_TEST_CASE(test_routine_indices_indices_sum_sub) {
   BOOST_CHECK(mdot::internal_qn_sum(o_lhs, o_rhs) == 7);
   BOOST_CHECK(mdot::internal_qn_sub(o_lhs, o_rhs) == 3);
 }
+
+BOOST_AUTO_TEST_CASE(test_routine_indices_potential_middle_indices) {
+  std::vector<t_index_t> theta_indices = {{0, 0, 0,0}, {0, 1, 0,0}};
+  auto out = mdot::potential_middle_indices(theta_indices, -1);
+  BOOST_CHECK(out[0] == 0);
+  BOOST_CHECK(out[1] == 1);
+}

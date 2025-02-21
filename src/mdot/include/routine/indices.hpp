@@ -71,4 +71,36 @@ static inline constexpr index_t internal_qn_sub(const index_t lhs,
   return lhs - rhs;
 }
 
+std::vector<index_t> potential_middle_indices(
+    std::vector<t_index_t> theta_indices, const int direction_right = -1
+) {
+  std::vector<index_t> middle_indices;
+  if (direction_right == -2) {
+      for (auto& theta_index : theta_indices) {
+        middle_indices.push_back(internal_qn_sum(std::get<0>(theta_index),std::get<1>(theta_index)));
+        middle_indices.push_back(internal_qn_sub(std::get<3>(theta_index),std::get<2>(theta_index)));
+      } 
+    } else if (direction_right == -1) {
+      for (auto& theta_index : theta_indices) {
+        middle_indices.push_back(internal_qn_sum(std::get<0>(theta_index),std::get<1>(theta_index)));
+        middle_indices.push_back(internal_qn_sum(std::get<2>(theta_index),std::get<3>(theta_index)));
+      } 
+    } else if (direction_right == 1) {
+      for (auto& theta_index : theta_indices) {
+        middle_indices.push_back(internal_qn_sum(std::get<0>(theta_index),std::get<1>(theta_index)));
+      }
+    } else if (direction_right == 2) {
+      for (auto& theta_index : theta_indices) {
+        middle_indices.push_back(internal_qn_sub(std::get<3>(theta_index),std::get<2>(theta_index)));
+      }
+    } else if (direction_right == 3) {
+      for (auto& theta_index : theta_indices) {
+        middle_indices.push_back(internal_qn_sum(std::get<2>(theta_index),std::get<3>(theta_index)));
+      }
+    }
+    std::sort(middle_indices.begin(), middle_indices.end());
+    middle_indices.erase(std::unique(middle_indices.begin(), middle_indices.end()), middle_indices.end());
+    return middle_indices;
+}
+
 } // namespace mdot
