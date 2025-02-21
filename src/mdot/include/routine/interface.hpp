@@ -46,18 +46,20 @@ void theta_to_mm(dtbloc_t& theta_blocs, dmbloc_t &lhs_blocs,
     std::vector<std::vector<dnum_t>> array_of_U, array_of_V;
     std::vector<std::vector<dnum_t>> array_of_S;
     svd_nondeg(theta_blocs, out_nondeg_deg.first, array_of_U, array_of_S, array_of_V);
+    ///svd_deg(theta_blocs, deg, subnewsize_deg, array_of_U, array_of_S, array_of_V)
 
     auto cut = truncation_strategy(array_of_S, chi_max, dw, eps);
 
     if (normalize)
       normalize_the_array(array_of_S, cut);
 
-/*
+    std::vector<index_t> cut_nondeg, cut_deg;
+    for (std::size_t i=0;i<out_nondeg_deg.first.size();i++)
+      cut_nondeg.push_back(cut[i]);
+    // for (std::size_t i=0;i<out_nondeg_deg.second.size();i++)
+    //   cut_deg.push_back(cut[out_nondeg_deg.first.size()+i]);
 
-*/
   /*
-    cut_nondeg = [cut[i] for i in range(len(nondeg))]
-    cut_deg = [cut[i] for i in range(len(nondeg), len(nondeg) + len(deg))]
     mul_usv_deg(
         array_of_U,
         array_of_S,
