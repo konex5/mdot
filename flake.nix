@@ -1,5 +1,5 @@
 {
-  description = "A simple C/C++ flake";
+  description = "golden-cpp - A simple C/C++ flake";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -23,7 +23,8 @@
       );
 
       repoName = "golden-cpp";
-      version = nixpkgsFor.x86_64-linux.golden-cpp.version;
+      repoVersion = nixpkgsFor.x86_64-linux.golden-cpp.version;
+      repoDescription = "golden-cpp - A simple C/C++ flake";
     in
     {
       overlay = final: prev: {
@@ -43,23 +44,14 @@
 
       hydraJobs = forDevSystems (system: {
 
-        build = self.packages.${system}.golden-cpp;
+        build = nixpkgsFor.${system}.golden-cpp;
+        build-clang = nixpkgsFor.${system}.golden-cpp-clang;
 
-        tarball =
-          nixpkgsFor.${system}.releaseTools.sourceTarball rec {
-            name = "${repoName}-tarball";
-            inherit version;
-            src = self;
-            postDist = ''
-              cp README.md $out/
-            '';
-          };
-
-        docker = nixpkgsFor.${system}.dockerTools.buildLayeredImage {
-          name = "${repoName}-docker";
-          tag = "flake";
+        docker = with nixpkgsFor.${system}; dockerTools.buildLayeredImage {
+          name = "${repoName}-docker-${repoVersion}";
+          tag = "latest";
           created = "now";
-          contents = [ self.defaultApp ];
+          contents = [ golden-cpp ];
           config = {
             Cmd = [ "cli_golden" ];
             # Env = [ "CMDLINE=ENABLED" ];
@@ -67,24 +59,46 @@
           };
         };
 
+        # debrpm = nixpkgsFor.${system}.releaseTools.debBuild {
+        #   name = "${repoName}-debrpm";
+        #   diskImage = nixpkgsFor.${system}.vmTools.diskImageFuns.centos7x86_64 {};
+        #   src = self.packages.${system}.golden-cpp;
+        #   buildInputs = [];
+        #   meta.description = "${repoDescription}";
+        # };
 
-        coverage =
-          nixpkgsFor.${system}.releaseTools.coverageAnalysis {
-            name = "${repoName}-coverage";
-            src = self.hydraJobs.tarball;
-            lcovFilter = [ "*/tests/*" ];
-          };
+        # tarball =
+        #   nixpkgsFor.${system}.releaseTools.sourceTarball {
+        #     name = "${repoName}-  tarball";
+        #     src = self;
+        #   };
+
+        # clang-analysis =
+        #   nixpkgsFor.${system}.releaseTools.clangAnalysis {
+        #     name = "${repoName}-clang-analysis";
+        #     src = self;
+        #   };
+
+        # coverage =
+        #   nixpkgsFor.${system}.releaseTools.coverageAnalysis {
+        #     name = "${repoName}-coverage";
+        #     src = self.hydraJobs.tarball;
+        #     #lcovFilter = [ "*/tests/*" ];
+        #   };
 
         release = nixpkgsFor.${system}.releaseTools.aggregate
           {
-            name = "${repoName}-${self.hydraJobs.tarball.version}";
+            name = "${repoName}-release-${repoVersion}";
             constituents =
               [
-                self.hydraJobs.build
-                self.hydraJobs.docker
-                self.hydraJobs.tarball
+                self.hydraJobs.${system}.build
+                #self.hydraJobs.${system}.build-clang                
+                #self.hydraJobs.${system}.docker
+                #self.hydraJobs.${system}.debrpm
+                #self.hydraJobs.${system}.tarball
+                #self.hydraJobs.${system}.coverage
               ];
-            meta.description = "Release golden-cpp";
+            meta.description = "hydraJobs: ${repoDescription}";
           };
 
       });
@@ -113,12 +127,12 @@
 
       templates = {
         golden-cpp = {
-          description = "A simple C/C++ template";
-          path = "${self.packages.x86_64-linux.golden-cpp}";
+          description = "template - ${repoDescription}";
+          path = self;
         };
         golden-cpp-clang = {
-          description = "A simple C/C++ template";
-          path = "${self.packages.x86_64-linux.golden-cpp-clang}";
+          description = "template - ${repoDescription}";
+          path = self;
         };
       };
 
