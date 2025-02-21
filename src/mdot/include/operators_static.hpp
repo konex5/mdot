@@ -1,5 +1,6 @@
 #pragma once
 
+#include "mdot/include/babel_type.hpp"
 #include <cmath>
 #include <array>
 #include <complex>
@@ -16,46 +17,58 @@
 
 typedef std::size_t index_t;
 
-namespace mdot {
+namespace mdot
+{
 
+  template <class Q>
+  struct real_operators_crtp
+  {
+    // static constexpr dnum_t normalization = Q::n_normalization;
+    static constexpr index_t size = Q::n_size;
+    static constexpr std::array<index_t, 2> shape = Q::n_shape;
+    static constexpr std::array<dnum_t, 4> array = Q::n_array;
 
-template <class Q> struct real_operators_crtp {
-  // static constexpr double normalization = Q::n_normalization; 
-  static constexpr index_t size = Q::n_size;
-  static constexpr std::array<index_t,2> shape = Q::n_shape;
-  static constexpr std::array<double,4> array = Q::n_array;
+    //inline static index_t sub(index_t q1, index_t q2) { return Q::qsub(q1, q2); }
+  };
 
-  //inline static index_t sub(index_t q1, index_t q2) { return Q::qsub(q1, q2); }
-};
+  template <class Q>
+  struct cplx_operators_crtp
+  {
+    // static constexpr dnum_t normalization = Q::n_normalization;
+    static constexpr index_t size = Q::n_size;
+    static constexpr std::array<index_t, 2> shape = Q::n_shape;
+    static constexpr std::array<znum_t, 4> array = Q::n_array;
 
+    //inline static index_t sub(index_t q1, index_t q2) { return Q::qsub(q1, q2); }
+  };
 
-struct sh_id_no : real_operators_crtp<sh_id_no> {
-  // static constexpr double n_normalization = 1./sqrt(2); 
-  static constexpr index_t n_size = 4;
-  static constexpr std::array<index_t,2> n_shape = {2,2};
-  static constexpr std::array<double,4> n_array = {1,0,0,1};
+  struct sh_id_no : real_operators_crtp<sh_id_no>
+  {
+    //static constexpr dnum_t n_normalization = 1./sqrt(2);
+    static constexpr index_t n_size = 4;
+    static constexpr std::array<index_t, 2> n_shape = {2, 2};
+    static constexpr std::array<dnum_t, 4> n_array = {1, 0, 0, 1};
 
-  // inline static index_t qsub(index_t q1, index_t q2) {
-  //   (void)q1, (void)q2;
-  //   return 0;
-  // }
-};
+    // inline static index_t qsub(index_t q1, index_t q2) {
+    //   (void)q1, (void)q2;
+    //   return 0;
+    // }
+  };
 
+  struct sh_id_cplx_no : cplx_operators_crtp<sh_id_cplx_no>
+  {
+    // static constexpr dnum_t n_normalization = 1./sqrt(2);
+    static constexpr index_t n_size = 4;
+    static constexpr std::array<index_t, 2> n_shape = {2, 2};
+    static constexpr std::array<znum_t, 4> n_array = {1 + 0i, 0, 0, 1 + 0i};
 
-struct sh_id_cplx_no : real_operators_crtp<sh_id_cplx_no > {
-  // static constexpr double n_normalization = 1./sqrt(2); 
-  static constexpr index_t n_size = 4;
-  static constexpr std::array<index_t,2> n_shape = {2,2};
-  //static constexpr std::array<std::complex<double> ,4> n_array = {{1,0},{0,0},{0,0},{1,0}};
+    // inline static index_t qsub(index_t q1, index_t q2) {
+    //   (void)q1, (void)q2;
+    //   return 0;
+    // }
+  };
 
-  // inline static index_t qsub(index_t q1, index_t q2) {
-  //   (void)q1, (void)q2;
-  //   return 0;
-  // }
-};
-
-
-/*
+  /*
 
   
 template <class Q> struct blocs_crtp {

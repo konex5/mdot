@@ -3,10 +3,12 @@
 //#include "mdot/include/babel_type.hpp"
 #include "mdot/include/operators_static.hpp"
 
-BOOST_AUTO_TEST_CASE(test_operators_so_none_real) {
+BOOST_AUTO_TEST_CASE(test_operators_static_so_none_real) {
   BOOST_CHECK(mdot::real_operators_crtp<mdot::sh_id_no>::size == 4);
   BOOST_CHECK(mdot::real_operators_crtp<mdot::sh_id_no>::shape[0] == 2);
   BOOST_CHECK(mdot::real_operators_crtp<mdot::sh_id_no>::shape[1] == 2);
+  BOOST_CHECK(mdot::real_operators_crtp<mdot::sh_id_no>::array[0] == 1);
+  BOOST_CHECK(mdot::real_operators_crtp<mdot::sh_id_no>::array[3] == 1);
   
 /* 
   auto soid = std::get<0>(single_operator_real("so-id", "so-none"));
@@ -23,4 +25,14 @@ BOOST_AUTO_TEST_CASE(test_operators_so_none_real) {
                         soid_square[2 + 2 * 3]) *
                            pow(soid_norm, 2) -
                        1) < 1e-7); */
+}
+
+
+BOOST_AUTO_TEST_CASE(test_operators_static_so_none_cplx) {
+  BOOST_CHECK(mdot::cplx_operators_crtp<mdot::sh_id_cplx_no>::size == 4);
+  BOOST_CHECK(mdot::cplx_operators_crtp<mdot::sh_id_cplx_no>::shape[0] == 2);
+  BOOST_CHECK(mdot::cplx_operators_crtp<mdot::sh_id_cplx_no>::shape[1] == 2);
+  BOOST_CHECK(mdot::cplx_operators_crtp<mdot::sh_id_cplx_no>::array[0].real() == 1);
+  BOOST_CHECK(mdot::cplx_operators_crtp<mdot::sh_id_cplx_no>::array[3].imag() == 0);
+
 }
