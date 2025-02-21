@@ -21,6 +21,8 @@ void dstev_(const char *jobz, const size_t *n, const dnum_t *d, const dnum_t *e,
             size_t *info);
 }
 
+namespace mdot {
+
 inline dnum_t vector_norm(dnum_t *psi, const size_t N) {
   dnum_t norm;
   const size_t inc = 1;
@@ -127,4 +129,6 @@ bool lanczos_ev(dnum_t *A, dnum_t *psi, size_t dim, size_t &max_iter,
   }
   free(Vm), free(As), free(Bs), free(d), free(e);
   return converged;
+}
+
 }

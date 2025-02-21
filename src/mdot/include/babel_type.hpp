@@ -45,6 +45,15 @@ using g_shape_t =
 using dgbloc_t = std::map<g_index_t, std::pair<g_shape_t, _darr_t>>;
 using zgbloc_t = std::map<g_index_t, std::pair<g_shape_t, _zarr_t>>;
 
+
+using menv_index_t =
+    std::tuple<index_t, index_small_t, index_t, index_t, index_small_t, index_t>;
+using menv_shape_t =
+    std::tuple<index_t, index_small_t, index_t, index_t, index_small_t, index_t>;
+using dmenvbloc_t = std::map<menv_index_t, std::pair<menv_shape_t, _darr_t>>;
+using zmenvbloc_t = std::map<menv_index_t, std::pair<menv_shape_t, _zarr_t>>;
+
+
 template <typename, typename = void> struct real_type;
 
 template <typename T>
