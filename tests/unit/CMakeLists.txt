@@ -1,4 +1,4 @@
-set(UNIT_TESTS_NAMES dummy golden utils_random_matrix svd)
+set(UNIT_TESTS_NAMES dummy utils_random_matrix simple_svd svd)
 
 foreach(UNIT_TEST_NAME ${UNIT_TESTS_NAMES})
   add_executable(test_${UNIT_TEST_NAME} test_${UNIT_TEST_NAME}.cpp)
