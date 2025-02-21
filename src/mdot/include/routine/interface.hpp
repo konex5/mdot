@@ -28,7 +28,7 @@ void mm_to_theta_no_gate(dtbloc_t &dst_blocs, const dmbloc_t lhs_blocs,
 }
 
 void theta_to_mm(dtbloc_t& theta_blocs, dmbloc_t &lhs_blocs,
-                 dmbloc_t &rhs_blocs, dnum_t &dw_dict, const index_t chi_max,
+                 dmbloc_t &rhs_blocs, dnum_t &dw, const index_t chi_max,
                  const bool normalize, const bool is_um,
                  const int direction_right, const double eps) {
   std::vector<t_index_t> theta_indices;
@@ -47,19 +47,12 @@ void theta_to_mm(dtbloc_t& theta_blocs, dmbloc_t &lhs_blocs,
     std::vector<std::vector<dnum_t>> array_of_S;
     svd_nondeg(theta_blocs, out_nondeg_deg.first, array_of_U, array_of_S, array_of_V);
 
+    auto cut = truncation_strategy(array_of_S, chi_max, dw, eps);
+
+    if (normalize)
+      normalize_the_array(array_of_S, cut);
+
   /*
-    svd_nondeg(theta_blocs, nondeg, nondeg_dims, array_of_U, array_of_S,
-    array_of_V) svd_deg(theta_blocs, deg, subnewsize_deg, array_of_U,
-    array_of_S, array_of_V)
-
-    cut, dw = truncation_strategy(array_of_S, eps, chi_max)
-
-    if normalize:
-        normalize_the_array(array_of_S, cut)
-
-    dw_dict["dw_one_serie"] += dw
-    # simdict['dw_max'] = max(dw,simdict['dw_max'])
-
     cut_nondeg = [cut[i] for i in range(len(nondeg))]
     cut_deg = [cut[i] for i in range(len(nondeg), len(nondeg) + len(deg))]
     mul_usv_deg(
