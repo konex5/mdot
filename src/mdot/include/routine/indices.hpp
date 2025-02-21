@@ -79,31 +79,31 @@ potential_middle_indices(const std::vector<t_index_t> theta_indices,
   if (direction_right == -2) {
     for (auto &theta_index : theta_indices) {
       middle_indices.push_back(
-          internal_qn_sum(std::get<0>(theta_index), std::get<1>(theta_index)));
+          internal_qn_sum(std::get<0>(theta_index), static_cast<index_t>(std::get<1>(theta_index))));
       middle_indices.push_back(
-          internal_qn_sub(std::get<3>(theta_index), std::get<2>(theta_index)));
+          internal_qn_sub(std::get<3>(theta_index), static_cast<index_t>(std::get<2>(theta_index))));
     }
   } else if (direction_right == -1) {
     for (auto &theta_index : theta_indices) {
       middle_indices.push_back(
-          internal_qn_sum(std::get<0>(theta_index), std::get<1>(theta_index)));
+          internal_qn_sum(std::get<0>(theta_index), static_cast<index_t>(std::get<1>(theta_index))));
       middle_indices.push_back(
-          internal_qn_sum(std::get<2>(theta_index), std::get<3>(theta_index)));
+          internal_qn_sum(static_cast<index_t>(std::get<2>(theta_index)), std::get<3>(theta_index)));
     }
   } else if (direction_right == 1) {
     for (auto &theta_index : theta_indices) {
       middle_indices.push_back(
-          internal_qn_sum(std::get<0>(theta_index), std::get<1>(theta_index)));
+          internal_qn_sum(std::get<0>(theta_index), static_cast<index_t>(std::get<1>(theta_index))));
     }
   } else if (direction_right == 2) {
     for (auto &theta_index : theta_indices) {
       middle_indices.push_back(
-          internal_qn_sub(std::get<3>(theta_index), std::get<2>(theta_index)));
+          internal_qn_sub(std::get<3>(theta_index), static_cast<index_t>(std::get<2>(theta_index))));
     }
   } else if (direction_right == 3) {
     for (auto &theta_index : theta_indices) {
       middle_indices.push_back(
-          internal_qn_sum(std::get<2>(theta_index), std::get<3>(theta_index)));
+          internal_qn_sum(static_cast<index_t>(std::get<2>(theta_index)), std::get<3>(theta_index)));
     }
   }
   std::sort(middle_indices.begin(), middle_indices.end());
