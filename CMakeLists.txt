@@ -30,29 +30,33 @@ option(PROJECT_STATIC "Build Static Libraries" OFF)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_compile_options(-Wall -Wextra)
 # #
 # https://stackoverflow.com/questions/45955272/modern-way-to-set-compiler-flags-in-cross-platform-cmake-project
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND APPLE)
   add_compile_options("-Wa" "-q")
 else()
-  add_compile_options(-Wall -Wextra)
   add_compile_options(
     $<$<CONFIG:DEBUG>:-Werror> $<$<CONFIG:DEBUG>:-pedantic>
     $<$<CONFIG:DEBUG>:-Wunused-macros> $<$<CONFIG:DEBUG>:-Wshadow>)
   add_compile_options($<$<CONFIG:RELEASE>:-mfma> $<$<CONFIG:RELEASE>:-mavx>
   )# ?=> -mftree-vectorize
-  if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") # -O1 ?
+  if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     add_compile_options(
-      $<$<CONFIG:ASAN>:-g> $<$<CONFIG:ASAN>:-fsanitize=address>
-      $<$<CONFIG:ASAN>:-fno-omit-frame-pointer>)
+      $<$<CONFIG:ASAN>:-fsanitize=address> $<$<CONFIG:ASAN>:-g>
+      $<$<CONFIG:ASAN>:-O1> $<$<CONFIG:ASAN>:-fno-omit-frame-pointer>)
     add_compile_options(
       $<$<CONFIG:MSAN>:-g>
+      $<$<CONFIG:MSAN>:-O2>
       $<$<CONFIG:MSAN>:-fsanitize=memory>
       $<$<CONFIG:MSAN>:-fsanitize-memory-track-origins=2>
       $<$<CONFIG:MSAN>:-fno-omit-frame-pointer>
       $<$<CONFIG:MSAN>:-fno-optimize-sibling-calls>)
-    add_compile_options($<$<CONFIG:TSAN>:-g>
+    add_compile_options($<$<CONFIG:TSAN>:-g> $<$<CONFIG:TSAN>:-O1>
                         $<$<CONFIG:TSAN>:-fsanitize=thread>)
+    add_compile_options(
+      $<$<CONFIG:UBSAN>:-g> $<$<CONFIG:UBSAN>:-fno-omit-frame-pointer>
+      $<$<CONFIG:UBSAN>:-fsanitize=undefined>)
     add_compile_options(
       $<$<CONFIG:CODECOV>:-g> $<$<CONFIG:CODECOV>:-fprofile-instr-generate>
       $<$<CONFIG:CODECOV>:-fcoverage-mapping> $<$<CONFIG:CODECOV>:-fno-inline>)
