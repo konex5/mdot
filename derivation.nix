@@ -1,12 +1,12 @@
-{ stdenv, src, boost17x, cmakeMinimal, fixDarwinDylibNames, gnumake, hugo, lib, ninja, pandoc, tbb }:
+{ stdenv, src, boost17x, cmakeMinimal, fixDarwinDylibNames, gnumake, lib, ninja, tbb }:
 
 stdenv.mkDerivation rec {
-  pname = "golden-cpp";
+  pname = "mdot";
   version = "0.0.1";
   inherit src;
 
   buildInputs = [ boost17x tbb ];
-  nativeBuildInputs = [ cmakeMinimal gnumake ninja ] ++ [ hugo ] ++ lib.optional stdenv.hostPlatform.isDarwin fixDarwinDylibNames;
+  nativeBuildInputs = [ cmakeMinimal gnumake ninja ] ++ lib.optional stdenv.hostPlatform.isDarwin fixDarwinDylibNames;
   cmakeFlags = [
     "-DCMAKE_BUILD_TYPE=Release"
     "-DPROJECT_TESTS=On"
