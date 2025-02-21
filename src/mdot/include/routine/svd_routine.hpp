@@ -116,6 +116,7 @@ void svd_nondeg(dtbloc_t& theta_bloc,
       for (auto& it: nondeg) {
         auto key = it.second;
         auto shape = theta_bloc[key].first;
+        
         auto N = static_cast<std::size_t>(std::get<0>(shape)*std::get<1>(shape));
         auto M = static_cast<std::size_t>(std::get<2>(shape)*std::get<3>(shape));
         auto K = std::min(N,M);
@@ -124,6 +125,7 @@ void svd_nondeg(dtbloc_t& theta_bloc,
         std::size_t ldA = M, ldu = N, ldvT = M < N ? M : N;
         double worktest;
         int info, lwork = -1;
+        /*
         //
         dgesvd_((char *)"S", (char *)"S", &M, &N, theta_bloc[key].second.data(), &ldA, Sout.data(), VDout.data(), &ldu, Uout.data(),
             &ldvT, &worktest, &lwork, &info);
@@ -135,8 +137,12 @@ void svd_nondeg(dtbloc_t& theta_bloc,
         array_of_U.push_back(Uout);
         array_of_S.push_back(Sout);
         array_of_V.push_back(VDout);
+        */
         std::cout << "just do it";
+        
       }
+        std::cout << "just do it";
+
 }
 /*
 void svd_deg(

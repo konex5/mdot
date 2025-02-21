@@ -46,12 +46,12 @@ void theta_to_mm(dtbloc_t& theta_blocs, dmbloc_t &lhs_blocs,
     std::vector<std::vector<dnum_t>> array_of_U, array_of_V;
     std::vector<std::vector<dnum_t>> array_of_S;
     svd_nondeg(theta_blocs, out_nondeg_deg.first, array_of_U, array_of_S, array_of_V);
-
+/*
     auto cut = truncation_strategy(array_of_S, chi_max, dw, eps);
 
     if (normalize)
       normalize_the_array(array_of_S, cut);
-
+*/
   /*
     cut_nondeg = [cut[i] for i in range(len(nondeg))]
     cut_deg = [cut[i] for i in range(len(nondeg), len(nondeg) + len(deg))]
