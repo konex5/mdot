@@ -28,7 +28,9 @@ BOOST_AUTO_TEST_CASE(test_routine_indices_indices_sum_sub) {
 
 BOOST_AUTO_TEST_CASE(test_routine_indices_potential_middle_indices) {
   std::vector<t_index_t> theta_indices = {{0, 0, 0,0}, {0, 1, 0,0}};
-  auto out = mdot::potential_middle_indices(theta_indices, -1);
-  BOOST_CHECK(out[0] == 0);
-  BOOST_CHECK(out[1] == 1);
+  auto middle = mdot::potential_middle_indices(theta_indices, -1);
+  BOOST_CHECK(middle[0] == 0);
+  BOOST_CHECK(middle[1] == 1);
+  auto out = mdot::degeneracy_in_theta(theta_indices,middle,-1);
+
 }
