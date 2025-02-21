@@ -17,7 +17,8 @@ set(clicommands golden)
 foreach(clicommand ${clicommands})
 
   add_executable(cli_${clicommand} cli/${clicommand}.cpp)
-  # target_link_libraries(cli_${clicommand} ${BOOST_LIBRARIES})
+  target_link_libraries(cli_${clicommand} ${BOOST_LIBRARIES}
+                        Boost::program_options)
 
   install(
     TARGETS cli_${clicommand}
