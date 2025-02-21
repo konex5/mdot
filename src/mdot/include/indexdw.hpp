@@ -1,7 +1,7 @@
 #pragma once
 
 #include <algorithm>
-#include "mdot/include/typedef.hpp"
+#include "mdot/include/babel_type.hpp"
 
 void norm_non_optimal(const array_of_s_type &array_of_s, dnum_t& norm_out) {
   norm_out = 0;
