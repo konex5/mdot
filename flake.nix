@@ -59,18 +59,24 @@
           };
         };
 
-        # debrpm = nixpkgsFor.${system}.releaseTools.debBuild {
-        #   name = "${repoName}-debrpm";
-        #   diskImage = nixpkgsFor.${system}.vmTools.diskImageFuns.centos7x86_64 {};
-        #   src = self.packages.${system}.golden-cpp;
-        #   buildInputs = [];
-        #   meta.description = "${repoDescription}";
+        # deb = with nixpkgsFor.x86_64-linux; releaseTools.debBuild {
+        #   name = "${repoName}-debian";
+        #   diskImage = vmTools.diskImageFuns.debian8x86_64 {};
+        #   src = golden-cpp.src;
+        #   # buildInputs = [];
+        # };
+
+        # rpm = with nixpkgsFor.x86_64-linux; releaseTools.rpmBuild {
+        #   name = "${repoName}-redhat";
+        #   diskImage = vmTools.diskImageFuns.centos7x86_64 {};
+        #   src = golden-cpp.src;
+        #   # buildInputs = [];
         # };
 
         # tarball =
         #   nixpkgsFor.${system}.releaseTools.sourceTarball {
-        #     name = "${repoName}-  tarball";
-        #     src = self;
+        #     name = "${repoName} - tarball";
+        #     src = "./.";
         #   };
 
         # clang-analysis =
@@ -94,7 +100,8 @@
                 self.hydraJobs.${system}.build
                 #self.hydraJobs.${system}.build-clang                
                 #self.hydraJobs.${system}.docker
-                #self.hydraJobs.${system}.debrpm
+                #self.hydraJobs.x86_64-linux.deb
+                #self.hydraJobs.x86_64-linux.rpm
                 #self.hydraJobs.${system}.tarball
                 #self.hydraJobs.${system}.coverage
               ];
@@ -128,11 +135,7 @@
       templates = {
         golden-cpp = {
           description = "template - ${repoDescription}";
-          path = self;
-        };
-        golden-cpp-clang = {
-          description = "template - ${repoDescription}";
-          path = self;
+          path = ./.;
         };
       };
 
