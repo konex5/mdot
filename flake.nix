@@ -3,46 +3,121 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, utils }:
-    utils.lib.eachSystem [ "x86_64-linux" ] (system:
-      let
-        overlay = pkgs-self: pkgs-super: {
-          golden-cpp = pkgs-super.callPackage ./derivation.nix {
-            src = self;
-            stdenv = pkgs-self.gccStdenv;
-          };
-          golden-cpp-clang = pkgs-super.callPackage ./derivation.nix {
-            src = self;
-            stdenv = pkgs-self.clangStdenv;
-          };
-          fullDev = pkgs-super.callPackage ./shell.nix { pkgs = pkgs-self; };
-        };
-        pkgs = import nixpkgs {
+  outputs = { self, nixpkgs }:
+
+    let
+      forCustomSystems = custom: f: nixpkgs.lib.genAttrs custom (system: f system);
+      supportedSystems = [ "x86_64-linux" "i686-linux" "aarch64-linux" "darwin" ];
+      forAllSystems = forCustomSystems supportedSystems;
+
+      nixpkgsFor = forAllSystems (system:
+        import nixpkgs {
           inherit system;
           config.allowUnfree = true;
-          overlays = [ overlay ];
+          overlays = [ self.overlay ];
+        }
+      );
+      #pkgs = nixpkgsFor.${"x86_64-linux"};
+      
+      repoName = "golden-cpp";
+      version = nixpkgsFor.${"x86_64-linux"}.golden-cpp.version;
+    in
+    {
+      overlay = final: prev: {
+        golden-cpp = prev.callPackage ./derivation.nix {
+          src = self;
+          stdenv = final.gccStdenv;
         };
-      in
-      rec {
-        packages = { inherit (pkgs) fullDev golden-cpp golden-cpp-clang; };
-        defaultPackage = self.packages.${system}.golden-cpp;
+        golden-cpp-clang = prev.callPackage ./derivation.nix {
+          src = self;
+          stdenv = final.clangStdenv;
+        };
+        fullDev = prev.callPackage ./shell.nix { pkgs = final; clangSupport = false; };
+      };
 
-        apps = {
-          cli_golden = {
-            type = "app";
-            program = "${self.defaultPackage.${system}}/bin/cli_golden";
+      hydraJobs = forAllSystems (system: {
+
+        build = self.packages.${system}.golden-cpp;
+
+        tarball =
+          nixpkgsFor.${system}.releaseTools.sourceTarball rec {
+            name = "${repoName}-tarball";
+            inherit version;
+            src = self;
+            postDist = ''
+              cp README.md $out/
+            '';
           };
-          cli_silver = {
-            type = "app";
-            program = "${self.defaultPackage.${system}}/bin/cli_silver";
+
+        dockerImage = nixpkgsFor.${system}.dockerTools.buildLayeredImage {
+          name = "${repoName}-docker";
+          tag = "flake";
+          created = "now";
+          contents = [ self.defaultApp ];
+          config = {
+            Cmd = [ "cli_golden" ];
+            # Env = [ "CMDLINE=ENABLED" ];
+            # ExposedPorts = { "8000" = { }; };
           };
         };
 
-        defaultApp = self.apps.${system}.cli_golden;
 
-        devShell = self.packages.${system}.golden-cpp;
+        coverage =
+          nixpkgsFor.${system}.releaseTools.coverageAnalysis {
+            name = "${repoName}-coverage";
+            src = self.hydraJobs.tarball;
+            lcovFilter = [ "*/tests/*" ];
+          };
+
+        release = nixpkgsFor.${system}.releaseTools.aggregate
+          {
+            name = "${repoName}-${self.hydraJobs.tarball.version}";
+            constituents =
+              [
+                self.hydraJobs.tarball
+                self.hydraJobs.build.x86_64-linux
+                self.hydraJobs.build.i686-linux
+              ];
+            meta.description = "Release golden-cpp";
+          };
+
       });
+
+      packages = forAllSystems (system:
+        with nixpkgsFor.${system}; {
+          inherit golden-cpp golden-cpp-clang fullDev;
+        });
+
+      defaultPackage = forAllSystems (system:
+        self.packages.${system}.golden-cpp);
+
+      apps = forAllSystems (system: {
+        golden-cpp = {
+          type = "app";
+          program = "${self.packages.${system}.golden-cpp}/bin/cli_golden";
+        };
+        golden-cpp-clang = {
+          type = "app";
+          program = "${self.packages.${system}.golden-cpp-clang}/bin/cli_golden";
+        };
+      }
+      );
+
+      defaultApp = forAllSystems (system: self.apps.${system}.golden-cpp);
+
+      templates = forAllSystems (system: {
+        golden-cpp = {
+          description = "C/C++ template";
+          path = "${self.packages.${system}.golden-cpp}";
+        };
+        golden-cpp-clang = {
+          description = "C/C++ template";
+          path = "${self.packages.${system}.golden-cpp-clang}";
+        };
+      });
+
+      defaultTemplate = self.templates.golden-cpp;
+    };
 }
