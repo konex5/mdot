@@ -126,8 +126,12 @@ void mul_usv_nondeg(std::vector<std::vector<dnum_t>> &array_U,
 
         for (auto &s : array_S[i])
           s = sqrt(s);
-/*        mul_mat_diag(mat_left, array_U[i], dim0 * dim1, array_S[i].size(),
+            std::cout << "dim0=" << dim0 << "dim1=" << dim1 << "sizeU=" << array_U[i].size() << "cut" << cut[i] << "sizeS" << array_S[i].size() << std::endl;
+          /*
+          mul_mat_diag(mat_left, array_U[i], dim0 * dim1, array_S.size(),
                      array_S[i], cut[i]);
+          */
+        /*
         mul_diag_mat(mat_right, array_V[i], array_S[i].size(), dim2 * dim3,
                      array_S[i], cut[i]);
                      */
