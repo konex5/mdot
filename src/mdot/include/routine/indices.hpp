@@ -20,7 +20,7 @@ split_degenerate_indices(
   for (size_t i = 0; i < all_targets.size(); i++) {
     if (std::find(all_targets.begin(), all_targets.end(), all_targets[i]) -
             all_targets.begin() ==
-        static_cast<size_t>(i))
+        static_cast<long>(i))
       new_indices.push_back(indices[i]);
     else
       dup_indices.push_back(indices[i]);
@@ -76,7 +76,7 @@ split_degenerate_indices_with_gate(
   for (size_t i = 0; i < all_targets.size(); i++) {
     if (std::find(all_targets.begin(), all_targets.end(), all_targets[i]) -
             all_targets.begin() ==
-        static_cast<size_t>(i))
+        static_cast<long>(i))
       new_indices.push_back(indices[i]);
     else
       dup_indices.push_back(indices[i]);
