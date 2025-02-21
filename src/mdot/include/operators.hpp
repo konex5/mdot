@@ -107,6 +107,22 @@ std::pair<zopbloc_t, dnum_t> single_operator_cplx(std::string name,
   //
   single_operators_cplx["sh-sy"]["sh-u1"][{0, 1}] = {{0, 1}};
   single_operators_cplx["sh-sy"]["sh-u1"][{1, 0}] = {{0, -1}};
+  //////
+  normalization["so-id-cplx"]["sh-none"] = 1. / sqrt(3);
+  single_operators_cplx["so-id-cplx"]["sh-none"][{0, 0}] = {
+      {1, 0}, {0, 0}, {0, 0}, {0, 0}, {1, 0}, {0, 0}, {0, 0}, {0, 0}, {1, 0}};
+  //
+  single_operators_cplx["so-id-cplx"]["sh-u1"][{0, 0}] = {{1, 0}};
+  single_operators_cplx["so-id-cplx"]["sh-u1"][{1, 1}] = {{1, 0}};
+  single_operators_cplx["so-id-cplx"]["sh-u1"][{2, 2}] = {{1, 0}};
+  ///
+  normalization["so-sy"]["sh-none"] = 1. / sqrt(3);
+  single_operators_cplx["so-sy"]["sh-none"][{0, 0}] = {
+      {0, 0}, {0, 1}, {0, 0}, {0, -1}, {0, 0}, {0, 1}, {0, 0}, {0, -1}, {0, 0}};
+  //
+  single_operators_cplx["so-sy"]["sh-u1"][{0, 0}] = {{1, 0}};
+  single_operators_cplx["so-sy"]["sh-u1"][{1, 1}] = {{1, 0}};
+  single_operators_cplx["so-sy"]["sh-u1"][{2, 2}] = {{1, 0}};
   //
   return {single_operators_cplx[name][qbasis], normalization[name][qbasis]};
 }
