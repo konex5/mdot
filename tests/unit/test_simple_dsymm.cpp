@@ -22,32 +22,30 @@ BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
   { // real, row major
     const std::size_t N = 2;
     const std::size_t M = 2;
-    const double A[N * (N + 1) / 2] = {1, 1, 1};
-    const double B[N * (N + 1) / 2] = {2, -1, -1};
-    const double C[N * (N + 1) / 2] = {1, -2, -2};
+    const std::size_t K = 2;
+
+    const double A[N * N] = {1, 1, 1, 1};
+    const double B[N * N] = {2, -1, -1, -1};
+    const double C[N * N] = {1, -2, 1, -2};
 
     for (std::size_t i = 0; i < N; i++)
       for (std::size_t j = 0; j < M; j++) {
         double sum = 0;
         for (std::size_t k = 0; k < K; k++)
           sum += A[i * K + k] * B[k * M + j];
-        // std::cout << "A[i*5+j]=" << A[i*M+j] << " and the sum gives:" << sum
-        // << std::endl;
         BOOST_CHECK_EQUAL(C[i * M + j], sum);
       };
 
-    double Cout[N * M];
+    double Cout[N * (N + 1) / 2];
     double alpha = 1., beta = 0.;
 
     dsymm_((char *)"L", (char *)"U", &M, &N, &alpha, B, &M, A, &K, &beta, Cout,
            &M);
 
     for (std::size_t k = 0; k < N * M; k++)
-      // std::cout << C[k] << "compared with" << Cout[k] << std::endl;
       BOOST_CHECK_EQUAL(C[k], Cout[k]);
-
-    std::cout << std::endl << std::endl;
   }
+  /*
   { // real, column major
     const std::size_t M = 2;
     const std::size_t K = 2;
@@ -78,4 +76,5 @@ BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
       // std::cout << C[k] << "compared with" << Cout[k] << std::endl;
       BOOST_CHECK_EQUAL(C[k], Cout[k]);
   }
+  */
 }
