@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
     double Cout[N * M];
     double alpha = 1., beta = 0.;
 
-    dsymm_((char *)"U", (char *)"U", &N, &M, &alpha, A, &N, B, &K, &beta, Cout,
+    dsymm_((char *)"L", (char *)"U", &N, &M, &alpha, A, &N, B, &K, &beta, Cout,
            &N);
 
     for (std::size_t k = 0; k < N * M; k++)
