@@ -97,8 +97,8 @@
             name = "${repoName}-release-${repoVersion}";
             constituents =
               [
-                self.hydraJobs.${system}.build
-                #self.hydraJobs.${system}.build-clang                
+                self.hydraJobs.x86_64-linux.build
+                self.hydraJobs.${system}.build-clang                
                 #self.hydraJobs.${system}.docker
                 #self.hydraJobs.x86_64-linux.deb
                 #self.hydraJobs.x86_64-linux.rpm
