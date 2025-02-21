@@ -61,13 +61,14 @@ indices_dst_theta_no_gate(const std::vector<m_index_t> left_indices,
   return dst_about_indices_to_contract;
 }
 
-static inline constexpr index_t internal_qn_sum(const index_t lhs,const index_t rhs) {
+static inline constexpr index_t internal_qn_sum(const index_t lhs,
+                                                const index_t rhs) {
   return lhs + rhs;
 }
 
-static inline constexpr index_t internal_qn_sub(const index_t lhs,const index_t rhs) {
+static inline constexpr index_t internal_qn_sub(const index_t lhs,
+                                                const index_t rhs) {
   return lhs - rhs;
 }
-
 
 } // namespace mdot

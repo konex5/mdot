@@ -12,18 +12,16 @@ BOOST_AUTO_TEST_CASE(test_routine_indices_indices_dst_theta_no_gate) {
   BOOST_CHECK(std::get<0>(std::get<0>(pair_out.first[0])) == 0);
 }
 
-
 BOOST_AUTO_TEST_CASE(test_routine_indices_indices_sum_sub) {
   constexpr index_t lhs = 3;
   constexpr index_t rhs = 1;
 
-  BOOST_CHECK(mdot::internal_qn_sum(lhs,rhs) == 4);
-  BOOST_CHECK(mdot::internal_qn_sub(lhs,rhs) == 2);
+  BOOST_CHECK(mdot::internal_qn_sum(lhs, rhs) == 4);
+  BOOST_CHECK(mdot::internal_qn_sub(lhs, rhs) == 2);
 
   index_t o_lhs = 5;
   index_t o_rhs = 2;
 
-  BOOST_CHECK(mdot::internal_qn_sum(o_lhs,o_rhs) == 7);
-  BOOST_CHECK(mdot::internal_qn_sub(o_lhs,o_rhs) == 3);
-
+  BOOST_CHECK(mdot::internal_qn_sum(o_lhs, o_rhs) == 7);
+  BOOST_CHECK(mdot::internal_qn_sub(o_lhs, o_rhs) == 3);
 }

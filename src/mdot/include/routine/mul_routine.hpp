@@ -48,19 +48,18 @@ void mul_mm_blocs_dup(
     auto M = static_cast<std::size_t>(std::get<1>(rhs_blocs[rhs_it].first) *
                                       std::get<2>(rhs_blocs[rhs_it].first));
     auto K = static_cast<std::size_t>(std::get<2>(lhs_blocs[lhs_it].first));
-    auto NM = N*M;
+    auto NM = N * M;
     std::vector<dnum_t> mat_out(NM);
 
     dgemm_((char *)"N", (char *)"N", &M, &N, &K, &alpha,
            rhs_blocs[rhs_it].second.data(), &M, lhs_blocs[lhs_it].second.data(),
            &K, &beta, mat_out.data(), &M);
 
-    #pragma omp
-    for (size_t i =0;i<NM;i++) {
+#pragma omp
+    for (size_t i = 0; i < NM; i++) {
       new_blocs[target].second[i] += mat_out[i];
     }
     std::cout << new_blocs[target].second[0] << " ";
-
+  }
 }
-    }
 } // namespace mdot
