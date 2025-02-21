@@ -74,7 +74,7 @@ void mul_mat_diag(std::vector<dnum_t> &destination,
   // const size_t inc = 1;
   // daxpy_(&cut, &(diag[i]), &(mat[i*N]), &inc, destination.data(), &inc);
   for (size_t i = 0; i < N; i++)
-    //#pragma omp parallel
+    #pragma omp parallel
     for (size_t j = 0; j < cut; j++)
       destination[i * cut + j] = diag[j] * mat[i * M + j];
 }
@@ -86,7 +86,7 @@ void mul_diag_mat(std::vector<dnum_t> &destination,
   // const size_t inc = 1;
   // daxpy_(&cut, &(diag[i]), &(mat[i*N]), &inc, destination.data(), &inc);
   for (size_t i = 0; i < cut; i++)
-    //#pragma omp parallel
+    #pragma omp parallel
     for (size_t j = 0; j < M; j++)
       destination[i * M + j] = diag[i] * mat[i * M + j];
 }
@@ -100,9 +100,6 @@ void mul_usv_nondeg(std::vector<std::vector<dnum_t>> &array_U,
                     dmbloc_t &dst_lhs_blocs, dmbloc_t &dst_rhs_blocs,
                     const int is_um) {
   for (std::size_t i = 0; i < nondeg.size(); i++) {
-    std::cout << "hello world!" << std::endl;
-    std::cout << cut[i] << " and " << cut.size() << std::endl;
-
     if (cut[i] > 0) {
       const index_t middle_index = nondeg[i].first;
       auto theta_index = nondeg[i].second;
@@ -110,6 +107,7 @@ void mul_usv_nondeg(std::vector<std::vector<dnum_t>> &array_U,
                               std::get<1>(nondeg_dims[i]), cut[i]};
       m_shape_t shape_right = {cut[i], std::get<2>(nondeg_dims[i]),
                                std::get<3>(nondeg_dims[i])};
+      std::vector<dnum_t> mat_left, mat_right;
       //
       const std::size_t dim0 =
           static_cast<std::size_t>(std::get<0>(shape_left));
@@ -119,23 +117,23 @@ void mul_usv_nondeg(std::vector<std::vector<dnum_t>> &array_U,
           static_cast<std::size_t>(std::get<1>(shape_right));
       const std::size_t dim3 =
           static_cast<std::size_t>(std::get<2>(shape_right));
-      std::vector<dnum_t> mat_left(dim0 * dim1 * cut[i]);
-      std::vector<dnum_t> mat_right(cut[i] * dim2 * dim3);
 
       if (is_um == 0) {
-
         for (auto &s : array_S[i])
           s = sqrt(s);
+        mat_left.resize(dim0 * dim1 * cut[i]);
+        mat_right.resize(cut[i] * dim2 * dim3);
         mul_mat_diag(mat_left, array_U[i], dim0 * dim1, array_S[i].size(),
                      array_S[i], cut[i]);
         mul_diag_mat(mat_right, array_V[i], array_S[i].size(), dim2 * dim3,
                      array_S[i], cut[i]);
-
       } else if (is_um == 1) {
         mat_left.swap(array_U[i]);
+        mat_right.resize(cut[i] * dim2 * dim3);
         mul_diag_mat(mat_right, array_V[i], array_S[i].size(), dim2 * dim3,
                      array_S[i], cut[i]);
       } else {
+        mat_left.resize(dim0 * dim1 * cut[i]);
         mul_mat_diag(mat_left, array_U[i], dim0 * dim1, array_S[i].size(),
                      array_S[i], cut[i]);
         mat_right.swap(array_V[i]);
