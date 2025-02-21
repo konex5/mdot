@@ -9,10 +9,10 @@ using namespace std;
 #define znum_t std::complex<double>
 
 extern "C" {
-void zgesdd_(const char *jobz, const size_t *m,
-             const size_t *n, const znum_t *a, const size_t *lda, double *s,
-             znum_t *u, const size_t *ldu, znum_t *vt, const size_t *ldvt,
-             znum_t *work, const int *lwork, double *rwork, int *iwork, int *info);
+void zgesdd_(const char *jobz, const size_t *m, const size_t *n,
+             const znum_t *a, const size_t *lda, double *s, znum_t *u,
+             const size_t *ldu, znum_t *vt, const size_t *ldvt, znum_t *work,
+             const int *lwork, double *rwork, int *iwork, int *info);
 }
 
 #undef size_t
@@ -49,16 +49,16 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd) {
     znum_t worktest;
     double rwork[5 * min(N, N)];
     int info, lwork = -1;
-    int iwork[8*N];
+    int iwork[8 * N];
 
-    zgesdd_((char *)"S", &N, &N, A, &ldA, Sout, VDout, &ldvT, Uout,
-            &ldu, &worktest, &lwork, rwork, iwork, &info);
+    zgesdd_((char *)"S", &N, &N, A, &ldA, Sout, VDout, &ldvT, Uout, &ldu,
+            &worktest, &lwork, rwork, iwork, &info);
 
     lwork = (int)worktest.real();
     znum_t work[lwork];
 
-    zgesdd_((char *)"S", &N, &N, A, &ldA, Sout, VDout, &ldvT, Uout,
-            &ldu, work, &lwork, rwork, iwork, &info);
+    zgesdd_((char *)"S", &N, &N, A, &ldA, Sout, VDout, &ldvT, Uout, &ldu, work,
+            &lwork, rwork, iwork, &info);
 
     for (size_t k = 0; k < N; k++)
       BOOST_CHECK(abs(S[k] - Sout[k]) < 1e-5);
@@ -104,16 +104,16 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd) {
     znum_t worktest;
     double rwork[5 * min(N, N)];
     int info, lwork = -1;
-    int iwork[8*N];
+    int iwork[8 * N];
 
-    zgesdd_((char *)"S", &N, &N, A, &ldA, Sout, Uout, &ldvT, VDout,
-            &ldu, &worktest, &lwork, rwork, iwork, &info);
+    zgesdd_((char *)"S", &N, &N, A, &ldA, Sout, Uout, &ldvT, VDout, &ldu,
+            &worktest, &lwork, rwork, iwork, &info);
 
     lwork = (int)worktest.real();
     znum_t work[lwork];
 
-    zgesdd_((char *)"S", &N, &N, A, &ldA, Sout, Uout, &ldvT, VDout,
-            &ldu, work, &lwork, rwork, iwork, &info);
+    zgesdd_((char *)"S", &N, &N, A, &ldA, Sout, Uout, &ldvT, VDout, &ldu, work,
+            &lwork, rwork, iwork, &info);
 
     for (size_t k = 0; k < N; k++)
       BOOST_CHECK(S[k] - Sout[k] < 1e-5);
