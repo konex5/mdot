@@ -1,5 +1,4 @@
-#ifndef _PROTOTYPE_DAVIDSON_H
-#define _PROTOTYPE_DAVIDSON_H 1
+#pragma once
 
 #include <cmath>
 #include <iomanip>
@@ -11,7 +10,18 @@
 
 #include <btas/QSPARSE/QSDArray.h>
 
-namespace davidson {
+extern "C" {
+void daxpy_(const size_t *n, const dnum_t *alpha, const dnum_t *x,
+            const size_t *incx, dnum_t *y, const size_t *incy);
+dnum_t ddot_(const size_t *n, const dnum_t *x, const size_t *incx,
+             const dnum_t *y, const size_t *incy);
+void dscal_(const size_t *n, const dnum_t *a, dnum_t *x, const size_t *incx);
+void dsymv_(const size_t *n, const dnum_t *alpha, const dnum_t *a, const size_t *lda,
+            const dnum_t *x, const size_t *incx, const dnum_t *beta,
+            const dnum_t *y, const size_t *incy);
+}
+
+namespace mdot {
 
 template <size_t N>
 using Functor =
@@ -133,5 +143,3 @@ double diagonalize(const Functor<N> &f_contract, const btas::QSDArray<N> &diag,
 }
 
 }; // namespace davidson
-
-#endif // _PROTOTYPE_DAVIDSON_H

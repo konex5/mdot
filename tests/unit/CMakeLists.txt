@@ -11,6 +11,7 @@ set(UNIT_TESTS_NAMES blocs_static dummy indexdw operators operators_static utils
 		     lapack_svd_zgesdd
 		     # lapack_eig_zheev
 			 routine_svd_routine
+			 routine_eig_jacobi
 			 routine_eig_lanczos
 			 routine_mul_routine
 			 routine_indices
