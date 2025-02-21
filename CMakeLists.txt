@@ -4,7 +4,7 @@ set(PROJECT_VERSION "0.0.1")
 
 project(
   "golden_cpp"
-  LANGUAGES CXX
+  LANGUAGES CXX C
   VERSION "${PROJECT_VERSION}"
   DESCRIPTION "CPP Golden Project")
 
@@ -18,7 +18,7 @@ set(CMAKE_CXX_COMPILER $ENV{CXX})
 # OPTIONS
 # ##############################################################################
 
-option(PROJECT_TESTS "Build Cpp Tests" ON)
+option(PROJECT_TESTS "Build Project's Tests" ON)
 option(PROJECT_SANDBOX "Build Sandbox" OFF)
 option(PROJECT_BENCHMARK "Build Benchmark" OFF)
 
@@ -38,18 +38,13 @@ add_compile_options(
 # option(PROJECT_SANITIZER_MSAN "Sanitizer MSAN" OFF)
 # option(PROJECT_SANITIZER_TSAN "Sanitizer TSAN" OFF)
 
-# if(${PROJECT_ASAN})
-#   set(CMAKE_CXX_FLAGS "-O -g -fsanitize=address")
+# if(${PROJECT_ASAN}) set(CMAKE_CXX_FLAGS "-O -g -fsanitize=address") endif()
+
+# if(${PROJECT_TSAN}) set(CMAKE_CXX_FLAGS "-O -g -fsanitize=thread -fopenmp")
 # endif()
 
-# if(${PROJECT_TSAN})
-#   set(CMAKE_CXX_FLAGS "-O -g -fsanitize=thread -fopenmp")
-# endif()
-
-# if(${PROJECT_MSAN})
-#   set(CMAKE_CXX_FLAGS
-#       "-fsanitize=memory -fPIE -pie -fno-omit-frame-pointer -g -O2")
-# endif()
+# if(${PROJECT_MSAN}) set(CMAKE_CXX_FLAGS "-fsanitize=memory -fPIE -pie
+# -fno-omit-frame-pointer -g -O2") endif()
 
 # ##############################################################################
 # FIND PACKAGES
@@ -64,8 +59,8 @@ include_directories(SYSTEM ${Boost_INCLUDE_DIR})
 # ##############################################################################
 # INCLUDE
 # ##############################################################################
-# configure_file("${PROJECT_SOURCE_DIR}/src/linalg/utils/path.hpp.in"
-# "${PROJECT_BINARY_DIR}/path.hpp")
+# configure_file("${PROJECT_SOURCE_DIR}/src/utils/path.hpp.in"
+# "${PROJECT_BINARY_DIR}/utils/path.hpp")
 include_directories("${PROJECT_SOURCE_DIR}/src" ${PROJECT_BINARY_DIR})
 
 # ##############################################################################
