@@ -12,7 +12,7 @@ foreach(library ${libraries})
 
 endforeach()
 
-set(clicommands climdot cliprintoperator)
+set(clicommands create_maximal_entangled_state climdot cliprintoperator)
 
 foreach(clicommand ${clicommands})
 
