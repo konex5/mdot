@@ -1,4 +1,4 @@
-set(UNIT_TESTS_NAMES dummy utils_random_matrix simple_svd svd dgemm_simple)
+set(UNIT_TESTS_NAMES dummy utils_random_matrix simple_svd svd simple_dgemm)
 
 foreach(UNIT_TEST_NAME ${UNIT_TESTS_NAMES})
   add_executable(test_${UNIT_TEST_NAME} test_${UNIT_TEST_NAME}.cpp)
@@ -7,6 +7,6 @@ foreach(UNIT_TEST_NAME ${UNIT_TESTS_NAMES})
                                   BOOST_TEST_DYN_LINK=TRUE)
   target_link_libraries(
     test_${UNIT_TEST_NAME} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY}
-    ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} lapack) # golden
+    ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} lapack)
   add_test(unit_${UNIT_TEST_NAME} test_${UNIT_TEST_NAME})
 endforeach()
