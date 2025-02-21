@@ -11,3 +11,14 @@ nix-shell --arg clangSupport false
 nix-build . --arg clangSupport false
 ```
 The project is built by default with *clang*.
+
+
+Tip: one line code formatter for C/C++ projects
+
+```bash
+nixpkgs-fmt .
+
+clang-format -i $(find . -path "./b*" -prune  -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp")
+
+cmake-format -i $(find . -path "./b*" -prune  -name "*.cmake" -o -name "CMakeLists.txt")
+```
