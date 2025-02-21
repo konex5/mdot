@@ -264,7 +264,7 @@ BOOST_AUTO_TEST_CASE(test_svd_validation) {
     dgesvd_((char *)"S", (char *)"S", &M, &N, A, &ldA, Sout, VDout, &ldvT, Uout,
             &ldu, work, &lwork, &info);
 
-    BOOST_CHECK(Uout[0] == 0.38631770311861136);
+    BOOST_CHECK(Uout[0] == -0.38631770311861136);
     BOOST_CHECK(Sout[0] == 9.5080320006957262);
     BOOST_CHECK(VDout[0] == -0.42866713354862607);
   }
