@@ -12,6 +12,18 @@ let
       [ bbenoist.Nix eamodio.gitlens ms-vscode.cpptools ]
       ++ vscode-utils.extensionsFromVscodeMarketplace [
         {
+          name = "vscode-clangd";
+          publisher = "llvm-vs-code-extensions";
+          version = "0.1.12";
+          sha256 = "WAWDW7Te3oRqRk4f1kjlcmpF91boU7wEnPVOgcLEISE=";
+        }
+        {
+          name = "cmake";
+          publisher = "twxs";
+          version = "0.0.17";
+          sha256 = "CFiva1AO/oHpszbpd7lLtDzbv1Yi55yQOQPP/kCTH4Y=";
+        }
+        {
           name = "cmake-tools";
           publisher = "ms-vscode";
           version = "1.7.3";
@@ -22,12 +34,6 @@ let
           publisher = "tuttieee";
           version = "0.31.0";
           sha256 = "McSWrOSYM3sMtZt48iStiUvfAXURGk16CHKfBHKj5Zk=";
-        }
-        {
-          name = "cmake";
-          publisher = "twxs";
-          version = "0.0.17";
-          sha256 = "CFiva1AO/oHpszbpd7lLtDzbv1Yi55yQOQPP/kCTH4Y=";
         }
       ];
   };
@@ -48,6 +54,9 @@ mkCustomShell {
     gdb
     git
     gnumake
+    llvm
+    less
+    more
     nixpkgs-fmt
     pkg-config
     emacs-nox
