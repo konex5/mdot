@@ -6,6 +6,8 @@
 
 ### Table Of Content
 
+* [readme page](README.md)
+* [Code snippets](README.md#code-snippets)
 * [hyperref](golden.md#test)
-
 * [hyperref](golden.md)
+* 
