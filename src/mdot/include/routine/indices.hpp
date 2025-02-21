@@ -196,4 +196,26 @@ degeneracy_in_theta(const std::vector<t_index_t> theta_indices,
   return {nondeg, degenerate};
 }
 
+std::vector<std::tuple<index_t, index_t,
+                       typename std::vector<std::tuple<index_t, index_t>>,
+                       typename std::vector<index_t>,
+                       typename std::vector<std::pair<index_t, index_t>>,
+                       typename std::vector<std::tuple<index_t, index_t>>,
+                       typename std::vector<index_t>,
+                       typename std::vector<std::pair<index_t, index_t>>>>
+slices_degenerate_blocs(
+    dtbloc_t theta_blocs,
+    std::vector<std::pair<index_t, std::vector<t_index_t>>> degenerate_list) {
+  //
+  std::vector<std::tuple<index_t, index_t,
+                         typename std::vector<std::tuple<index_t, index_t>>,
+                         typename std::vector<index_t>,
+                         typename std::vector<std::pair<index_t, index_t>>,
+                         typename std::vector<std::tuple<index_t, index_t>>,
+                         typename std::vector<index_t>,
+                         typename std::vector<std::pair<index_t, index_t>>>>
+      subnewsize;
+  return subnewsize;
+}
+
 } // namespace mdot
