@@ -11,10 +11,16 @@ BOOST_AUTO_TEST_CASE(test_blocs_static_sh_real) {
   BOOST_CHECK(std::get<1>(mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::get_shape(0)) == 1);
   BOOST_CHECK(std::get<0>(mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::get_shape(1)) == 1);
   BOOST_CHECK(std::get<1>(mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::get_shape(1)) == 1);
-  //auto arrays = mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::get_arrays(2.);
-  //BOOST_CHECK(arrays[0]->at(0) == 2.);
-  //auto array1 = mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::get_array(0);
-  
+  auto a = mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::get_shapes();
+  BOOST_CHECK(std::get<0>(a[0]) == 1);
+  BOOST_CHECK(std::get<1>(a[0]) == 1);
+  BOOST_CHECK(std::get<0>(a[1]) == 1);
+  BOOST_CHECK(std::get<1>(a[1]) == 1);
+  auto arrays = mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::get_arrays(2.);
+  BOOST_CHECK(arrays[0][0] == 2.);
+  BOOST_CHECK(arrays[0][1] == 2.);
+  auto array1 = mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::get_array(1,-2.);
+  BOOST_CHECK(array1[0] == -2.);
   //auto array1 = mdot::real_sh_blocs_crtp<mdot::sh_id_u1>::get_array(0,3.);
   // BOOST_CHECK(array1[0] == 3);
   
