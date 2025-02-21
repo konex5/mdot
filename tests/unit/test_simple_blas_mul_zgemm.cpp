@@ -19,7 +19,7 @@ void zgemm_(const char *transa, const char *transb, const size_t *m,
 
 #undef size_t
 
-BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
+BOOST_AUTO_TEST_CASE(test_zgemm_simple) {
 
   { // real, row major
     const std::size_t N = 2;

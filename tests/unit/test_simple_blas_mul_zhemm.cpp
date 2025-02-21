@@ -10,16 +10,16 @@ using namespace std;
 #define znum_t std::complex<double>
 
 extern "C" {
-void zhemm_(const char *transa, const char *transb, const size_t *m,
-            const size_t *n, const size_t *k, const znum_t *alpha,
-            const znum_t *a, const size_t *lda, const znum_t *b,
-            const size_t *ldb, const znum_t *beta, znum_t *c,
-            const size_t *ldc);
+
+void zhemm_(const char *side, const char *uplo, const size_t *m,
+            const size_t *n, const znum_t *alpha, const znum_t *a,
+            const size_t *lda, const znum_t *b, const size_t *ldb,
+            const znum_t *beta, znum_t *c, const size_t *ldc);
 }
 
 #undef size_t
 
-BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
+BOOST_AUTO_TEST_CASE(test_zhemm_simple) {
 
   { // real, row major
     const std::size_t N = 2;
@@ -42,8 +42,8 @@ BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
     znum_t Cout[N * M];
     znum_t alpha = {1., 0}, beta = {0., 0};
 
-    zgemm_((char *)"N", (char *)"N", &M, &N, &K, &alpha, B, &M, A, &K, &beta,
-           Cout, &M);
+    zhemm_((char *)"L", (char *)"U", &M, &N, &alpha, B, &M, A, &K, &beta, Cout,
+           &M);
 
     for (std::size_t k = 0; k < N * M; k++)
       // std::cout << C[k] << "compared with" << Cout[k] << std::endl;
@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
           sum += A[i + k * M] * B[k + j * K];
         // std::cout << "A[i+j*4]=" << C[i+j*N] << " and the sum gives:" << sum
         // << std::endl;
-        BOOST_CHECK(abs(C[i + j * M] - sum) < 1e-7);
+        BOOST_CHECK_EQUAL(C[i + j * M], sum);
       };
 
     znum_t Cout[N * M];
@@ -74,12 +74,12 @@ BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
 
     // zgemm_((char *)"T", (char *)"T", &N, &M, &K, &alpha, B, &K,
     //          A, &M, &beta, Cout, &N); // gives C^T
-    zgemm_((char *)"N", (char *)"N", &M, &N, &K, &alpha, A, &M, B, &K, &beta,
-           Cout, &M);
+    // zgemm_((char *)"N", (char *)"N", &M, &N, &K, &alpha, A, &M, B, &K, &beta,
+    //        Cout, &M);
 
-    for (std::size_t k = 0; k < N * M; k++)
-      // std::cout << C[k] << "compared with" << Cout[k] << std::endl;
-      BOOST_CHECK(abs(C[k] - Cout[k]) < 1e-7);
+    // for (std::size_t k = 0; k < N * M; k++)
+    //   // std::cout << C[k] << "compared with" << Cout[k] << std::endl;
+    //   BOOST_CHECK(abs(C[k] - Cout[k]) < 1e-7);
   }
 }
 #undef znum_t
