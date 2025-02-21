@@ -1,7 +1,7 @@
 #include <boost/test/unit_test.hpp>
 
-#include <math.h>
 #include <complex>
+#include <math.h>
 
 using namespace std;
 
@@ -18,7 +18,6 @@ void zgemm_(const char *transa, const char *transb, const size_t *m,
 }
 
 #undef size_t
-#undef dnum_t
 
 BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
 
@@ -26,9 +25,9 @@ BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
     const std::size_t N = 2;
     const std::size_t K = 2;
     const std::size_t M = 2;
-    const znum_t A[N * K] = {{1,1}, {-1,0}, {-1,0}, {0, 2}};
-    const znum_t B[K * M] = {{-1, 0}, {1,0},{1,0},{1,1}};
-    const znum_t C[N * M] = {{-2, -1}, {0, 0}, {1, 2},{-3,2}};
+    const znum_t A[N * K] = {{1, 1}, {-1, 0}, {-1, 0}, {0, 2}};
+    const znum_t B[K * M] = {{-1, 0}, {1, 0}, {1, 0}, {1, 1}};
+    const znum_t C[N * M] = {{-2, -1}, {0, 0}, {1, 2}, {-3, 2}};
 
     for (std::size_t i = 0; i < N; i++)
       for (std::size_t j = 0; j < M; j++) {
@@ -41,7 +40,7 @@ BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
       };
 
     znum_t Cout[N * M];
-    znum_t alpha = {1.,0}, beta = {0.,0};
+    znum_t alpha = {1., 0}, beta = {0., 0};
 
     zgemm_((char *)"N", (char *)"N", &M, &N, &K, &alpha, B, &M, A, &K, &beta,
            Cout, &M);
@@ -56,9 +55,9 @@ BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
     const std::size_t M = 2;
     const std::size_t K = 2;
     const std::size_t N = 3;
-    const znum_t A[N * K] = {{1,1}, {-1,0}, {-1,0}, {0, 2}};
-    const znum_t B[K * M] = {{-1, 0}, {1,0},{1,0},{1,1}};
-    const znum_t C[N * M] = {{-2, -1}, {1, 2}, {0, 0},{-3,2}};
+    const znum_t A[N * K] = {{1, 1}, {-1, 0}, {-1, 0}, {0, 2}};
+    const znum_t B[K * M] = {{-1, 0}, {1, 0}, {1, 0}, {1, 1}};
+    const znum_t C[N * M] = {{-2, -1}, {1, 2}, {0, 0}, {-3, 2}};
 
     for (std::size_t i = 0; i < M; i++)
       for (std::size_t j = 0; j < N; j++) {
@@ -67,7 +66,7 @@ BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
           sum += A[i + k * M] * B[k + j * K];
         // std::cout << "A[i+j*4]=" << C[i+j*N] << " and the sum gives:" << sum
         // << std::endl;
-        BOOST_CHECK(abs(C[i + j * M]- sum)<1e-7);
+        BOOST_CHECK(abs(C[i + j * M] - sum) < 1e-7);
       };
 
     znum_t Cout[N * M];
@@ -80,6 +79,7 @@ BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
 
     for (std::size_t k = 0; k < N * M; k++)
       // std::cout << C[k] << "compared with" << Cout[k] << std::endl;
-      BOOST_CHECK(abs(C[k]- Cout[k])<1e-7);
+      BOOST_CHECK(abs(C[k] - Cout[k]) < 1e-7);
   }
 }
+#undef znum_t
