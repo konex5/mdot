@@ -40,6 +40,7 @@ in
 mkCustomShell {
   buildInputs = [
     # stdenv.cc.cc.lib
+    # libcxxabi
     boost17x
     spdlog
     tbb
@@ -47,8 +48,6 @@ mkCustomShell {
   ] ++ lib.optionals (hostPlatform.isLinux) [ glibcLocales ];
 
   nativeBuildInputs = [ cmake gnumake ninja ] ++ [
-    # stdenv.cc.cc
-    # libcxxabi
     bashCompletion
     bashInteractive
     cacert
@@ -68,7 +67,10 @@ mkCustomShell {
     pkg-config
   ] ++ lib.optionals (hostPlatform.isLinux) [ typora vscodeExt ] ++ [ hugo ];
 
+  LANG = "en_US.UTF-8";
+  
   shellHook = ''
+    export HOME=$(pwd);
     export SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
   '';
 }
