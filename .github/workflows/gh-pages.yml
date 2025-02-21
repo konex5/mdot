@@ -3,7 +3,7 @@ name: update github pages
 on:
   push:
     branches:
-      - doc-deploy  # Set a branch to deploy
+      - main  # Set a branch to deploy
 
 jobs:
   deploy:

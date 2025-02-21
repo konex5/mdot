@@ -18,7 +18,7 @@ This is a skeleton template for a C/C++ project.
 The [nokxpkgs](https://github.com/nokx5/nokxpkgs#add-nokxpkgs-to-your-nix-channel) channel and associate overlay can be imported with the `-I` command or by setting the `NIX_PATH` environment variable.
 
 ```bash
-nix-shell -I nixpkgs=https://github.com/nokx5/nokxpkgs/archive/main.tar.gz -p golden_cpp --command cli_golden_cpp
+nix-shell -I nixpkgs=https://github.com/nokx5/nokxpkgs/archive/main.tar.gz -p golden_cpp --command cli_golden
 ```
 
 ### Develop the software
@@ -67,7 +67,7 @@ echo 'experimental-features = nix-command flakes' >> ~/.config/nix/nix.conf
 ### Use the software (without git clone)
 
 ```
-nix shell github:nokx5/golden_cpp --command cli_golden_cpp
+nix shell github:nokx5/golden_cpp --command cli_golden
 ```
 
 ### Develop the software
