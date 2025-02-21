@@ -6,8 +6,12 @@
       }
     )
     { }
+, clangSupport ? true
 }:
 
 with pkgs;
 
-callPackage ./derivation.nix { stdenv = clangStdenv; src = ./.; } # gccStdenv
+callPackage ./derivation.nix {
+  src = ./.;
+  stdenv = if clangSupport then clangStdenv else gccStdenv;
+}
