@@ -86,21 +86,14 @@ std::vector<index_t> truncation_strategy(const std::vector<darr_t> list_of_array
   
   auto lower = std::lower_bound(tmp_acc.begin(), tmp_acc.end(), stop_criterion,std::less_equal<dnum_t>{});
   size_t index_to_cut = std::distance(tmp_acc.begin(), lower);
-  std::cout << "index_to_cut" << index_to_cut << std::endl;
   dw += std::accumulate(tmp_square.begin(), tmp_square.begin()+index_to_cut, 0);
-
-  std::cout << "dw" << dw;
-  
   dnum_t maxcutvalue = tmp[index_to_cut];
-  std::cout << "maxcutvalue" << maxcutvalue;
 
   std::vector<index_t> cut_at_index;
   for (size_t i = 0; i < list_of_array.size(); i++) {
-    auto it = std::lower_bound(list_of_array[i].rbegin(), list_of_array[i].rend(), maxcutvalue, std::less_equal<dnum_t>{});
-    std::cout << " it is " << std::distance(list_of_array[i].rbegin(),it);
-    // auto value = static_cast<index_t>(list_of_array[i].size());
-    // std::cout << " value" << value;
-    // cut_at_index.push_back(std::min(value,chi_max));
+    auto it = std::upper_bound(list_of_array[i].begin(), list_of_array[i].end(), maxcutvalue, std::greater<dnum_t>{});
+    auto value = static_cast<index_t>(std::distance(list_of_array[i].begin(),it));
+    cut_at_index.push_back(std::min(value,chi_max));
   }
   
   return cut_at_index;
