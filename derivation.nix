@@ -1,11 +1,13 @@
-{ stdenv, src, boost17x, cmakeMinimal, fixDarwinDylibNames, gnumake, lib, ninja, tbb }:
+{ stdenv, src, boost17x, cmakeMinimal, fixDarwinDylibNames, gnumake, lapack, lib, ninja, tbb }:
+
+# lapack spdlog
 
 stdenv.mkDerivation rec {
   pname = "mdot";
   version = "0.0.1";
   inherit src;
 
-  buildInputs = [ boost17x tbb ];
+  buildInputs = [ boost17x lapack tbb ];
   nativeBuildInputs = [ cmakeMinimal gnumake ninja ] ++ lib.optional stdenv.hostPlatform.isDarwin fixDarwinDylibNames;
   cmakeFlags = [
     "-DCMAKE_BUILD_TYPE=Release"
