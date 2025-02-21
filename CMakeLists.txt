@@ -73,9 +73,6 @@ configure_file("${PROJECT_SOURCE_DIR}/src/utils/static.hpp.in"
                "${PROJECT_BINARY_DIR}/utils/static.hpp")
 include_directories("${PROJECT_SOURCE_DIR}/src" ${PROJECT_BINARY_DIR})
 
-# add_compile_definitions(COMPLEX_NUMBERS)
-# add_compile_definitions(FLOAT_NUMBERS)
-
 # ##############################################################################
 # PROJECT
 # ##############################################################################
@@ -85,9 +82,9 @@ add_subdirectory(src/silver)
 # ##############################################################################
 # TESTS and miscelaneous
 # ##############################################################################
-if(${PROJECT_TESTS})
-  include(CTest)
-  enable_testing()
+include(CTest)
+enable_testing()
+if(${PROJECT_UNIT_TESTS})
   add_subdirectory(tests/unit)
 endif()
 if(${PROJECT_SANDBOX})
@@ -96,6 +93,6 @@ endif()
 if(${PROJECT_BENCHMARK})
   add_subdirectory(tests/benchmark)
 endif()
-if(${PROJECT_VALIDATION})
-  add_subdirectory(tests/validation)
+if(${PROJECT_INTEGRATION})
+  add_subdirectory(tests/integration)
 endif()
