@@ -25,6 +25,10 @@ typedef typename std::vector<zarr_t> array_of_ztype;
 using index_small_t = uint8_t;
 using index_t = uint16_t;
 
+using op_index_t = std::tuple<index_small_t,index_small_t>;
+using dopbloc_t = std::map<op_index_t, darr_t>;
+using zopbloc_t = std::map<op_index_t, darr_t>;
+
 using m_index_t = std::tuple<index_t, index_small_t, index_t>;
 using m_shape_t = std::tuple<index_t, index_small_t, index_t>;
 using dmbloc_t = std::map<m_shape_t, darr_t>;
