@@ -176,3 +176,4 @@ dkms.conf
 **/build
 tests/sandbox
 docs/target-doc
+result*
