@@ -69,12 +69,10 @@ void truncation_strategy(const std::vector<darr_t> list_of_array,
   // chi_max = max chi of bloc
   // eps_truncation_error < sum_{i>chi_max} s_all,i^2
 
-
-
   dnum_t norm;
   bloc_norm(list_of_array, {}, norm);
   //
-  darr_t tmp;
+  std::vector<dnum_t> tmp;
   for (auto &arr : list_of_array)
     tmp.insert(tmp.end(), arr.begin(), arr.end());
 
@@ -83,12 +81,12 @@ void truncation_strategy(const std::vector<darr_t> list_of_array,
   size_t index_to_cut;
   const dnum_t stop_criterion = eps_truncation_error * pow(norm, 2);
   // square
-#pragma omp parallel
+  std::vector<dnum_t> tmp_square;
   for (dnum_t &i : tmp)
-    i = i * i;
+    tmp_square.push_back(i * i);
 
-  darr_t tmp_acc(tmp.size());
-  std::partial_sum(tmp.begin(), tmp.end(), tmp_acc.begin());
+  std::vector<dnum_t> tmp_acc(tmp_square.size());
+  std::partial_sum(tmp_square.begin(), tmp_square.end(), tmp_acc.begin());
 
   for (size_t i = 0; i < tmp_acc.size(); i++) {
     std::cout << " " << tmp_acc[i] << " ";
@@ -100,44 +98,25 @@ void truncation_strategy(const std::vector<darr_t> list_of_array,
   
   index_to_cut = std::distance(tmp_acc.begin(), lower);
   dw += std::accumulate(tmp_acc.begin(), lower, 0);
-  dnum_t maxcutvalue = *lower;
-
+  
   std::cout << "AAA AAA=" << index_to_cut;
-  for (size_t i = 0; i < index_to_cut; i++)
-    std::cout << " " << tmp_acc[i] << " ";
+  for (size_t i = 0; i < index_to_cut; i++) {
+    std::cout << "acc " << tmp_acc[i] << " ";
+    }
+  for (size_t i = 0; i < tmp.size(); i++) {
+    std::cout << "tmp " << tmp[i] << " ";
+    }
+  dnum_t maxcutvalue = tmp[index_to_cut];
+  std::cout << "maxcutvalue=" << maxcutvalue << std::endl;
 
-  //cut_at_index.reserve(list_of_array.size());
+  cut_at_index.reserve(list_of_array.size());
+  for (size_t i = 0; i < list_of_array.size(); i++) {
+     //std::lower_bound(tmp_acc.begin(), tmp_acc.end(), maxcutvalue);
+     //cut_at_index.push_back(min(,chi_max));
+
+  }
+
   //        return cut_at_index;
-
-  /*
-std::for_each(tbb::counting_iterator<size_t>(0),
-   tbb::counting_iterator<size_t>(cut.size()),
-   [list_of_array, cut, &dw, inc](size_t i) {
-           auto itout = list_of_array[i];
-           const size_t n = itout.size()-cut[i];
-           dw += ddot_(&n, itout.data()+cut[i], &inc, itout.data()+cut[i],
-&inc);
-         });
-
-
-
-
-            dw = _np.sum(A[:index2cutA] ** 2)
-
-
-            maxcutvalue = A[index2cutA]
-
-            del A
-
-          
-
-            cut_at_index = [
-                min(arr.size - _np.searchsorted(arr[::-1],
-            maxcutvalue, "left"), chi_max) for arr in list_of_array
-            ]
-
-            return cut_at_index, dw
-        */
 }
 
 template <typename T>
