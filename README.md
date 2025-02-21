@@ -1,6 +1,6 @@
 # [golden_cpp](https://nokx5.github.io/golden_cpp/)
 
-This is a skeleton template for a C/C++ project.
+This is a skeleton template for a C/C++ project. Please find all the documentation [here](https://nokx5.github.io/golden_cpp/).
 
 ## My development tools are
 - nix :snowflake: (packaging from hell :heart:)
