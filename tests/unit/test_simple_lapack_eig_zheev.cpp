@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#define size_t typename std::size_t
+#define size_t typename size_t
 #define znum_t std::complex<double>
 
 extern "C" {
@@ -18,13 +18,13 @@ void zheev_(const char *jobz, const char *uplo, const size_t *n,
 
 BOOST_AUTO_TEST_CASE(test_simple_zgesvd) {
 
-  const std::size_t N = 2;
+  const size_t N = 2;
 
   { // real, row major // eigenvalues only
     const znum_t A[N * N] = {{1., +1.}, {-1., -1.}, {-1., -1.}, {1., 0.}};
 
     double wout[N];
-    std::size_t ldA = N;
+    size_t ldA = N;
     znum_t worktest;
     double rwork[3 * N - 2];
     int info, lwork = -1;
@@ -57,10 +57,10 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd) {
                         {0.40824829, -0.40824829},
                         {-0.57735027, +0.57735027}};
 
-    for (std::size_t i = 0; i < N; i++)
-      for (std::size_t j = 0; j < M; j++) {
+    for (size_t i = 0; i < N; i++)
+      for (size_t j = 0; j < M; j++) {
         znum_t sum = 0;
-        for (std::size_t k = 0; k < K; k++)
+        for (size_t k = 0; k < K; k++)
           sum += U[i + k * N] * S[k] * Vd[k + j * K];
         // std::cout << "A[i+j*4]=" << A[i+j*N] << " and the sum gives:" << sum
         // << std::endl;
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd) {
 
     znum_t Uout[N * K], VDout[K * M];
     double Sout[K];
-    std::size_t ldA = N, ldu = M, ldvT = N < M ? N : M;
+    size_t ldA = N, ldu = M, ldvT = N < M ? N : M;
     znum_t worktest;
     int info, lwork = -1;
 
@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE(test_simple_zgesvd) {
     zgesvd_((char *)"S", (char *)"S", &N, &M, A, &ldA, Sout, Uout, &ldu, VDout,
             &ldvT, work, &lwork, &info);
 
-    for (std::size_t k = 0; k < K; k++)
+    for (size_t k = 0; k < K; k++)
       BOOST_CHECK(S[k] - Sout[k] < 1e-5);
   */}
 }

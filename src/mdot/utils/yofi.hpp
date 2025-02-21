@@ -16,11 +16,11 @@ namespace mdot {
 namespace yofi {
 
 // printing tuple
-template <std::size_t I = 0, typename... Tp>
+template <size_t I = 0, typename... Tp>
 typename std::enable_if<I == sizeof...(Tp), void>::type
 print_tuple(std::tuple<Tp...> &) {}
 
-template <std::size_t I = 0, typename... Tp>
+template <size_t I = 0, typename... Tp>
     typename std::enable_if <
     I<sizeof...(Tp), void>::type print_tuple(std::tuple<Tp...> &t) {
   std::cout << std::get<I>(t) << ", ";
@@ -28,11 +28,11 @@ template <std::size_t I = 0, typename... Tp>
 }
 
 // writing tuple to a file
-template <std::size_t I = 0, typename... Tp>
+template <size_t I = 0, typename... Tp>
 typename std::enable_if<I == sizeof...(Tp), void>::type
 write_tuple(std::ofstream &, std::tuple<Tp...> &) {}
 
-template <std::size_t I = 0, typename... Tp>
+template <size_t I = 0, typename... Tp>
     typename std::enable_if <
     I<sizeof...(Tp), void>::type write_tuple(std::ofstream &ofs,
                                              std::tuple<Tp...> &t) {
@@ -42,11 +42,11 @@ template <std::size_t I = 0, typename... Tp>
 }
 
 // reading tuple from a file
-template <std::size_t I = 0, typename... Tp>
+template <size_t I = 0, typename... Tp>
 typename std::enable_if<I == sizeof...(Tp), void>::type
 read_tuple(std::ifstream &, std::tuple<Tp...> &) {}
 
-template <std::size_t I = 0, typename... Tp>
+template <size_t I = 0, typename... Tp>
     typename std::enable_if <
     I<sizeof...(Tp), void>::type read_tuple(std::ifstream &ifs,
                                             std::tuple<Tp...> &t) {

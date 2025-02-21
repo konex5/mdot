@@ -62,9 +62,9 @@ void theta_to_mm(dtbloc_t &theta_blocs, dmbloc_t &lhs_blocs,
   }
 
   std::vector<index_t> cut_nondeg, cut_deg;
-  for (std::size_t i = 0; i < out_nondeg_deg.first.size(); i++)
+  for (size_t i = 0; i < out_nondeg_deg.first.size(); i++)
     cut_nondeg.push_back(cut[i]);
-  for (std::size_t i = 0; i < out_nondeg_deg.second.size(); i++)
+  for (size_t i = 0; i < out_nondeg_deg.second.size(); i++)
     cut_deg.push_back(cut[out_nondeg_deg.first.size() + i]);
 
   // mul_usv_deg(

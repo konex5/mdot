@@ -9,7 +9,7 @@
 #include "mdot/include/blocs_static.hpp"
 #include "mdot/include/operators_static.hpp"
 
-inline static const std::string spin_name(const std::size_t num) {
+inline static const std::string spin_name(const size_t num) {
   // this functionality shouldn't be used in practice.
   if (num == 0)
     return "sh";
@@ -23,7 +23,7 @@ inline static const std::string spin_name(const std::size_t num) {
     return "";
 }
 
-inline static const std::string qn_name(const std::size_t num) {
+inline static const std::string qn_name(const size_t num) {
   // this functionality shouldn't be used in practice.
   if (num == 0)
     return "no";
@@ -37,9 +37,9 @@ inline std::string get_model_name(boost::filesystem::path hamiltonian_path) {
   return "description";
 }
 
-inline std::map<std::string, std::size_t>
+inline std::map<std::string, size_t>
 get_model_info(boost::filesystem::path hamiltonian_path) {
-  std::map<std::string, std::size_t> model_dict;
+  std::map<std::string, size_t> model_dict;
   model_dict["size"] = 10;
   model_dict["interaction_range"] = 2;
   model_dict["spin_name"] = 0; // sh
@@ -60,13 +60,12 @@ get_model_parameters(boost::filesystem::path hamiltonian_path) {
 // get_details_tdmrg
 
 std::tuple<std::vector<dnum_t>, std::vector<dtbloc_t>>
-create_maximal_entangled_state(std::size_t size, std::size_t spin_name,
-                               std::size_t qn_name) {
+create_maximal_entangled_state(size_t size, size_t spin_name, size_t qn_name) {
   std::vector<dnum_t> coef;
   std::vector<dtbloc_t> dmps;
   t_index_t tmp_indices;
   std::vector<dnum_t> tmp_vec;
-  for (std::size_t i = 0; i < size; i++) {
+  for (size_t i = 0; i < size; i++) {
     coef.push_back(1. / sqrt(2));
     if (spin_name == 0 && qn_name == 0) {
       tmp_indices = {0, 0, 0, 0};

@@ -21,17 +21,17 @@ void dgemm_(const char *transa, const char *transb, const size_t *m,
 BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
 
   { // real, row major
-    const std::size_t N = 3;
-    const std::size_t K = 2;
-    const std::size_t M = 2;
+    const size_t N = 3;
+    const size_t K = 2;
+    const size_t M = 2;
     const double A[N * K] = {1, 1, 1, -1, 0, 1};
     const double B[K * M] = {0, 1, 1, -1};
     const double C[N * M] = {1, 0, -1, 2, 1, -1};
 
-    for (std::size_t i = 0; i < N; i++)
-      for (std::size_t j = 0; j < M; j++) {
+    for (size_t i = 0; i < N; i++)
+      for (size_t j = 0; j < M; j++) {
         double sum = 0;
-        for (std::size_t k = 0; k < K; k++)
+        for (size_t k = 0; k < K; k++)
           sum += A[i * K + k] * B[k * M + j];
         // std::cout << "A[i*5+j]=" << A[i*M+j] << " and the sum gives:" << sum
         // << std::endl;
@@ -44,24 +44,24 @@ BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
     dgemm_((char *)"N", (char *)"N", &M, &N, &K, &alpha, B, &M, A, &K, &beta,
            Cout, &M);
 
-    for (std::size_t k = 0; k < N * M; k++)
+    for (size_t k = 0; k < N * M; k++)
       // std::cout << C[k] << "compared with" << Cout[k] << std::endl;
       BOOST_CHECK_EQUAL(C[k], Cout[k]);
 
     std::cout << std::endl << std::endl;
   }
   { // real, column major
-    const std::size_t M = 2;
-    const std::size_t K = 2;
-    const std::size_t N = 3;
+    const size_t M = 2;
+    const size_t K = 2;
+    const size_t N = 3;
     const double A[M * K] = {0, 1, 1, -1};
     const double B[K * N] = {1, 1, 1, -1, 0, 1};
     const double C[M * N] = {1, 0, -1, 2, 1, -1};
 
-    for (std::size_t i = 0; i < M; i++)
-      for (std::size_t j = 0; j < N; j++) {
+    for (size_t i = 0; i < M; i++)
+      for (size_t j = 0; j < N; j++) {
         double sum = 0;
-        for (std::size_t k = 0; k < K; k++)
+        for (size_t k = 0; k < K; k++)
           sum += A[i + k * M] * B[k + j * K];
         // std::cout << "A[i+j*4]=" << C[i+j*N] << " and the sum gives:" << sum
         // << std::endl;
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE(test_dgemm_simple) {
     dgemm_((char *)"N", (char *)"N", &M, &N, &K, &alpha, A, &M, B, &K, &beta,
            Cout, &M);
 
-    for (std::size_t k = 0; k < N * M; k++)
+    for (size_t k = 0; k < N * M; k++)
       // std::cout << C[k] << "compared with" << Cout[k] << std::endl;
       BOOST_CHECK_EQUAL(C[k], Cout[k]);
   }

@@ -22,11 +22,11 @@ void mul_mm_blocs_new(
         buildtarget) {
   const double alpha = 1., beta = 0.;
   for (auto &[target, lhs_it, rhs_it] : buildtarget) {
-    auto N = static_cast<std::size_t>(std::get<0>(lhs_blocs[lhs_it].first) *
-                                      std::get<1>(lhs_blocs[lhs_it].first));
-    auto M = static_cast<std::size_t>(std::get<1>(rhs_blocs[rhs_it].first) *
-                                      std::get<2>(rhs_blocs[rhs_it].first));
-    auto K = static_cast<std::size_t>(std::get<2>(lhs_blocs[lhs_it].first));
+    auto N = static_cast<size_t>(std::get<0>(lhs_blocs[lhs_it].first) *
+                                 std::get<1>(lhs_blocs[lhs_it].first));
+    auto M = static_cast<size_t>(std::get<1>(rhs_blocs[rhs_it].first) *
+                                 std::get<2>(rhs_blocs[rhs_it].first));
+    auto K = static_cast<size_t>(std::get<2>(lhs_blocs[lhs_it].first));
     std::vector<dnum_t> mat_out(N * M);
 
     dgemm_((char *)"N", (char *)"N", &M, &N, &K, &alpha,
@@ -47,11 +47,11 @@ void mul_mm_blocs_dup(
         buildtarget) {
   const double alpha = 1., beta = 0.;
   for (auto &[target, lhs_it, rhs_it] : buildtarget) {
-    auto N = static_cast<std::size_t>(std::get<0>(lhs_blocs[lhs_it].first) *
-                                      std::get<1>(lhs_blocs[lhs_it].first));
-    auto M = static_cast<std::size_t>(std::get<1>(rhs_blocs[rhs_it].first) *
-                                      std::get<2>(rhs_blocs[rhs_it].first));
-    auto K = static_cast<std::size_t>(std::get<2>(lhs_blocs[lhs_it].first));
+    auto N = static_cast<size_t>(std::get<0>(lhs_blocs[lhs_it].first) *
+                                 std::get<1>(lhs_blocs[lhs_it].first));
+    auto M = static_cast<size_t>(std::get<1>(rhs_blocs[rhs_it].first) *
+                                 std::get<2>(rhs_blocs[rhs_it].first));
+    auto K = static_cast<size_t>(std::get<2>(lhs_blocs[lhs_it].first));
     auto NM = N * M;
     std::vector<dnum_t> mat_out(NM);
 
@@ -98,7 +98,7 @@ void mul_usv_nondeg(std::vector<std::vector<dnum_t>> &array_U,
                     std::vector<t_shape_t> &nondeg_dims,
                     dmbloc_t &dst_lhs_blocs, dmbloc_t &dst_rhs_blocs,
                     const int is_um) {
-  for (std::size_t i = 0; i < nondeg.size(); i++) {
+  for (size_t i = 0; i < nondeg.size(); i++) {
     if (cut[i] > 0) {
       const index_t middle_index = nondeg[i].first;
       auto theta_index = nondeg[i].second;
@@ -108,14 +108,10 @@ void mul_usv_nondeg(std::vector<std::vector<dnum_t>> &array_U,
                                std::get<3>(nondeg_dims[i])};
       std::vector<dnum_t> mat_left, mat_right;
       //
-      const std::size_t dim0 =
-          static_cast<std::size_t>(std::get<0>(shape_left));
-      const std::size_t dim1 =
-          static_cast<std::size_t>(std::get<1>(shape_left));
-      const std::size_t dim2 =
-          static_cast<std::size_t>(std::get<1>(shape_right));
-      const std::size_t dim3 =
-          static_cast<std::size_t>(std::get<2>(shape_right));
+      const size_t dim0 = static_cast<size_t>(std::get<0>(shape_left));
+      const size_t dim1 = static_cast<size_t>(std::get<1>(shape_left));
+      const size_t dim2 = static_cast<size_t>(std::get<1>(shape_right));
+      const size_t dim3 = static_cast<size_t>(std::get<2>(shape_right));
 
       if (is_um == 0) {
         for (auto &s : array_S[i])

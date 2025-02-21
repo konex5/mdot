@@ -17,10 +17,10 @@ inline std::array<double, 4> normalize(std::array<double, 4> array) {
   std::array<double, 4> out;
 
   double norm = 0;
-  for (std::size_t i = 0; i < array.size(); i++)
+  for (size_t i = 0; i < array.size(); i++)
     norm += array[i] * array[i];
 
-  for (std::size_t i = 0; i < array.size(); i++)
+  for (size_t i = 0; i < array.size(); i++)
     out[i] = array[i] / norm;
 
   return out;

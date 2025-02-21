@@ -12,9 +12,9 @@ int main() {
   auto size = mdot::cplx_sh_operators_crtp<mdot::sh_id_cplx_no>::size;
 
   std::cout << "the matrix is..." << std::endl;
-  std::size_t nb_col = std::get<1>(shape);
-  for (std::size_t i = 0; i < std::get<0>(shape); i++) {
-    for (std::size_t j = 0; j < nb_col; j++)
+  size_t nb_col = std::get<1>(shape);
+  for (size_t i = 0; i < std::get<0>(shape); i++) {
+    for (size_t j = 0; j < nb_col; j++)
       std::cout << arr[j + i * nb_col] << " ";
     std::cout << std::endl;
   }

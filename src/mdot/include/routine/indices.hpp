@@ -17,7 +17,7 @@ split_degenerate_indices(
   for (auto &it : indices)
     all_targets.push_back(std::get<0>(it));
 
-  for (std::size_t i = 0; i < all_targets.size(); i++) {
+  for (size_t i = 0; i < all_targets.size(); i++) {
     if (std::find(all_targets.begin(), all_targets.end(), all_targets[i]) -
             all_targets.begin() ==
         static_cast<long>(i))

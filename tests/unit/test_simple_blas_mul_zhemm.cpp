@@ -22,17 +22,17 @@ void zhemm_(const char *side, const char *uplo, const size_t *m,
 BOOST_AUTO_TEST_CASE(test_zhemm_simple) {
 
   { // real, row major
-    const std::size_t N = 2;
-    const std::size_t K = 2;
-    const std::size_t M = 2;
+    const size_t N = 2;
+    const size_t K = 2;
+    const size_t M = 2;
     const znum_t A[N * K] = {{1, 0}, {-1, -2}, {-1, 2}, {2, 0}};
     const znum_t B[K * M] = {{-1, 0}, {1, 1}, {1, -1}, {1, 0}};
     const znum_t C[N * M] = {{-4, -1}, {0, -1}, {3, -4}, {-1, 1}};
 
-    for (std::size_t i = 0; i < N; i++)
-      for (std::size_t j = 0; j < M; j++) {
+    for (size_t i = 0; i < N; i++)
+      for (size_t j = 0; j < M; j++) {
         znum_t sum = 0;
-        for (std::size_t k = 0; k < K; k++)
+        for (size_t k = 0; k < K; k++)
           sum += A[i * K + k] * B[k * M + j];
         // std::cout << "A[i*5+j]=" << A[i*M+j] << " and the sum gives:" << sum
         // << std::endl;
@@ -45,23 +45,23 @@ BOOST_AUTO_TEST_CASE(test_zhemm_simple) {
     zhemm_((char *)"L", (char *)"U", &N, &M, &alpha, B, &K, A, &N, &beta, Cout,
            &M);
 
-    for (std::size_t k = 0; k < N * M; k++)
+    for (size_t k = 0; k < N * M; k++)
       BOOST_CHECK_EQUAL(C[k], Cout[k]);
 
     std::cout << std::endl << std::endl;
   }
   { // real, column major
-    const std::size_t M = 2;
-    const std::size_t K = 2;
-    const std::size_t N = 2;
+    const size_t M = 2;
+    const size_t K = 2;
+    const size_t N = 2;
     const znum_t A[N * K] = {{1, 0}, {-1, 2}, {-1, -2}, {2, 0}};
     const znum_t B[K * M] = {{-1, 0}, {1, -1}, {1, 1}, {1, 0}};
     const znum_t C[N * M] = {{-4, -1}, {3, -4}, {0, -1}, {-1, 1}};
 
-    for (std::size_t i = 0; i < M; i++)
-      for (std::size_t j = 0; j < N; j++) {
+    for (size_t i = 0; i < M; i++)
+      for (size_t j = 0; j < N; j++) {
         znum_t sum = 0;
-        for (std::size_t k = 0; k < K; k++)
+        for (size_t k = 0; k < K; k++)
           sum += A[i + k * M] * B[k + j * K];
         BOOST_CHECK(abs(C[i + j * M] - sum) < 1e-7);
       };
@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE(test_zhemm_simple) {
     zhemm_((char *)"L", (char *)"U", &M, &N, &alpha, A, &N, B, &K, &beta, Cout,
            &N);
 
-    for (std::size_t k = 0; k < N * M; k++)
+    for (size_t k = 0; k < N * M; k++)
       BOOST_CHECK(abs(C[k] - Cout[k]) < 1e-7);
   }
 }
