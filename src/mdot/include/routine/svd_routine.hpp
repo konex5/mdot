@@ -119,7 +119,6 @@ void svd_nondeg(dtbloc_t& theta_bloc,
         auto N = static_cast<std::size_t>(std::get<0>(shape)*std::get<1>(shape));
         auto M = static_cast<std::size_t>(std::get<2>(shape)*std::get<3>(shape));
         auto K = std::min(N,M);
-        
         ///
         std::vector<double> Uout(N * K), Sout(K), VDout(K * M);
         std::size_t ldA = M, ldu = N, ldvT = M < N ? M : N;
@@ -132,7 +131,7 @@ void svd_nondeg(dtbloc_t& theta_bloc,
         double work[lwork];
         dgesvd_((char *)"S", (char *)"S", &M, &N, theta_bloc[key].second.data(), &ldA, Sout.data(), VDout.data(), &ldu, Uout.data(),
             &ldvT, work, &lwork, &info);
-        ///
+        //
         array_of_U.push_back(Uout);
         array_of_S.push_back(Sout);
         array_of_V.push_back(VDout);
