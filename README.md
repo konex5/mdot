@@ -30,7 +30,7 @@ The project is built by default with *clang* which works better with
 *tbb* in my case.
 
 The gate application as well as the python wrapper can be found under
-the **mdotbind** project.
+the **mdot11** project.
 
 ## Abstract
 
